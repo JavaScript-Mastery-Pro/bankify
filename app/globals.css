@@ -8,17 +8,23 @@
   box-sizing: border-box;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 @layer utilities {
   .flex-center {
     @apply flex items-center justify-center;
+  }
+  .text-14 {
+    @apply text-[14px] leading-[20px];
+  }
+  .text-24 {
+    @apply text-[24px] leading-[30px];
+  }
+  .text-26 {
+    @apply text-[26px] leading-[32px];
+  }
+  .text-36 {
+    @apply text-[36px] leading-[44px];
+  }
+  .text-16 {
+    @apply text-[16px] leading-[24px];
   }
 }
