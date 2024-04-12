@@ -41,7 +41,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
             <Input
               type="text"
               placeholder="Enter your name"
-              className="text-16 placeholder:text-16 rounded-lg border border-gray-300 px-3.5 py-2.5 text-gray-500 shadow-form placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="input-class px-3.5 py-2.5 shadow-form"
             />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -49,7 +49,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
             <Input
               type="email"
               placeholder="Enter your email"
-              className="text-16 placeholder:text-16 rounded-lg border border-gray-300 px-3.5 py-2.5 text-gray-500 shadow-form placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="input-class px-3.5 py-2.5 shadow-form"
             />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -59,7 +59,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
             <Input
               type="password"
               placeholder="••••••••"
-              className="text-16 placeholder:text-16 rounded-lg border border-gray-300 px-3.5 py-2.5 text-gray-500 shadow-form placeholder:text-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="input-class px-3.5 py-2.5 shadow-form"
             />
           </div>
         </div>
@@ -70,7 +70,10 @@ const AuthForm = ({ type }: AuthFormProps) => {
           >
             {type === "sign-in" ? "Sign in" : "Sign up"}
           </Button>
-          <Button className="text-16 rounded-lg border border-gray-300 bg-transparent font-semibold text-gray-700 shadow-form">
+          <Button
+            variant="outline"
+            className="text-16 rounded-lg border-gray-300 font-semibold text-gray-700 shadow-form"
+          >
             <Image
               src="/icons/google.svg"
               alt="google"

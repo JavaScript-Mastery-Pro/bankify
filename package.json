@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@stripe/connect-js": "^3.3.3",
     "@stripe/react-stripe-js": "^2.7.0",
     "@stripe/stripe-js": "^3.3.0",
+    "chart.js": "^4.4.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "eslint-config-prettier": "^9.1.0",
@@ -23,7 +26,9 @@
     "next": "^14.1.4",
     "prettier": "^3.2.5",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
+    "react-paginate": "^8.2.0",
     "stripe": "^15.0.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7"
