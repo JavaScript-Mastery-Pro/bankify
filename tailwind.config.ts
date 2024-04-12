@@ -20,13 +20,33 @@ const config = {
     extend: {
       colors: {
         bankGradient: "#0179FE",
+        indigo: {
+          500: "#6172F3",
+          700: "#3538CD",
+        },
+        success: {
+          600: "#039855",
+          700: "#027A48",
+        },
+        pink: {
+          500: "#EE46BC",
+          600: "#DD2590",
+          700: "#C11574",
+        },
+        blue: {
+          500: "#2E90FA",
+          600: "#1570EF",
+          700: "#175CD3",
+        },
         sky: {
           1: "#F3F9FF",
         },
         black: {
           1: "#00214F",
+          2: "#344054",
         },
         gray: {
+          200: "#EAECF0",
           300: "#D0D5DD",
           500: "#667085",
           600: "#475467",
@@ -39,6 +59,10 @@ const config = {
       },
       boxShadow: {
         form: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+        chart:
+          "0px 1px 3px 0px rgba(16, 24, 40, 0.10), 0px 1px 2px 0px rgba(16, 24, 40, 0.06)",
+        profile:
+          "0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03)",
       },
       fontFamily: {
         inter: "var(--font-inter)",
