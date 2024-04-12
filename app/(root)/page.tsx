@@ -5,7 +5,6 @@ import CreditCard from "@/components/CreditCard";
 import DoughnutChart from "@/components/DoughnutChart";
 import RecentTransactions from "@/components/RecentTransactions";
 import { CreateAccountButton } from "@/components/shared/CreateAccountButton";
-import MobileNav from "@/components/shared/MobileNav";
 import { Button } from "@/components/ui/button";
 import { budgetCards } from "@/constants";
 
@@ -23,14 +22,9 @@ const Home = () => {
               Access & manage your account and transactions efficiently.
             </p>
           </div>
-          <div className="max-sm:hidden">
-            <Button className="text-14 bg-bank-gradient px-4 py-2.5 font-semibold text-white shadow-form">
-              Send funds
-            </Button>
-          </div>
-          <div className="ml-4 sm:hidden">
-            <MobileNav />
-          </div>
+          <Button className="text-14 bg-bank-gradient px-4 py-2.5 font-semibold text-white shadow-form">
+            Send funds
+          </Button>
         </header>
         <section className="flex h-[168px] w-full items-center gap-6 rounded-xl border border-gray-200 p-6 shadow-chart">
           <div className="size-full max-w-[120px]">
