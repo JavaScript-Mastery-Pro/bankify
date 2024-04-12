@@ -1,5 +1,7 @@
 import { DeleteAccountButton } from "@/components/shared/DeleteAccountButton";
 import { DepositButton } from "@/components/shared/DespositButton";
+import { GetBalanceButton } from "@/components/shared/GetBalanceButton";
+import { GetBalanceTransactionsButton } from "@/components/shared/GetBalanceTransactionsButton";
 import { TopUpBalanceButton } from "@/components/shared/TopUpBalanceButton";
 
 const Return = async ({ params: { id } }: SearchParamProps) => {
@@ -42,9 +44,14 @@ const Return = async ({ params: { id } }: SearchParamProps) => {
       <p>
         Account email: <span className="font-bold">{account.email}</span>
       </p>
-      <DeleteAccountButton accountId={id} />
+      <DeleteAccountButton accountId={account.id} />
       <TopUpBalanceButton amountInDollar={topUpAmountInDollar} />
-      <DepositButton amountInDollar={depositAmountInDollar} account={id} />
+      <DepositButton
+        amountInDollar={depositAmountInDollar}
+        account={account.id}
+      />
+      <GetBalanceButton account={account.id} />
+      <GetBalanceTransactionsButton account={account.id} />
     </div>
   );
 };
