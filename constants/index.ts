@@ -85,3 +85,23 @@ export const transactionHistory = [
     status: "credited",
   },
 ];
+
+interface BudgetCardProps {
+  type: "Subscriptions" | "Food and booze" | "Savings";
+  amountLeft: number;
+}
+
+export const budgetCards: BudgetCardProps[] = [
+  {
+    type: "Subscriptions",
+    amountLeft: 25,
+  },
+  {
+    type: "Food and booze",
+    amountLeft: 125,
+  },
+  {
+    type: "Savings",
+    amountLeft: 50,
+  },
+];

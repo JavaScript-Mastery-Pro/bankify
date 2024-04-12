@@ -53,7 +53,7 @@ const RecentTransactions = () => {
           pageCount={10}
           previousLabel={<NextPrevButton type="prev" />}
           renderOnZeroPageCount={null}
-          className="flex items-center gap-3"
+          className="flex-center w-full gap-3"
           pageClassName="flex-center border text-gray-600 rounded border-sky-1 size-10 text-14 font-semibold"
           nextClassName="flex-center border rounded border-sky-1 size-10 w-fit px-4"
           previousClassName="flex-center border rounded border-sky-1 size-10 w-fit px-4"

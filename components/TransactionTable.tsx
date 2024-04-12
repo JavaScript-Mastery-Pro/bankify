@@ -62,8 +62,8 @@ const TransactionTable = ({ data }: TransactionTableProps) => {
           <TableHead className="px-0">Transaction</TableHead>
           <TableHead className="px-0">Amount</TableHead>
           <TableHead className="px-0">Date</TableHead>
-          <TableHead className="px-0">Category</TableHead>
-          <TableHead className="px-0"></TableHead>
+          <TableHead className="px-0 max-md:hidden">Category</TableHead>
+          <TableHead className="px-0 max-md:hidden"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -87,10 +87,10 @@ const TransactionTable = ({ data }: TransactionTableProps) => {
               {transaction.amount}
             </TableCell>
             <TableCell className="px-0">{transaction.date}</TableCell>
-            <TableCell className="px-0">
+            <TableCell className="px-0 max-md:hidden">
               <CategoryBadge category={transaction.category} />
             </TableCell>
-            <TableCell>
+            <TableCell className="max-md:hidden">
               <div className="flex justify-end">
                 <Image
                   src="/icons/edit.svg"
