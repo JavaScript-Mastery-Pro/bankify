@@ -1,6 +1,10 @@
 import { DeleteAccountButton } from "@/components/shared/DeleteAccountButton";
+import { DepositButton } from "@/components/shared/DespositButton";
+import { TopUpBalanceButton } from "@/components/shared/TopUpBalanceButton";
 
 const Return = async ({ params: { id } }: SearchParamProps) => {
+  const topUpAmountInDollar = 20;
+  const depositAmountInDollar = 5;
   // Get Account
   const account = await fetch(
     `${process.env.NEXT_PUBLIC_SITE_URL}/api/account_get`,
@@ -17,11 +21,9 @@ const Return = async ({ params: { id } }: SearchParamProps) => {
     .then((response) => response.json())
     .then((data) => {
       const { account } = data;
-      console.log("Retrieved Account Client", account);
+      // console.log("Retrieved Account Client", account);
       return account;
     });
-
-  console.log(account);
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-5 p-24">
@@ -41,6 +43,8 @@ const Return = async ({ params: { id } }: SearchParamProps) => {
         Account email: <span className="font-bold">{account.email}</span>
       </p>
       <DeleteAccountButton accountId={id} />
+      <TopUpBalanceButton amountInDollar={topUpAmountInDollar} />
+      <DepositButton amountInDollar={depositAmountInDollar} account={id} />
     </div>
   );
 };

@@ -44,11 +44,11 @@ export const DeleteAccountButton = ({ accountId }: { accountId: string }) => {
 
       {!deletedAccount && !accountDeletePending && (
         <Button
-          variant="destructive"
+          className="bg-red-500 text-white"
           onClick={deleteAccount}
           disabled={accountDeletePending}
         >
-          Delete Account:
+          Delete Account
         </Button>
       )}
 

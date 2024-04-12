@@ -7,11 +7,23 @@ export const POST = async (request: Request) => {
 
   try {
     const account = await stripe.accounts.create({
-      type: "custom",
+      type: "standard",
       country: user.country,
       email: user.email,
       capabilities: {
-        transfers: { requested: true },
+        card_payments: {
+          requested: true,
+        },
+        transfers: {
+          requested: true,
+        },
+      },
+      settings: {
+        payouts: {
+          schedule: {
+            interval: "manual",
+          },
+        },
       },
     });
 
