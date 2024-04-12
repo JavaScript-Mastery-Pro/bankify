@@ -1,27 +1,14 @@
 "use client";
-
 import ReactPaginate from "react-paginate";
 
 import { transactionHistory } from "@/constants";
 
 import NextPrevButton from "./shared/NextPrevButton";
 import TransactionTable from "./TransactionTable";
-import { Button } from "./ui/button";
 
-const RecentTransactions = () => {
+const TransactionHistoryTable = () => {
   return (
     <section className="flex w-full flex-col gap-6">
-      <header className="flex justify-between">
-        <h2 className="text-18 font-semibold text-gray-900">
-          Recent transactions
-        </h2>
-        <Button
-          variant="outline"
-          className="text-14 rounded-lg border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
-        >
-          View all
-        </Button>
-      </header>
       <TransactionTable data={transactionHistory} />
       <div className="flex-center w-full pt-5">
         <ReactPaginate
@@ -41,4 +28,4 @@ const RecentTransactions = () => {
   );
 };
 
-export default RecentTransactions;
+export default TransactionHistoryTable;
