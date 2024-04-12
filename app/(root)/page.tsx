@@ -1,0 +1,125 @@
+import Image from "next/image";
+
+import BudgetCard from "@/components/BudgetCard";
+import CreditCard from "@/components/CreditCard";
+import DoughnutChart from "@/components/DoughnutChart";
+import RecentTransactions from "@/components/RecentTransactions";
+import MobileNav from "@/components/shared/MobileNav";
+import { Button } from "@/components/ui/button";
+import { budgetCards } from "@/constants";
+
+const Home = () => {
+  return (
+    <section className="no-scrollbar flex w-full flex-col max-xl:max-h-screen max-xl:overflow-y-scroll xl:flex-row">
+      <div className="no-scrollbar flex w-full flex-1 flex-col gap-8 px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll">
+        <header className="flex justify-between">
+          <div className="flex flex-col gap-1 ">
+            <h1 className="text-24 lg:text-30 font-semibold text-gray-900">
+              Welcome, <span className="text-bankGradient">Adrian</span>
+            </h1>
+            <p className="text-14 lg:text-16 font-normal text-gray-600">
+              Access & manage your account and transactions efficiently.
+            </p>
+          </div>
+          <div className="max-sm:hidden">
+            <Button className="text-14 bg-bank-gradient px-4 py-2.5 font-semibold text-white shadow-form">
+              Send funds
+            </Button>
+          </div>
+          <div className="ml-4 sm:hidden">
+            <MobileNav />
+          </div>
+        </header>
+        <section className="flex h-[168px] w-full items-center gap-6 rounded-xl border border-gray-200 p-6 shadow-chart">
+          <div className="size-full max-w-[120px]">
+            <DoughnutChart />
+          </div>
+          <article className="flex w-full flex-1 flex-col gap-6">
+            <h1 className="text-16 font-semibold text-gray-900">
+              Primary account
+            </h1>
+            <div className="flex flex-col gap-2">
+              <h1 className="text-14 font-medium text-gray-600">
+                Current balance
+              </h1>
+              <div className="flex w-full items-center justify-between">
+                <h1 className="text-24 lg:text-30 flex-1 font-semibold text-gray-900">
+                  $25,000.00
+                </h1>
+                <div className="text-14  flex h-fit items-center rounded-2xl bg-success-50 px-2 font-medium text-success-700 max-sm:hidden">
+                  <Image
+                    src="/icons/arrow-up.svg"
+                    width={12}
+                    height={12}
+                    alt="arrow up"
+                  />{" "}
+                  <h3>3.4</h3>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+        <RecentTransactions />
+      </div>
+      <aside className="no-scrollbar flex w-full flex-col border-l border-gray-200 xl:max-h-screen xl:w-[390px] xl:overflow-y-scroll">
+        <section className="flex flex-col">
+          <div className="h-[120px] w-full bg-gradient-mesh bg-cover bg-no-repeat" />
+          <div className="relative flex px-6 max-xl:justify-center">
+            <div className="flex-center absolute -top-8 size-24 rounded-full bg-white shadow-profile">
+              <Image src="/icons/jsm.svg" width={80} height={80} alt="jsm" />
+            </div>
+            <div className="flex flex-col pt-28">
+              <h1 className="text-24 font-semibold text-gray-900">
+                Adrain Hajdin
+              </h1>
+              <p className="text-16 font-normal text-gray-600">
+                adrian@jsmastery.pro
+              </p>
+            </div>
+          </div>
+        </section>
+        <section className="flex flex-col justify-between gap-8 px-6 py-8">
+          <div className="flex flex-1 flex-col gap-6">
+            <header className="flex w-full justify-between">
+              <h1 className="text-18 font-semibold text-gray-900">My Banks</h1>
+              <div className="flex gap-2">
+                <Image
+                  src="/icons/plus.svg"
+                  width={20}
+                  height={20}
+                  alt="plus icon"
+                />
+                <h2 className="text-14 font-semibold text-gray-600">
+                  Add Bank
+                </h2>
+              </div>
+            </header>
+            <div className="max-xl:flex-center relative">
+              <CreditCard icon="/icons/visa.svg" />
+              <div className="absolute left-7 top-10 -z-10 w-full md:left-48 xl:left-7">
+                <CreditCard
+                  bgClassName="bg-bank-gradient"
+                  icon="icons/mastercard.svg"
+                />
+              </div>
+            </div>
+          </div>
+          <section className="flex flex-1 flex-col gap-6 pt-10">
+            <h1 className="text-18 font-semibold text-gray-900">My budgets</h1>
+            <div className="flex flex-col gap-3">
+              {budgetCards.map((budgetCard) => (
+                <BudgetCard
+                  key={budgetCard.type}
+                  type={budgetCard.type}
+                  amountLeft={budgetCard.amountLeft}
+                />
+              ))}
+            </div>
+          </section>
+        </section>
+      </aside>
+    </section>
+  );
+};
+
+export default Home;
