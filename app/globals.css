@@ -29,6 +29,9 @@
   .flex-center {
     @apply flex items-center justify-center;
   }
+  .text-10 {
+    @apply text-[10px] leading-[14px];
+  }
   .text-12 {
     @apply text-[12px] leading-[16px];
   }
