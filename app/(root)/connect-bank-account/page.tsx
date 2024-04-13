@@ -4,7 +4,7 @@ import ConnectAccountForm from "@/components/ConnectAccountForm";
 
 const ConnectBankAccount = () => {
   return (
-    <section className="flex flex-col gap-8 p-8 xl:py-12">
+    <section className="no-scrollbar flex flex-col gap-8 overflow-y-scroll p-8 md:max-h-screen xl:py-12">
       <header className="flex flex-col gap-2">
         <h1 className="text-30 font-semibold text-gray-900">
           Connect a Bank Account
