@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { stripe } from "@/lib/utils";
 
-export const POST = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   // const { account } = await request.json();
 
+  // stripeAccount: account,
   try {
     const balanceTransactions = await stripe.balanceTransactions.list({
-      // stripeAccount: account,
-      limit: 3,
+      limit: 5,
+      // stripeAccount: account
     });
 
     return NextResponse.json({ balanceTransactions });

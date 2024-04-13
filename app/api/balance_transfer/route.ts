@@ -7,7 +7,7 @@ export const POST = async (request: Request) => {
 
   try {
     const transfer = await stripe.transfers.create({
-      amount: amountInDollar,
+      amount: amountInDollar * 100,
       currency: "usd",
       destination: account,
     });
@@ -15,7 +15,7 @@ export const POST = async (request: Request) => {
     return NextResponse.json({ transfer });
   } catch (error) {
     console.error(
-      "An error occurred when calling the Stripe API to transfer balance:",
+      "========An error occurred when calling the Stripe API to transfer balance:",
       error
     );
   }

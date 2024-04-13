@@ -17,7 +17,7 @@ export const CreateAccountButton = () => {
     await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/account_create`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: JSON.stringify({
         user: newUser,

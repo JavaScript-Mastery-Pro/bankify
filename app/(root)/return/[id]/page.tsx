@@ -3,6 +3,7 @@ import { DepositButton } from "@/components/shared/DespositButton";
 import { GetBalanceButton } from "@/components/shared/GetBalanceButton";
 import { GetBalanceTransactionsButton } from "@/components/shared/GetBalanceTransactionsButton";
 import { TopUpBalanceButton } from "@/components/shared/TopUpBalanceButton";
+import { TransferButton } from "@/components/shared/TransferButton";
 
 const Return = async ({ params: { id } }: SearchParamProps) => {
   const topUpAmountInDollar = 20;
@@ -47,6 +48,11 @@ const Return = async ({ params: { id } }: SearchParamProps) => {
       <DeleteAccountButton accountId={account.id} />
       <TopUpBalanceButton amountInDollar={topUpAmountInDollar} />
       <DepositButton
+        amountInDollar={depositAmountInDollar}
+        account={account.id}
+      />
+      {/* <AddDepositButton amountInDollar={6} account={account.id} /> */}
+      <TransferButton
         amountInDollar={depositAmountInDollar}
         account={account.id}
       />

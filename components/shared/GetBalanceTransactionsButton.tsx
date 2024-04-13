@@ -19,20 +19,19 @@ export const GetBalanceTransactionsButton = ({
     await fetch(
       `${process.env.NEXT_PUBLIC_SITE_URL}/api/balance_transactions`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify({ account }),
       }
     )
       .then((response) => response.json())
       .then((data) => {
         setBalanceTransactionsPending(false);
 
-        const { balance } = data;
-        if (balance) {
-          setBalanceTransactions(balance);
+        const { balanceTransactions } = data;
+        if (balanceTransactions) {
+          setBalanceTransactions(balanceTransactions);
         }
       });
   };

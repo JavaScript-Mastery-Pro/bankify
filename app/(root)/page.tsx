@@ -4,14 +4,12 @@ import BudgetCard from "@/components/BudgetCard";
 import CreditCard from "@/components/CreditCard";
 import DoughnutChart from "@/components/DoughnutChart";
 import RecentTransactions from "@/components/RecentTransactions";
-import { CreateAccountButton } from "@/components/shared/CreateAccountButton";
 import { Button } from "@/components/ui/button";
 import { budgetCards } from "@/constants";
 
 const Home = () => {
   return (
     <section className="no-scrollbar flex w-full flex-col max-xl:max-h-screen max-xl:overflow-y-scroll xl:flex-row">
-      <CreateAccountButton />
       <div className="no-scrollbar flex w-full flex-1 flex-col gap-8 px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll">
         <header className="flex justify-between">
           <div className="flex flex-col gap-1 ">
