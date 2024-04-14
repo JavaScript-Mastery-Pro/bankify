@@ -7,49 +7,55 @@ import { Button } from "../ui/button";
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-export const DepositButton = ({
+export const WithdrawButton = ({
   amountInDollar,
+  bankId,
   account,
 }: {
   amountInDollar: number;
+  bankId: string;
   account: string;
 }) => {
-  const [depositPending, setDepositPending] = useState(false);
+  const [withdrawPending, setWithdrawPending] = useState(false);
+  const [payout, setPayout] = useState();
 
-  const depositToBalance = async () => {
-    setDepositPending(true);
-    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/checkout_session`, {
+  const withdrawToBank = async () => {
+    setWithdrawPending(true);
+    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/payout_create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         amountInDollar,
+        bankId,
         account,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        setDepositPending(false);
+        setWithdrawPending(false);
 
-        const { url } = data;
-        if (url) {
-          window.location.href = url;
+        const { payout } = data;
+        if (payout) {
+          setPayout(payout);
         }
       });
   };
+
+  console.log({ payout });
 
   return (
     <div className="flex flex-col space-y-5">
       <Button
         className="bg-bankGradient text-white"
-        onClick={depositToBalance}
-        disabled={depositPending}
+        onClick={withdrawToBank}
+        disabled={withdrawPending}
       >
-        New Deposit
+        Withdraw
       </Button>
 
-      {depositPending && <p>Depositing to your balance...</p>}
+      {withdrawPending && <p>Transfering to your bank account...</p>}
     </div>
   );
 };

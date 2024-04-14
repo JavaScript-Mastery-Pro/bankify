@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
 
-import { stripe } from "@/lib/utils";
+import { AppFixedFee } from "@/constants";
+import { calculateStripeFee, stripe } from "@/lib/utils";
 
 export const POST = async (request: Request) => {
-  const { amountInDollar, account, applicationFee } = await request.json();
+  const { amountInDollar, account } = await request.json();
+  const stripeFee = calculateStripeFee(amountInDollar);
+  const totalFee = stripeFee + AppFixedFee;
+
+  const totalAmount = parseFloat((amountInDollar + totalFee).toFixed(2));
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -11,7 +16,7 @@ export const POST = async (request: Request) => {
         {
           price_data: {
             currency: "usd",
-            unit_amount: (amountInDollar + applicationFee) * 100,
+            unit_amount: totalAmount * 100,
             product_data: {
               name: "Deposit",
             },
@@ -19,6 +24,13 @@ export const POST = async (request: Request) => {
           quantity: 1,
         },
       ],
+      payment_intent_data: {
+        application_fee_amount: parseFloat(totalFee.toFixed(2)) * 100,
+        transfer_data: {
+          destination: account,
+        },
+        description: "Deposit",
+      },
       mode: "payment",
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/return/${account}`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/return/${account}`,

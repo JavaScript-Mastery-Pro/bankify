@@ -105,3 +105,5 @@ export const budgetCards: BudgetCardProps[] = [
     amountLeft: 50,
   },
 ];
+
+export const AppFixedFee = 0.2;

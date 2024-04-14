@@ -3,19 +3,15 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/lib/utils";
 
 export const POST = async (request: Request) => {
-  const { amountInDollar, origin, destination } = await request.json();
+  const { amountInDollar, account } = await request.json();
 
   try {
-    const transfer = await stripe.transfers.create(
-      {
-        amount: amountInDollar * 100,
-        currency: "usd",
-        destination,
-      },
-      {
-        stripeAccount: origin,
-      }
-    );
+    const transfer = await stripe.transfers.create({
+      amount: amountInDollar * 100,
+      currency: "usd",
+      destination: account,
+    });
+
     return NextResponse.json({ transfer });
   } catch (error) {
     console.error(

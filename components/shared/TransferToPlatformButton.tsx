@@ -7,32 +7,31 @@ import { Button } from "../ui/button";
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-export const AddDepositButton = ({
+export const TransferToPlatformButton = ({
   amountInDollar,
   account,
 }: {
   amountInDollar: number;
   account: string;
 }) => {
-  const [depositPending, setDepositPending] = useState(false);
-  const applicationFee = 1; // .45 (stripe fee) + .65 (application fee)
+  const [transferPending, setTransferPending] = useState(false);
 
-  const depositToBalance = async () => {
-    setDepositPending(true);
-    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/charge_destination`, {
+  const transferToPlatformBalance = async () => {
+    setTransferPending(true);
+    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/balance_transfer`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         amountInDollar,
-        account,
-        applicationFee,
+        destination: process.env.NEXT_PUBLIC_STRIPE_PLATFORM_ID!,
+        origin: account,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        setDepositPending(false);
+        setTransferPending(false);
 
         const { url } = data;
         if (url) {
@@ -45,13 +44,13 @@ export const AddDepositButton = ({
     <div className="flex flex-col space-y-5">
       <Button
         className="bg-bankGradient text-white"
-        onClick={depositToBalance}
-        disabled={depositPending}
+        onClick={transferToPlatformBalance}
+        disabled={transferPending}
       >
-        Add Deposit
+        Tranfer to Platform
       </Button>
 
-      {depositPending && <p>Depositing to your balance...</p>}
+      {transferPending && <p>Transfering to your balance...</p>}
     </div>
   );
 };
