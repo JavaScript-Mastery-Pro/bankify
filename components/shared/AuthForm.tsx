@@ -148,7 +148,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
             >
               {type === "sign-in" ? "Sign in" : "Sign up"}
             </Button>
-            <Button
+            {/* <Button
               variant="outline"
               className="text-16 rounded-lg border-gray-300 font-semibold text-gray-700 shadow-form"
             >
@@ -159,7 +159,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 height={24}
               />
               &nbsp; Sign in with Google
-            </Button>
+            </Button> */}
           </div>
         </form>
       </Form>
