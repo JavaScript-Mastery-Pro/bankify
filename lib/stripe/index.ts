@@ -77,7 +77,7 @@ export const getBalance = async (stripeId: string) => {
   }
 };
 
-// RECEIVE DEPOSIT
+// SEND DEPOSIT
 export const sendDesposit = async ({
   amountInDollar,
   stripeId,
@@ -97,7 +97,6 @@ export const sendDesposit = async ({
   const totalFee = stripeFee + AppFixedFee;
   const totalAmount = parseFloat((amountInDollar + totalFee).toFixed(2));
 
-  console.log("sendDesposit");
   try {
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -127,8 +126,8 @@ export const sendDesposit = async ({
         note,
       },
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/return/${stripeId}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/return/${stripeId}`,
+      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
     });
 
     return JSON.parse(JSON.stringify({ url: session.url }));
