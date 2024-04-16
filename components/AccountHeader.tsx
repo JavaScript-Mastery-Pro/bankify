@@ -12,9 +12,9 @@ const AccountHeader = () => {
   useEffect(() => {
     async function fetchBalance() {
       const balance = await getBalance(user.stripeId);
-
-      console.log("balance", balance);
-      setBalance(balance.pending[0].amount / 100);
+      const actualAmount = balance.pending[0].amount / 100;
+      setBalance(actualAmount);
+      console.log("balance", actualAmount);
     }
     fetchBalance();
   });
