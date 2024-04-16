@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { stripe } from "@/lib/utils";
+import { stripe } from "@/lib/stripe/config";
 
 export const POST = async (request: Request) => {
   const { amountInDollar, account, applicationFee } = await request.json();

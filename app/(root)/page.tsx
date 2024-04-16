@@ -6,31 +6,28 @@ import DoughnutChart from "@/components/DoughnutChart";
 import RecentTransactions from "@/components/RecentTransactions";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
 import { budgetCards } from "@/constants";
-// import { getBalance } from "@/lib/stripe/balance.stripe";
-
-// import { getCurrentUserServer } from "@/lib/services/user.services";
+import { getBalance } from "@/lib/stripe/balance.stripe";
 
 const Home = async () => {
-  // const balance = await getBalance("acct_1P4yTKCE6Xl11oKt");
-  // const balances = [
-  //   {
-  //     type: "available",
-  //     amount: balance.available[0].amount,
-  //   },
-  //   {
-  //     type: "instant",
-  //     amount: balance.instant_available[0].amount,
-  //   },
-  //   {
-  //     type: "pending",
-  //     amount: balance.pending[0].amount,
-  //   },
-  // ];
+  const balance = await getBalance("acct_1P4yTKCE6Xl11oKt");
+  const balances = [
+    {
+      type: "available",
+      amount: balance.available[0].amount,
+    },
+    {
+      type: "instant",
+      amount: balance.instant_available[0].amount,
+    },
+    {
+      type: "pending",
+      amount: balance.pending[0].amount,
+    },
+  ];
 
-  // const totalBalance =
-  //   balances.reduce((total, currentValue) => total + currentValue.amount, 0) /
-  //   100;
-  const totalBalance = 33.91;
+  const totalBalance =
+    balances.reduce((total, currentValue) => total + currentValue.amount, 0) /
+    100;
 
   return (
     <section className="no-scrollbar flex w-full flex-col max-xl:max-h-screen max-xl:overflow-y-scroll xl:flex-row">

@@ -1,6 +1,6 @@
 "use server";
 
-import { stripe } from "../utils";
+import { stripe } from "./config";
 
 // CREATE ONBOARDING LINK
 export const getBalance = async (stripeId: string) => {

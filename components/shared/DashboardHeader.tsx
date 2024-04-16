@@ -1,27 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
-
 import { useUserContext } from "@/context/AuthContext";
-import { getBalance } from "@/lib/stripe/balance.stripe";
 
 import { Button } from "../ui/button";
 
 export const DashboardHeader = () => {
   const { user } = useUserContext();
-
-  useEffect(() => {
-    const getUserBalance = async () => {
-      try {
-        const balance = await getBalance(user.stripeId);
-
-        console.log({ balance });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUserBalance();
-  }, [user.stripeId]);
 
   return (
     <header className="flex justify-between">

@@ -2,11 +2,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 import { sidebarLinks } from "@/constants";
 import { useUserContext } from "@/context/AuthContext";
-import { logoutAccount } from "@/lib/services/services";
+import { logoutAccount } from "@/lib/services";
 import { cn } from "@/lib/utils";
 
 import { Input } from "../ui/input";
@@ -15,29 +14,6 @@ const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { user } = useUserContext();
-
-  console.log({ user });
-
-  useEffect(() => {
-    const getBalanceData = async () => {
-      await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/balance_get`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ account: user.stripeId }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const { balance } = data;
-          if (balance) {
-            console.log("=========balance", balance);
-          }
-        });
-    };
-
-    user.stripeId && getBalanceData();
-  }, [user.stripeId]);
 
   const handleLogOut = async () => {
     const loggedOut = await logoutAccount();

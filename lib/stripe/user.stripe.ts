@@ -1,4 +1,4 @@
-import { stripe } from "@/lib/utils";
+import { stripe } from "@/lib/stripe/config";
 
 // CREATE ACOUNT
 export const createStripeAccount = async (user: {

@@ -50,6 +50,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const currentAccount = await account.get();
       setIsAuthenticated(true);
 
+      console.log({ currentAccount });
+
       // Get current user's details
       const result = await databases.listDocuments(
         appwriteConfig.databaseId,

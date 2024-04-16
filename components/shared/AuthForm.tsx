@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { useUserContext } from "@/context/AuthContext";
-import { loginUser, signUpUser } from "@/lib/services/services";
+import { loginUser, signUpUser } from "@/lib/services";
 
 import { Button } from "../ui/button";
 import {
