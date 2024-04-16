@@ -7,8 +7,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { useUserContext } from "@/context/AuthContext";
-import { signUpUser } from "@/lib/services/server.services";
-import { loginUser } from "@/lib/services/services";
+import { loginUser, signUpUser } from "@/lib/services/services";
 
 import { Button } from "../ui/button";
 import {
@@ -213,8 +212,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
             >
               {type === "sign-in" ? "Sign in" : "Sign up"}
             </Button>
-            <Button
-              type="button"
+            {/* <Button
               variant="outline"
               className="text-16 rounded-lg border-gray-300 font-semibold text-gray-700 shadow-form"
             >
@@ -225,7 +223,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 height={24}
               />
               &nbsp; Sign in with Google
-            </Button>
+            </Button> */}
           </div>
         </form>
       </Form>
