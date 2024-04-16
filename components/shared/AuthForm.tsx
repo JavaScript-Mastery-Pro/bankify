@@ -44,7 +44,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
       type === "sign-in"
         ? z.string().optional()
         : z.string().min(3, "ssn cannot be empty"),
-    password: z.string().min(6, "password must be 6 character"),
+    password: z.string().min(8, "password must be 8 character"),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
