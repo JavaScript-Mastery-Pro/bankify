@@ -6,29 +6,8 @@ import DoughnutChart from "@/components/DoughnutChart";
 import RecentTransactions from "@/components/RecentTransactions";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
 import { budgetCards } from "@/constants";
-import { getBalance } from "@/lib/stripe/balance.stripe";
 
 const Home = async () => {
-  const balance = await getBalance("acct_1P4yTKCE6Xl11oKt");
-  const balances = [
-    {
-      type: "available",
-      amount: balance.available[0].amount,
-    },
-    {
-      type: "instant",
-      amount: balance.instant_available[0].amount,
-    },
-    {
-      type: "pending",
-      amount: balance.pending[0].amount,
-    },
-  ];
-
-  const totalBalance =
-    balances.reduce((total, currentValue) => total + currentValue.amount, 0) /
-    100;
-
   return (
     <section className="no-scrollbar flex w-full flex-col max-xl:max-h-screen max-xl:overflow-y-scroll xl:flex-row">
       <div className="no-scrollbar flex w-full flex-1 flex-col gap-8 px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll">
@@ -47,7 +26,7 @@ const Home = async () => {
               </h1>
               <div className="flex w-full items-center justify-between">
                 <h1 className="text-24 lg:text-30 flex-1 font-semibold text-gray-900">
-                  ${totalBalance}
+                  $33.99
                 </h1>
                 <div className="text-14  flex h-fit items-center rounded-2xl bg-success-50 px-2 font-medium text-success-700 max-sm:hidden">
                   <Image

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { stripe } from "@/lib/stripe/config";
+import { stripe } from "@/lib/utils";
 
 export const POST = async (request: Request) => {
   const { user } = await request.json();
@@ -26,9 +26,6 @@ export const POST = async (request: Request) => {
           },
         },
       },
-      // tos_acceptance: {
-      //   service_agreement: "recipient",
-      // },
     });
 
     return NextResponse.json({ account: account.id });

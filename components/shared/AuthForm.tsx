@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { useUserContext } from "@/context/AuthContext";
-import { loginUser, signUpUser } from "@/lib/services";
+import { loginUser, signUpUser } from "@/lib/services/index";
 
 import { Button } from "../ui/button";
 import {
@@ -77,7 +77,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
           email: data.email,
           password: data.password,
         });
-        console.log({ session });
 
         if (session) {
           setIsAuthenticated(true);

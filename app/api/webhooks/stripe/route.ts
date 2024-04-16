@@ -1,12 +1,15 @@
 /* eslint-disable camelcase */
+import { ID } from "appwrite";
 import { NextResponse } from "next/server";
 import stripe from "stripe";
+
+import { databases, appwriteConfig } from "@/lib/appwrite/config";
 
 export async function POST(request: Request) {
   const body = await request.text();
 
   const sig = request.headers.get("stripe-signature") as string;
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+  const endpointSecret = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!;
 
   let event;
 
@@ -21,15 +24,26 @@ export async function POST(request: Request) {
 
   // CREATE
   if (eventType === "checkout.session.completed") {
-    // const { id, amount_total, metadata } = event.data.object;
-    // const order = {
-    //   stripeId: id,
-    //   eventId: metadata?.eventId || "",
-    //   buyerId: metadata?.buyerId || "",
-    //   totalAmount: amount_total ? (amount_total / 100).toString() : "0",
-    //   createdAt: new Date(),
-    // };
-    // return NextResponse.json({ message: "OK", order: newOrder });
+    const { id, metadata } = event.data.object;
+    console.log("checkout.session.completed", metadata);
+
+    const newTransaction = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.transactionsCollectionId,
+      ID.unique(),
+      {
+        stripeTransactionId: id,
+        amount: metadata?.amountInDollar
+          ? (parseInt(metadata?.amountInDollar) / 100).toString()
+          : "0",
+        user: metadata?.userId! || "",
+        category: metadata?.category! || "",
+        name: metadata?.name! || "",
+        note: metadata?.note! || "",
+      }
+    );
+
+    return NextResponse.json({ message: "OK", transaction: newTransaction });
   }
 
   return new Response("", { status: 200 });
