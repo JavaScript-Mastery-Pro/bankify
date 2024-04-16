@@ -88,25 +88,24 @@ export async function logoutAccount() {
 
 //
 // LOGOUT USER
-// export async function createNewTransaction() {
-//   try {
-//     const newTransaction =  await databases.createDocument(
-//       appwriteConfig.databaseId,
-//       appwriteConfig.transactionsCollectionId,
-//       ID.unique(),
-//       {
-//         stripeTransactionId: id,
-//         amount: metadata?.amountInDollar
-//           ? (parseInt(metadata?.amountInDollar) / 100).toString()
-//           : "0",
-//         user: metadata?.userId! || "",
-//         category: metadata?.category! || "",
-//         name: metadata?.name! || "",
-//         note: metadata?.note! || "",
-//       }
-//     );
-//     return newTransaction;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+export async function createNewTransaction() {
+  try {
+    const newTransaction = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.transactionsCollectionId,
+      ID.unique(),
+      {
+        stripeTransactionId:
+          "cs_test_a1SuRJOMdR59XyMkk5HXN8Prsi3jrGw7T5Ar1im37J6IeCty5lm8w9dx6d",
+        amount: "5",
+        user: "661e9cdc0a1f3a357702",
+        category: "Deposit",
+        name: "Stripe Deposit",
+        note: "",
+      }
+    );
+    if (!newTransaction) throw Error;
+  } catch (error) {
+    console.log(error);
+  }
+}
