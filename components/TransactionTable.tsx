@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { cn } from "@/lib/utils";
+import { cn, formatDateTime } from "@/lib/utils";
 
 import {
   Table,
@@ -13,8 +13,8 @@ import {
 
 interface TransactionTableProps {
   data: {
-    company: string;
-    companyLogo: string;
+    id: string;
+    name: string;
     amount: number;
     date: string;
     category: string;
@@ -72,13 +72,13 @@ const TransactionTable = ({ data }: TransactionTableProps) => {
             <TableCell className="truncate px-0">
               <div className="flex items-center gap-3">
                 <Image
-                  src={transaction.companyLogo}
+                  src={"/icons/a-coffee.svg"}
                   width={40}
                   height={40}
                   alt="company logo"
                 />
                 <h1 className="text-14 font-medium text-gray-900">
-                  {transaction.company}
+                  {transaction.name}
                 </h1>
               </div>
             </TableCell>
@@ -86,7 +86,9 @@ const TransactionTable = ({ data }: TransactionTableProps) => {
               {transaction.status === "debited" ? "-" : "+"}$
               {transaction.amount}
             </TableCell>
-            <TableCell className="px-0">{transaction.date}</TableCell>
+            <TableCell className="px-0">
+              {formatDateTime(new Date(transaction.date)).dateTime}
+            </TableCell>
             <TableCell className="px-0 max-md:hidden">
               <CategoryBadge category={transaction.category} />
             </TableCell>

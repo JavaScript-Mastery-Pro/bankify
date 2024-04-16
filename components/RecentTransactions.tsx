@@ -1,14 +1,39 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 
-import { transactionHistory } from "@/constants";
+import { useUserContext } from "@/context/AuthContext";
+import { getTransactions } from "@/lib/services";
 
 import NextPrevButton from "./shared/NextPrevButton";
 import TransactionTable from "./TransactionTable";
 import { Button } from "./ui/button";
 
 const RecentTransactions = () => {
+  const { user } = useUserContext();
+  const [transactions, setTransaction] = useState<any[]>([]);
+  console.log({ user });
+  useEffect(() => {
+    const getTransactionsData = async () => {
+      const transactions = await getTransactions(user.id);
+      if (transactions) {
+        const transformedData = transactions.documents.map((document) => ({
+          id: document.$id,
+          name: document.name,
+          amount: document.amount,
+          date: document.$createdAt,
+          category: document.category,
+          status: "credited",
+        }));
+        setTransaction(transformedData);
+      }
+      console.log(transactions);
+      return transactions;
+    };
+
+    getTransactionsData();
+  }, [user.id]);
   return (
     <section className="flex w-full flex-col gap-6">
       <header className="flex justify-between">
@@ -22,7 +47,7 @@ const RecentTransactions = () => {
           View all
         </Button>
       </header>
-      <TransactionTable data={transactionHistory} />
+      <TransactionTable data={transactions} />
       <div className="flex-center w-full pt-5">
         <ReactPaginate
           breakLabel="..."

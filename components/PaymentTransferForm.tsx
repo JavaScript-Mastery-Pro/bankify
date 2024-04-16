@@ -10,7 +10,7 @@ import * as z from "zod";
 // import { metadata } from "@/app/layout";
 // import { useUserContext } from "@/context/AuthContext";
 // import { databases, appwriteConfig } from "@/lib/appwrite/config";
-import { createNewTransaction } from "@/lib/services";
+
 import { sendDesposit } from "@/lib/stripe";
 
 import { Button } from "./ui/button";
@@ -70,8 +70,6 @@ const PaymentTransferForm = () => {
       }
 
       // console.log(session);
-      const newTransaction = await createNewTransaction();
-      console.log(newTransaction);
 
       // const newTransaction = await databases.createDocument(
       //   appwriteConfig.databaseId,

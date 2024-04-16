@@ -1,4 +1,4 @@
-import { ID } from "appwrite";
+import { ID, Query } from "appwrite";
 
 import {
   account,
@@ -86,24 +86,17 @@ export async function logoutAccount() {
 }
 
 //
-// LOGOUT USER
-export async function createNewTransaction() {
+// GET TRANSACTIONS
+export async function getTransactions(userId: string) {
   try {
-    const newTransaction = await databases.createDocument(
+    const transactions = databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.transactionsCollectionId,
-      ID.unique(),
-      {
-        stripeTransactionId:
-          "cs_test_a1SuRJOMdR59XyMkk5HXN8Prsi3jrGw7T5Ar1im37J6IeCty5lm8w9dx6d",
-        amount: "5",
-        user: "661e9cdc0a1f3a357702",
-        category: "Deposit",
-        name: "Stripe Deposit",
-        note: "",
-      }
+      [Query.equal("user", userId)]
     );
-    if (!newTransaction) throw Error;
+
+    if (!transactions) throw Error;
+    return transactions;
   } catch (error) {
     console.log(error);
   }
