@@ -61,6 +61,9 @@ const PaymentTransferForm = () => {
         note: "",
       };
       const session = await sendDesposit(despositData);
+      if (session) {
+        window.location.href = session.url;
+      }
 
       console.log(session);
     } catch (error) {

@@ -131,7 +131,7 @@ export const sendDesposit = async ({
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/return/${stripeId}`,
     });
 
-    return JSON.parse(JSON.stringify(session));
+    return JSON.parse(JSON.stringify({ url: session.url }));
   } catch (error) {
     console.error(
       "An error occurred when calling the Stripe API to get balance:",
