@@ -17,7 +17,7 @@ const MobileNav = () => {
   const pathname = usePathname();
 
   return (
-    <section className="w-full max-w-[264px] sm:hidden">
+    <section className="w-full max-w-[264px]">
       <Sheet>
         <SheetTrigger asChild>
           <Image
@@ -25,7 +25,7 @@ const MobileNav = () => {
             width={30}
             height={30}
             alt="hamburger icon"
-            className="cursor-pointer sm:hidden"
+            className="cursor-pointer"
           />
         </SheetTrigger>
         <SheetContent side="left" className="border-none bg-white">

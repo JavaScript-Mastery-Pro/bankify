@@ -1,7 +1,9 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -23,6 +25,7 @@ interface AuthFormProps {
 }
 
 const AuthForm = ({ type }: AuthFormProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const formSchema = z.object({
     name:
       type === "sign-in"
@@ -41,7 +44,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
     },
   });
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+    setIsLoading(true);
+    setTimeout(() => {
+      console.log(data);
+      setIsLoading(false);
+    }, 3000);
   };
   return (
     <section className="flex w-full max-w-[365px] flex-col gap-5 md:gap-8">
@@ -146,7 +153,16 @@ const AuthForm = ({ type }: AuthFormProps) => {
               type="submit"
               className="text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form"
             >
-              {type === "sign-in" ? "Sign in" : "Sign up"}
+              {isLoading ? (
+                <>
+                  <Loader2 size={20} className="animate-spin" /> &nbsp;
+                  Loading...
+                </>
+              ) : type === "sign-in" ? (
+                "Sign in"
+              ) : (
+                "Sign up"
+              )}
             </Button>
             {/* <Button
               variant="outline"
@@ -171,7 +187,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
             : "Already have an account?"}
         </p>
         <Link
-          href="/sign-in"
+          href={type === "sign-in" ? "/sign-up" : "/sign-in"}
           className="text-14 cursor-pointer font-medium text-bankGradient"
         >
           {type === "sign-in" ? "Sign up" : "Sign in"}
