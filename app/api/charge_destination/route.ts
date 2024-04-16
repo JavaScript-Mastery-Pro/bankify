@@ -30,8 +30,6 @@ export const POST = async (request: Request) => {
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/return/${account}`,
     });
 
-    console.log({ session });
-
     return NextResponse.json({ url: session.url });
   } catch (error) {
     console.error(

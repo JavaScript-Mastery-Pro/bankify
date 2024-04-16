@@ -38,10 +38,7 @@ const Return = async ({ params: { id } }: SearchParamProps) => {
       return account;
     });
 
-  console.log({ account });
-
-  return (
-    <div className="flex min-h-screen flex-col items-center gap-5 p-24">
+  console.log({ account });    <div className="flex min-h-screen flex-col items-center gap-5 p-24">
       <h1 className="font-bold">Dashboard (Return Page)</h1>
       <p>Deposit {depositAmountInDollar}</p>
       <p>Stripe fee {transactionFee}</p>

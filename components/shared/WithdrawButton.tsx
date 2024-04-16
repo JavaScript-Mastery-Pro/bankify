@@ -43,7 +43,7 @@ export const WithdrawButton = ({
       });
   };
 
-  console.log({ payout });
+  c;
 
   return (
     <div className="flex flex-col space-y-5">

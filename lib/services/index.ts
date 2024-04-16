@@ -10,7 +10,6 @@ import { createStripeAccount, createOnboardingLink } from "../stripe";
 
 // SIGN-UP
 export const signUpUser = async (user: CreateNewUser) => {
-  console.log({ user });
   try {
     // Create stripe account
     const newStripeAccount = await createStripeAccount({
