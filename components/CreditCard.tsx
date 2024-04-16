@@ -45,7 +45,7 @@ const CreditCard = ({
         <Image src={icon} width={45} height={32} alt="visa" />
       </div>
       <Image
-        src="/icons/lines.svg"
+        src="/icons/lines.png"
         width={316}
         height={190}
         alt="lines"
