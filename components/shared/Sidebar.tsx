@@ -96,9 +96,11 @@ const Sidebar = () => {
           alt="jsm"
           className="rounded-full"
         />
-        <div className="flex flex-col justify-center max-lg:hidden">
+        <div className="flex max-w-[70%] flex-col justify-center max-lg:hidden">
           <h1 className="text-14 font-semibold text-gray-700">{user.name}</h1>
-          <p className="text-14 font-normal text-gray-600">{user.email}</p>
+          <p className="text-14  truncate font-normal text-gray-600">
+            {user.email}
+          </p>
         </div>
         <Image src="icons/logout.svg" width={20} height={20} alt="jsm" />
       </footer>

@@ -28,7 +28,10 @@ interface AuthFormProps {
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const router = useRouter();
-  const { setIsAuthenticated } = useUserContext();
+  const { setIsAuthenticated, isAuthenticated } = useUserContext();
+  if (isAuthenticated) {
+    router.push("/");
+  }
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
