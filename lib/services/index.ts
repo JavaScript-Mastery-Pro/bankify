@@ -1,5 +1,3 @@
-//
-
 import { ID, Query } from "appwrite";
 
 import {

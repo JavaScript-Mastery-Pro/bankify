@@ -1,7 +1,7 @@
 "use client";
 
 import { Query } from "appwrite";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createContext, useContext, useState, useEffect } from "react";
 
 import { account, appwriteConfig, databases } from "@/lib/appwrite/config";
@@ -38,6 +38,7 @@ const AuthContext = createContext<ContextType>(InitialState);
 
 // Context provider
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   const [user, setUser] = useState<User>(InitialUser);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,8 +50,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Check if there's a logged in user
       const currentAccount = await account.get();
       setIsAuthenticated(true);
-
-      console.log({ currentAccount });
 
       // Get current user's details
       const result = await databases.listDocuments(
@@ -85,11 +84,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       cookieFallback === null ||
       cookieFallback === undefined
     ) {
-      setIsAuthenticated(false);
-      if (!isAuthenticated) redirect("/sign-in");
+      router.push("/sign-in");
     }
 
-    checkAuthUser();
+    !isAuthenticated && checkAuthUser();
   }, []);
 
   const value = {
