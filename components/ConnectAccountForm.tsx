@@ -1,6 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -25,11 +27,8 @@ const formSchema = z.object({
   branchcode: z.string().min(4, "code must be 4 character").max(4),
 });
 
-const handleSubmit = (data: z.infer<typeof formSchema>) => {
-  console.log(data);
-};
-
 const ConnectAccountForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,6 +38,15 @@ const ConnectAccountForm = () => {
       branchcode: "",
     },
   });
+
+  const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      console.log(data);
+      alert("Bank account connected successfully");
+      setIsLoading(false);
+    }, 3000);
+  };
   return (
     <Form {...form}>
       <form
@@ -139,7 +147,6 @@ const ConnectAccountForm = () => {
         />
         <div className="flex w-full max-w-[850px] gap-3 border-t border-gray-200 py-5">
           <Button
-            type="submit"
             variant="outline"
             className="text-14 w-full border-gray-300 font-semibold text-gray-700 shadow-form"
             onClick={() => form.reset()}
@@ -150,7 +157,14 @@ const ConnectAccountForm = () => {
             type="submit"
             className="text-14 w-full bg-bank-gradient font-semibold text-white shadow-form"
           >
-            Connect Bank Account
+            {isLoading ? (
+              <>
+                <Loader2 size={20} className="animate-spin" /> &nbsp;
+                Submitting...
+              </>
+            ) : (
+              "Connect Bank Account"
+            )}
           </Button>
         </div>
       </form>

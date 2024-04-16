@@ -1,8 +1,10 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -27,6 +29,7 @@ interface AuthFormProps {
 const AuthForm = ({ type }: AuthFormProps) => {
   const router = useRouter();
   const { setIsAuthenticated } = useUserContext();
+  const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
     name:
@@ -52,6 +55,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
   });
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
     try {
       if (type === "sign-up" && data.name && data.ssn) {
         const userData = {
@@ -80,6 +84,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
           router.push("/");
         }
       }
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -210,20 +215,17 @@ const AuthForm = ({ type }: AuthFormProps) => {
               type="submit"
               className="text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form"
             >
-              {type === "sign-in" ? "Sign in" : "Sign up"}
+              {isLoading ? (
+                <>
+                  <Loader2 size={20} className="animate-spin" /> &nbsp;
+                  Loading...
+                </>
+              ) : type === "sign-in" ? (
+                "Sign in"
+              ) : (
+                "Sign up"
+              )}
             </Button>
-            {/* <Button
-              variant="outline"
-              className="text-16 rounded-lg border-gray-300 font-semibold text-gray-700 shadow-form"
-            >
-              <Image
-                src="/icons/google.svg"
-                alt="google"
-                width={24}
-                height={24}
-              />
-              &nbsp; Sign in with Google
-            </Button> */}
           </div>
         </form>
       </Form>
@@ -235,7 +237,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
             : "Already have an account?"}
         </p>
         <Link
-          href="/sign-in"
+          href={type === "sign-in" ? "/sign-up" : "/sign-in"}
           className="text-14 cursor-pointer font-medium text-bankGradient"
         >
           {type === "sign-in" ? "Sign up" : "Sign in"}

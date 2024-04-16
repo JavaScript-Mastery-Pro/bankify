@@ -21,7 +21,7 @@ const Sidebar = () => {
   };
 
   return (
-    <section className="sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between  border-r border-gray-200 bg-white p-6 pt-8 text-white max-sm:hidden lg:w-[355px]">
+    <section className="sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between  border-r border-gray-200 bg-white p-6 pt-8 text-white max-md:hidden lg:w-[355px]">
       <nav className="flex flex-col gap-6">
         <Link href="/" className="flex cursor-pointer items-center gap-1 px-4">
           <Image
