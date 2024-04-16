@@ -7,10 +7,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { metadata } from "@/app/layout";
+// import { metadata } from "@/app/layout";
 import { useUserContext } from "@/context/AuthContext";
 import { databases, appwriteConfig } from "@/lib/appwrite/config";
-import { sendDesposit } from "@/lib/stripe";
+// import { sendDesposit } from "@/lib/stripe";
 
 import { Button } from "./ui/button";
 import {
