@@ -1,4 +1,4 @@
-import { ID, Query } from "appwrite";
+import { ID } from "appwrite";
 
 import {
   account,
@@ -6,13 +6,11 @@ import {
   avatars,
   databases,
 } from "../appwrite/config";
-import {
-  createStripeAccount,
-  createOnboardingLink,
-} from "../stripe/user.stripe";
+import { createStripeAccount, createOnboardingLink } from "../stripe";
 
 // SIGN-UP
 export const signUpUser = async (user: CreateNewUser) => {
+  console.log({ user });
   try {
     // Create stripe account
     const newStripeAccount = await createStripeAccount({
@@ -45,6 +43,10 @@ export const signUpUser = async (user: CreateNewUser) => {
       }
     );
     if (!newAppwriteUser) throw Error;
+
+    // Sign-in user
+    const session = await account.createEmailSession(user.email, user.password);
+    if (!session) throw Error;
 
     // Get user's onboarding link
     const onboardingLink = await createOnboardingLink(newStripeAccount.id);
@@ -79,27 +81,6 @@ export async function logoutAccount() {
   try {
     await account.deleteSession("current");
     return { loggedOut: true };
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// GET CURRENT USER
-export async function getCurrentUserServer() {
-  try {
-    const currentAccount = await account.get();
-
-    console.log({ currentAccount });
-
-    // Get current user's details
-    const result = await databases.listDocuments(
-      appwriteConfig.databaseId,
-      appwriteConfig.usersCollectionId,
-      [Query.equal("accountId", currentAccount.$id)]
-    );
-
-    const currentUser = result.documents[0];
-    return currentUser;
   } catch (error) {
     console.log(error);
   }
