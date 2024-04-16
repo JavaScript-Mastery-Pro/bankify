@@ -2,10 +2,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { cn } from "@/lib/utils";
+import { useUserContext } from "@/context/AuthContext";
+import { signUpUser } from "@/lib/services/server.services";
+import { loginUser } from "@/lib/services/services";
 
 import { Button } from "../ui/button";
 import {
@@ -23,12 +26,19 @@ interface AuthFormProps {
 }
 
 const AuthForm = ({ type }: AuthFormProps) => {
+  const router = useRouter();
+  const { setIsAuthenticated } = useUserContext();
+
   const formSchema = z.object({
     name:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(4, "name cannot be empty"),
-    emailAddress: z.string().email(),
+        : z.string().min(3, "name cannot be empty"),
+    email: z.string().email(),
+    ssn:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "ssn cannot be empty"),
     password: z.string().min(6, "password must be 6 character"),
   });
 
@@ -36,13 +46,46 @@ const AuthForm = ({ type }: AuthFormProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      emailAddress: "",
+      email: "",
+      ssn: "",
       password: "",
     },
   });
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      if (type === "sign-up" && data.name && data.ssn) {
+        const userData = {
+          email: data.email,
+          name: data.name,
+          password: data.password,
+          ssn: data.ssn,
+        };
+
+        const onboardingLink = await signUpUser(userData);
+
+        if (onboardingLink) {
+          window.location.href = onboardingLink.url;
+        }
+      }
+
+      if (type === "sign-in") {
+        const session = await loginUser({
+          email: data.email,
+          password: data.password,
+        });
+        console.log({ session });
+
+        if (session) {
+          setIsAuthenticated(true);
+          router.push("/");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <section className="flex w-full max-w-[365px] flex-col gap-5 md:gap-8">
       <header className="flex flex-col gap-5 md:gap-8">
@@ -66,11 +109,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col gap-5 md:gap-8"
         >
-          <div
-            className={cn("w-full", {
-              hidden: type === "sign-in",
-            })}
-          >
+          {type === "sign-up" && (
             <FormField
               control={form.control}
               name="name"
@@ -94,10 +133,10 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 </FormItem>
               )}
             />
-          </div>
+          )}
           <FormField
             control={form.control}
-            name="emailAddress"
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <div className="flex flex-col gap-1.5">
@@ -118,6 +157,32 @@ const AuthForm = ({ type }: AuthFormProps) => {
               </FormItem>
             )}
           />
+          {type === "sign-up" && (
+            <FormField
+              control={form.control}
+              name="ssn"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex flex-col gap-1.5">
+                    <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                      Social Security Number
+                    </FormLabel>
+                    <div className="flex w-full flex-col">
+                      <FormControl>
+                        <Input
+                          placeholder="000000000"
+                          className="input-class"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-12 text-red-500" />
+                    </div>
+                  </div>
+                </FormItem>
+              )}
+            />
+          )}
+
           <FormField
             control={form.control}
             name="password"
@@ -149,6 +214,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
               {type === "sign-in" ? "Sign in" : "Sign up"}
             </Button>
             <Button
+              type="button"
               variant="outline"
               className="text-16 rounded-lg border-gray-300 font-semibold text-gray-700 shadow-form"
             >

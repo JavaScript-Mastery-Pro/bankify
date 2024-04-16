@@ -13,7 +13,7 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ balance });
   } catch (error) {
     console.error(
-      "An error occurred when calling the Stripe API to get user balance:",
+      "An error occurred when calling the Stripe API to get balance:",
       error
     );
   }

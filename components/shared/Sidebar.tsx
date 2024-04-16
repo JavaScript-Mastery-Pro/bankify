@@ -1,15 +1,48 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { sidebarLinks } from "@/constants";
+import { useUserContext } from "@/context/AuthContext";
+import { logoutAccount } from "@/lib/services/services";
 import { cn } from "@/lib/utils";
 
 import { Input } from "../ui/input";
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useUserContext();
+
+  console.log({ user });
+
+  useEffect(() => {
+    const getBalanceData = async () => {
+      await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/balance_get`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ account: user.stripeId }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const { balance } = data;
+          if (balance) {
+            console.log("=========balance", balance);
+          }
+        });
+    };
+
+    user.stripeId && getBalanceData();
+  }, [user.stripeId]);
+
+  const handleLogOut = async () => {
+    const loggedOut = await logoutAccount();
+    if (loggedOut) router.push("/sign-in");
+  };
 
   return (
     <section className="sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between  border-r border-gray-200 bg-white p-6 pt-8 text-white max-sm:hidden lg:w-[355px]">
@@ -76,13 +109,20 @@ const Sidebar = () => {
           );
         })}
       </nav>
-      <footer className="flex items-center gap-2 px-4 pb-8 pt-6">
-        <Image src="icons/jsm.svg" width={40} height={40} alt="jsm" />
+      <footer
+        className="flex items-center gap-2 px-4 pb-8 pt-6"
+        onClick={handleLogOut}
+      >
+        <Image
+          src={user.image || "icons/jsm.svg"}
+          width={40}
+          height={40}
+          alt="jsm"
+          className="rounded-full"
+        />
         <div className="flex flex-col justify-center max-lg:hidden">
-          <h1 className="text-14 font-semibold text-gray-700">Adrain Hajdin</h1>
-          <p className="text-14 font-normal text-gray-600">
-            adrian@jsmastery.pro
-          </p>
+          <h1 className="text-14 font-semibold text-gray-700">{user.name}</h1>
+          <p className="text-14 font-normal text-gray-600">{user.email}</p>
         </div>
         <Image src="icons/logout.svg" width={20} height={20} alt="jsm" />
       </footer>

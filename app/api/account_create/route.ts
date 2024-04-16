@@ -8,7 +8,7 @@ export const POST = async (request: Request) => {
   try {
     const account = await stripe.accounts.create({
       type: "custom",
-      country: user.country,
+      country: "US",
       email: user.email,
       business_type: "individual",
       capabilities: {
@@ -26,9 +26,9 @@ export const POST = async (request: Request) => {
           },
         },
       },
-      tos_acceptance: {
-        service_agreement: "recipient",
-      },
+      // tos_acceptance: {
+      //   service_agreement: "recipient",
+      // },
     });
 
     return NextResponse.json({ account: account.id });

@@ -4,26 +4,38 @@ import BudgetCard from "@/components/BudgetCard";
 import CreditCard from "@/components/CreditCard";
 import DoughnutChart from "@/components/DoughnutChart";
 import RecentTransactions from "@/components/RecentTransactions";
-import { Button } from "@/components/ui/button";
+import { DashboardHeader } from "@/components/shared/DashboardHeader";
 import { budgetCards } from "@/constants";
+// import { getBalance } from "@/lib/stripe/balance.stripe";
 
-const Home = () => {
+// import { getCurrentUserServer } from "@/lib/services/user.services";
+
+const Home = async () => {
+  // const balance = await getBalance("acct_1P4yTKCE6Xl11oKt");
+  // const balances = [
+  //   {
+  //     type: "available",
+  //     amount: balance.available[0].amount,
+  //   },
+  //   {
+  //     type: "instant",
+  //     amount: balance.instant_available[0].amount,
+  //   },
+  //   {
+  //     type: "pending",
+  //     amount: balance.pending[0].amount,
+  //   },
+  // ];
+
+  // const totalBalance =
+  //   balances.reduce((total, currentValue) => total + currentValue.amount, 0) /
+  //   100;
+  const totalBalance = 33.91;
+
   return (
     <section className="no-scrollbar flex w-full flex-col max-xl:max-h-screen max-xl:overflow-y-scroll xl:flex-row">
       <div className="no-scrollbar flex w-full flex-1 flex-col gap-8 px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll">
-        <header className="flex justify-between">
-          <div className="flex flex-col gap-1 ">
-            <h1 className="text-24 lg:text-30 font-semibold text-gray-900">
-              Welcome, <span className="text-bankGradient">Adrian</span>
-            </h1>
-            <p className="text-14 lg:text-16 font-normal text-gray-600">
-              Access & manage your account and transactions efficiently.
-            </p>
-          </div>
-          <Button className="text-14 bg-bank-gradient px-4 py-2.5 font-semibold text-white shadow-form">
-            Send funds
-          </Button>
-        </header>
+        <DashboardHeader />
         <section className="flex h-[168px] w-full items-center gap-6 rounded-xl border border-gray-200 p-6 shadow-chart">
           <div className="size-full max-w-[120px]">
             <DoughnutChart />
@@ -38,7 +50,7 @@ const Home = () => {
               </h1>
               <div className="flex w-full items-center justify-between">
                 <h1 className="text-24 lg:text-30 flex-1 font-semibold text-gray-900">
-                  $25,000.00
+                  ${totalBalance}
                 </h1>
                 <div className="text-14  flex h-fit items-center rounded-2xl bg-success-50 px-2 font-medium text-success-700 max-sm:hidden">
                   <Image

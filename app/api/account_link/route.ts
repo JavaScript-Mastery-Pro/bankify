@@ -13,8 +13,6 @@ export const POST = async (request: Request) => {
       type: "account_onboarding",
     });
 
-    console.log({ accountLink });
-
     return NextResponse.json({ url: accountLink.url });
   } catch (error) {
     console.error(

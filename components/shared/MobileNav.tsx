@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
+import { logoutAccount } from "@/lib/services/services";
 import { cn } from "@/lib/utils";
 
 const MobileNav = () => {
@@ -78,7 +79,10 @@ const MobileNav = () => {
                 })}
               </nav>
             </SheetClose>
-            <footer className="flex items-center gap-2 px-4 pb-8 pt-6">
+            <footer
+              className="flex items-center gap-2 px-4 pb-8 pt-6"
+              onClick={logoutAccount}
+            >
               <Image src="icons/jsm.svg" width={40} height={40} alt="jsm" />
               <div className="flex flex-col justify-center">
                 <h1 className="text-14 font-semibold text-gray-700">
