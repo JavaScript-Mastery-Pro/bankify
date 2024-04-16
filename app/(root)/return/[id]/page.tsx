@@ -2,7 +2,6 @@ import { DeleteAccountButton } from "@/components/shared/DeleteAccountButton";
 import { DepositButton } from "@/components/shared/DespositButton";
 import { GenerateBankTokenButton } from "@/components/shared/GenerateBankTokenButton";
 import { GetBalanceButton } from "@/components/shared/GetBalanceButton";
-import { GetBalanceTransactionsButton } from "@/components/shared/GetBalanceTransactionsButton";
 import { GetBankListButton } from "@/components/shared/GetBankListButton";
 import { TopUpBalanceButton } from "@/components/shared/TopUpBalanceButton";
 import { TransferToAccountButton } from "@/components/shared/TransferToAccountButton";
@@ -69,7 +68,7 @@ const Return = async ({ params: { id } }: SearchParamProps) => {
       />
 
       <GetBalanceButton account={account.id} />
-      <GetBalanceTransactionsButton account={account.id} />
+
       <GenerateBankTokenButton
         accountName="John Doe"
         routingNumber="110000000"
