@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 // import { metadata } from "@/app/layout";
-import { useUserContext } from "@/context/AuthContext";
+// import { useUserContext } from "@/context/AuthContext";
 // import { databases, appwriteConfig } from "@/lib/appwrite/config";
 import { createNewTransaction } from "@/lib/services";
 import { sendDesposit } from "@/lib/stripe";
@@ -39,6 +39,7 @@ const formSchema = z.object({
 
 const PaymentTransferForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  // const { isAuthenticated } = useUserContext();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
