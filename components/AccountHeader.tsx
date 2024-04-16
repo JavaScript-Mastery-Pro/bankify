@@ -14,7 +14,6 @@ const AccountHeader = () => {
       const balance = await getBalance(user.stripeId);
       const actualAmount = balance.pending[0].amount / 100;
       setBalance(actualAmount);
-      console.log("balance", actualAmount);
     }
     fetchBalance();
   });

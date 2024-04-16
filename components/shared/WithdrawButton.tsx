@@ -19,6 +19,8 @@ export const WithdrawButton = ({
   const [withdrawPending, setWithdrawPending] = useState(false);
   const [payout, setPayout] = useState();
 
+  console.log({ payout });
+
   const withdrawToBank = async () => {
     setWithdrawPending(true);
     await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/payout_create`, {
@@ -42,8 +44,6 @@ export const WithdrawButton = ({
         }
       });
   };
-
-  console.log({ payout });
 
   return (
     <div className="flex flex-col space-y-5">

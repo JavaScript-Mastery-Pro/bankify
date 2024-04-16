@@ -1,16 +1,17 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ID } from "appwrite";
+// import { ID } from "appwrite";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 // import { metadata } from "@/app/layout";
-import { useUserContext } from "@/context/AuthContext";
-import { databases, appwriteConfig } from "@/lib/appwrite/config";
-// import { sendDesposit } from "@/lib/stripe";
+// import { useUserContext } from "@/context/AuthContext";
+// import { databases, appwriteConfig } from "@/lib/appwrite/config";
+import { createNewTransaction } from "@/lib/services";
+import { sendDesposit } from "@/lib/stripe";
 
 import { Button } from "./ui/button";
 import {
@@ -38,8 +39,7 @@ const formSchema = z.object({
 
 const PaymentTransferForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { isAuthenticated } = useUserContext();
-  console.log({ isAuthenticated });
+  // const { isAuthenticated } = useUserContext();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,37 +56,39 @@ const PaymentTransferForm = () => {
     setIsLoading(true);
     console.log("submit handler");
     try {
-      // const despositData = {
-      //   amountInDollar: 5,
-      //   stripeId: "acct_1P6AdtC5KCyJFI0K",
-      //   userId: "661e67ba159984138bab",
-      //   category: "Deposit",
-      //   name: "Stripe Deposit",
-      //   note: "",
-      // };
-      // const session = await sendDesposit(despositData);
-      // if (session) {
-      //   window.location.href = session.url;
-      // }
+      const despositData = {
+        amountInDollar: 5,
+        stripeId: "acct_1P6AdtC5KCyJFI0K",
+        userId: "661e67ba159984138bab",
+        category: "Deposit",
+        name: "Stripe Deposit",
+        note: "",
+      };
+      const session = await sendDesposit(despositData);
+      if (session) {
+        window.location.href = session.url;
+      }
 
       // console.log(session);
-
-      const newTransaction = await databases.createDocument(
-        appwriteConfig.databaseId,
-        appwriteConfig.transactionsCollectionId,
-        ID.unique(),
-        {
-          stripeTransactionId:
-            "cs_test_a1SuRJOMdR59XyMkk5HXN8Prsi3jrGw7T5Ar1im37J6IeCty5lm8w9dx6d",
-          amount: data.amount,
-          user: "661e9cdc0a1f3a357702",
-          category: "Deposit",
-          name: "Stripe Deposit",
-          note: "",
-        }
-      );
-
+      const newTransaction = await createNewTransaction();
       console.log(newTransaction);
+
+      // const newTransaction = await databases.createDocument(
+      //   appwriteConfig.databaseId,
+      //   appwriteConfig.transactionsCollectionId,
+      //   ID.unique(),
+      //   {
+      //     stripeTransactionId:
+      //       "cs_test_a1SuRJOMdR59XyMkk5HXN8Prsi3jrGw7T5Ar1im37J6IeCty5lm8w9dx6d",
+      //     amount: data.amount,
+      //     user: "661e9cdc0a1f3a357702",
+      //     category: "Deposit",
+      //     name: "Stripe Deposit",
+      //     note: "",
+      //   }
+      // );
+
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
