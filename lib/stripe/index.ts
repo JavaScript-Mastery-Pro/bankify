@@ -97,6 +97,7 @@ export const sendDesposit = async ({
   const totalFee = stripeFee + AppFixedFee;
   const totalAmount = parseFloat((amountInDollar + totalFee).toFixed(2));
 
+  console.log("sendDesposit");
   try {
     const session = await stripe.checkout.sessions.create({
       line_items: [

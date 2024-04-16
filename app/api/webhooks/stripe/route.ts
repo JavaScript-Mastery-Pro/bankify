@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   const body = await request.text();
 
   const sig = request.headers.get("stripe-signature") as string;
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+  const endpointSecret = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!;
 
   let event;
 
@@ -25,6 +25,7 @@ export async function POST(request: Request) {
   // CREATE
   if (eventType === "checkout.session.completed") {
     const { id, metadata } = event.data.object;
+    console.log("checkout.session.completed", metadata);
 
     const newTransaction = await databases.createDocument(
       appwriteConfig.databaseId,
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
         user: metadata?.userId! || "",
         category: metadata?.category! || "",
         name: metadata?.name! || "",
+        note: metadata?.note! || "",
       }
     );
 

@@ -1,33 +1,38 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { loadStripe } from "@stripe/stripe-js";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { sendDesposit } from "@/lib/stripe";
+
 import { Button } from "./ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
+  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
+// import { Textarea } from "./ui/textarea";
+
+loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const formSchema = z.object({
   name: z.string().min(4, "Name is too short"),
-  emailAddress: z.string().email("Invalid email address"),
-  transferNote: z.string().optional(),
-  accountNumber: z
-    .string()
-    .min(15, "account number must be exact 15 character")
-    .max(15),
-  branchcode: z.string().min(4, "code must be 4 character").max(4),
+  // emailAddress: z.string().email("Invalid email address"),
+  // transferNote: z.string().optional(),
+  // accountNumber: z
+  //   .string()
+  //   .min(15, "account number must be exact 15 character")
+  //   .max(15),
+  // branchcode: z.string().min(4, "code must be 4 character").max(4),
 });
 
 const PaymentTransferForm = () => {
@@ -36,19 +41,32 @@ const PaymentTransferForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      emailAddress: "",
-      transferNote: "",
-      accountNumber: "",
-      branchcode: "",
+      // emailAddress: "",
+      // transferNote: "",
+      // accountNumber: "",
+      // branchcode: "",
     },
   });
 
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    setTimeout(() => {
-      console.log(data);
-      setIsLoading(false);
-    }, 3000);
+    console.log("submit handler");
+    try {
+      const despositData = {
+        amountInDollar: 5,
+        stripeId: "acct_1P6AdtC5KCyJFI0K", //
+        userId: "661e67ba159984138bab",
+        category: "Deposit",
+        name: "Stripe Deposit",
+        note: "",
+      };
+      const session = await sendDesposit(despositData);
+
+      console.log(session);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -80,7 +98,7 @@ const PaymentTransferForm = () => {
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="emailAddress"
           render={({ field }) => (
@@ -102,8 +120,8 @@ const PaymentTransferForm = () => {
               </div>
             </FormItem>
           )}
-        />
-        <FormField
+        /> */}
+        {/* <FormField
           control={form.control}
           name="transferNote"
           render={({ field }) => (
@@ -132,8 +150,8 @@ const PaymentTransferForm = () => {
               </div>
             </FormItem>
           )}
-        />
-        <div className="flex flex-col gap-1 border-t border-gray-200 py-6">
+        /> */}
+        {/* <div className="flex flex-col gap-1 border-t border-gray-200 py-6">
           <h2 className="text-18 font-semibold text-gray-900">
             Bank account details
           </h2>
@@ -186,7 +204,7 @@ const PaymentTransferForm = () => {
               </div>
             </FormItem>
           )}
-        />
+        /> */}
         <div className="flex w-full max-w-[850px] gap-3 border-t border-gray-200 py-5">
           <Button
             variant="outline"
