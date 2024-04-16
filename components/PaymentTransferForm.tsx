@@ -26,7 +26,7 @@ import { Input } from "./ui/input";
 // import { Textarea } from "./ui/textarea";
 
 const formSchema = z.object({
-  name: z.string().min(4, "Name is too short"),
+  amount: z.string().min(4, "Name is too short"),
   // emailAddress: z.string().email("Invalid email address"),
   // transferNote: z.string().optional(),
   // accountNumber: z
@@ -44,7 +44,7 @@ const PaymentTransferForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      amount: "",
       // emailAddress: "",
       // transferNote: "",
       // accountNumber: "",
@@ -78,7 +78,7 @@ const PaymentTransferForm = () => {
         {
           stripeTransactionId:
             "cs_test_a1SuRJOMdR59XyMkk5HXN8Prsi3jrGw7T5Ar1im37J6IeCty5lm8w9dx6d",
-          amount: "5",
+          amount: data.amount,
           user: "661e9cdc0a1f3a357702",
           category: "Deposit",
           name: "Stripe Deposit",
@@ -101,20 +101,16 @@ const PaymentTransferForm = () => {
       >
         <FormField
           control={form.control}
-          name="name"
+          name="amount"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
               <div className="flex w-full max-w-[850px] flex-col gap-3 py-5 md:flex-row lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                  Recipient&apos;s Full Name
+                  Amount
                 </FormLabel>
                 <div className="flex w-full flex-col">
                   <FormControl>
-                    <Input
-                      placeholder="Nikky eva"
-                      className="input-class"
-                      {...field}
-                    />
+                    <Input placeholder="5" className="input-class" {...field} />
                   </FormControl>
                   <FormMessage className="text-12 text-red-500" />
                 </div>
