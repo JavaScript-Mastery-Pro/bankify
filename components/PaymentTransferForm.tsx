@@ -1,12 +1,16 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ID } from "appwrite";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { sendDesposit } from "@/lib/stripe";
+// import { metadata } from "@/app/layout";
+import { useUserContext } from "@/context/AuthContext";
+import { databases, appwriteConfig } from "@/lib/appwrite/config";
+// import { sendDesposit } from "@/lib/stripe";
 
 import { Button } from "./ui/button";
 import {
@@ -34,6 +38,9 @@ const formSchema = z.object({
 
 const PaymentTransferForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { isAuthenticated } = useUserContext();
+  console.log({ isAuthenticated });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,20 +56,37 @@ const PaymentTransferForm = () => {
     setIsLoading(true);
     console.log("submit handler");
     try {
-      const despositData = {
-        amountInDollar: 5,
-        stripeId: "acct_1P6EJXCGKqcAf9WJ", //
-        userId: "661e9edbf0ab92a7a384",
-        category: "Deposit",
-        name: "Stripe Deposit",
-        note: "",
-      };
-      const session = await sendDesposit(despositData);
-      if (session) {
-        window.location.href = session.url;
-      }
+      // const despositData = {
+      //   amountInDollar: 5,
+      //   stripeId: "acct_1P6AdtC5KCyJFI0K",
+      //   userId: "661e67ba159984138bab",
+      //   category: "Deposit",
+      //   name: "Stripe Deposit",
+      //   note: "",
+      // };
+      // const session = await sendDesposit(despositData);
+      // if (session) {
+      //   window.location.href = session.url;
+      // }
 
-      console.log(session);
+      // console.log(session);
+
+      const newTransaction = await databases.createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.transactionsCollectionId,
+        ID.unique(),
+        {
+          stripeTransactionId:
+            "cs_test_a1SuRJOMdR59XyMkk5HXN8Prsi3jrGw7T5Ar1im37J6IeCty5lm8w9dx6d",
+          amount: "5",
+          user: "661e9cdc0a1f3a357702",
+          category: "Deposit",
+          name: "Stripe Deposit",
+          note: "",
+        }
+      );
+
+      console.log(newTransaction);
     } catch (error) {
       console.log(error);
     }

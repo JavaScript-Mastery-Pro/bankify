@@ -85,3 +85,28 @@ export async function logoutAccount() {
     console.log(error);
   }
 }
+
+//
+// LOGOUT USER
+// export async function createNewTransaction() {
+//   try {
+//     const newTransaction =  await databases.createDocument(
+//       appwriteConfig.databaseId,
+//       appwriteConfig.transactionsCollectionId,
+//       ID.unique(),
+//       {
+//         stripeTransactionId: id,
+//         amount: metadata?.amountInDollar
+//           ? (parseInt(metadata?.amountInDollar) / 100).toString()
+//           : "0",
+//         user: metadata?.userId! || "",
+//         category: metadata?.category! || "",
+//         name: metadata?.name! || "",
+//         note: metadata?.note! || "",
+//       }
+//     );
+//     return newTransaction;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
