@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loadStripe } from "@stripe/stripe-js";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,8 +20,6 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 // import { Textarea } from "./ui/textarea";
-
-loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const formSchema = z.object({
   name: z.string().min(4, "Name is too short"),
