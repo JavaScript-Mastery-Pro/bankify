@@ -50,7 +50,7 @@ const Return = async ({ params: { id } }: SearchParamProps) => {
       <p>Total Amount {total}</p>
       <p>Receive Amount {total - (transactionFee + AppFixedFee)}</p>
       <p>
-        Account email: <span className="font-bold">{account.email}</span>
+        Account email test: <span className="font-bold">{account.email}</span>
       </p>
       <DeleteAccountButton accountId={account.id} />
       <TopUpBalanceButton amountInDollar={topUpAmountInDollar} />
