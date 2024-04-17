@@ -19,6 +19,8 @@ export const BankAccounts = () => {
   const { user } = useUserContext();
   const [banks, setBanks] = useState<any[]>([]);
 
+  console.log({ banks });
+
   useEffect(() => {
     const getTransactionsData = async () => {
       const data = await getBankAccounts(user.id);

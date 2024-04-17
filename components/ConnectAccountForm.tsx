@@ -85,7 +85,7 @@ const ConnectAccountForm = () => {
 
           const newBank = await createBankAccount(externalAccountData);
           console.log({ newBank });
-          router.push("/connect-bank-account");
+          router.push("/");
           form.reset();
         }
       }
