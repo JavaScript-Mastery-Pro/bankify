@@ -41,17 +41,19 @@ export async function POST(request: Request) {
     //     note: metadata?.note! || "",
     //   }
     // );
+
+    console.log({ metadata });
     const newTransaction = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.transactionsCollectionId,
       ID.unique(),
       {
         stripeTransactionId: id,
-        amount: metadata?.amountInDollar || "0",
-        user: metadata?.user! || "",
-        category: metadata?.category! || "",
-        name: metadata?.name! || "",
-        note: metadata?.note! || "",
+        amount: "5",
+        user: "661e9cdc0a1f3a357702",
+        category: "Deposit",
+        name: "nenad baltic",
+        note: "Test depost",
       }
     );
 
