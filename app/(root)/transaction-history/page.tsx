@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import DepositModal from "@/components/DepositModal";
 import TransactionHistoryTable from "@/components/TransactionHistoryTable";
 import { Button } from "@/components/ui/button";
 
@@ -15,19 +16,8 @@ const TransactionHistory = () => {
             Welcome back, Adrian
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            className="text14_padding10 border-gray-300 text-gray-700 shadow-form"
-          >
-            <Image
-              src="/icons/dollar.svg"
-              width={20}
-              height={20}
-              alt="dollar icon"
-            />
-            &nbsp; Deposit
-          </Button>
+        <div className="flex items-center gap-2">
+          <DepositModal />
           <Button className="text14_padding10 bg-bank-gradient text-white shadow-form">
             Send fund
           </Button>
