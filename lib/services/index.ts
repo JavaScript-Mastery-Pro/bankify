@@ -100,22 +100,6 @@ export async function getTransactions(userId: string) {
   }
 }
 
-// GET TRANSACTIONS
-export async function getBankAccounts(userId: string) {
-  try {
-    const bankAccounts = databases.listDocuments(
-      appwriteConfig.databaseId,
-      appwriteConfig.banksCollectionId,
-      [Query.equal("user", userId)]
-    );
-
-    if (!bankAccounts) throw Error;
-    return bankAccounts;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 // CREATE BANK ACCOUNT
 export async function createBankAccount({
   stripeBankId,
@@ -148,6 +132,22 @@ export async function createBankAccount({
     );
     if (!newBank) throw Error;
     return newBank;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// GET BANK ACCOUNTS
+export async function getBankAccounts(userId: string) {
+  try {
+    const bankAccounts = databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.banksCollectionId,
+      [Query.equal("user", userId)]
+    );
+
+    if (!bankAccounts) throw Error;
+    return bankAccounts;
   } catch (error) {
     console.log(error);
   }

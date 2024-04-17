@@ -74,7 +74,7 @@ const ConnectAccountForm = () => {
             stripeBankId: externalAccount.id,
             accountHolderName: externalAccount.account_holder_name,
             user: externalAccount?.metadata?.userId! || "",
-            accountNumber: externalAccount.account,
+            accountNumber: externalAccount.accountNumber,
             routingNumber: externalAccount.routing_number,
             bankName: externalAccount.bank_name,
           };

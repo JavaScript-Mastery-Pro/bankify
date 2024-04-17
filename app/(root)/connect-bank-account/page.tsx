@@ -1,5 +1,6 @@
 import React from "react";
 
+import { BankAccounts } from "@/components/BankAccounts";
 import ConnectAccountForm from "@/components/ConnectAccountForm";
 import PageHeader from "@/components/shared/PageHeader";
 
@@ -12,10 +13,13 @@ const ConnectBankAccount = () => {
         topDescription="Securely link your bank account"
         bottomDescription="Enter the bank account details of the recipient"
       />
-      <section className="size-full">
+      <section className="size-full ">
         <ConnectAccountForm />
       </section>
-      <section></section>
+
+      <section className="mt-10 size-full border-t border-gray-200">
+        <BankAccounts />
+      </section>
     </section>
   );
 };
