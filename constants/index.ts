@@ -29,7 +29,8 @@ export const sidebarLinks = [
 
 export const transactionHistory = [
   {
-    company: "Spotify",
+    id: "Spotify",
+    name: "Spotify",
     companyLogo: "/icons/spotify.svg",
     amount: 12.99,
     date: "Wed 1:00pm",
@@ -37,7 +38,8 @@ export const transactionHistory = [
     status: "debited",
   },
   {
-    company: "A coffee",
+    id: "A coffee",
+    name: "A coffee",
     companyLogo: "/icons/a-coffee.svg",
     amount: 18.99,
     date: "Wed 7:20pm",
@@ -45,7 +47,8 @@ export const transactionHistory = [
     status: "debited",
   },
   {
-    company: "Stripe",
+    id: "Stripe",
+    name: "Stripe",
     companyLogo: "/icons/stripe.svg",
     amount: 88.0,
     date: "Wed 2:45pm",
@@ -53,7 +56,8 @@ export const transactionHistory = [
     status: "credited",
   },
   {
-    company: "Figma",
+    id: "Figma",
+    name: "Figma",
     companyLogo: "/icons/figma.svg",
     amount: 15.0,
     date: "Tue 6:10pm",
@@ -61,7 +65,8 @@ export const transactionHistory = [
     status: "debited",
   },
   {
-    company: "TBF Bakery",
+    id: "TBF Bakery",
+    name: "TBF Bakery",
     companyLogo: "/icons/tbfBakery.svg",
     amount: 35.5,
     date: "Tue 7:52am",
@@ -69,7 +74,8 @@ export const transactionHistory = [
     status: "debited",
   },
   {
-    company: "Fresh F&V",
+    id: "Fresh F&V",
+    name: "Fresh F&V",
     companyLogo: "/icons/fresh-fv.svg",
     amount: 25.5,
     date: "Tue 7:52am",
@@ -77,7 +83,8 @@ export const transactionHistory = [
     status: "debited",
   },
   {
-    company: "Stripe",
+    id: "Stripe",
+    name: "Stripe",
     companyLogo: "/icons/stripe.svg",
     amount: 88.0,
     date: "Wed 2:45pm",

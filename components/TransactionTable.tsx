@@ -15,6 +15,7 @@ interface TransactionTableProps {
   data: {
     id: string;
     name: string;
+    companyLogo: string;
     amount: number;
     date: string;
     category: string;
@@ -72,7 +73,7 @@ const TransactionTable = ({ data }: TransactionTableProps) => {
             <TableCell className="truncate px-0">
               <div className="flex items-center gap-3">
                 <Image
-                  src={"/icons/a-coffee.svg"}
+                  src={transaction.companyLogo}
                   width={40}
                   height={40}
                   alt="company logo"

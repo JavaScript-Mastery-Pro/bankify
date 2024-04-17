@@ -16,7 +16,7 @@ export const POST = async (request: Request) => {
     return NextResponse.json({ externalAccount });
   } catch (error) {
     console.error(
-      "An error occurred when calling the Stripe API to create an account:",
+      "An error occurred when calling the Stripe API to add a bank:",
       error
     );
   }

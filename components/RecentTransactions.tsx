@@ -21,6 +21,7 @@ const RecentTransactions = () => {
         const transformedData = transactions.documents.map((document) => ({
           id: document.$id,
           name: document.name,
+          companyLogo: "/icons/a-coffee.svg",
           amount: document.amount,
           date: document.$createdAt,
           category: document.category,

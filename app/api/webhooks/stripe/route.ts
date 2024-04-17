@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { BankAccount } from "@stripe/stripe-js";
 import { ID } from "appwrite";
 import { NextResponse } from "next/server";
 import stripe from "stripe";
@@ -22,10 +23,9 @@ export async function POST(request: Request) {
   // Get the ID and type
   const eventType = event.type;
 
-  // CREATE
+  // CREATE DEPOSIT SUCCESS
   if (eventType === "checkout.session.completed") {
     const { id, metadata } = event.data.object;
-    console.log("checkout.session.completed", metadata);
 
     const newTransaction = await databases.createDocument(
       appwriteConfig.databaseId,
@@ -44,6 +44,28 @@ export async function POST(request: Request) {
     );
 
     return NextResponse.json({ message: "OK", transaction: newTransaction });
+  }
+
+  // CREATE BANK SUCCESS
+  if (eventType === "account.external_account.created") {
+    const externalAccount = event.data.object;
+    console.log("account.external_account.created", event.data.object);
+
+    const newExternalAccount = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.banksCollectionId,
+      ID.unique(),
+      {
+        stripeBankId: externalAccount.id,
+        accountHolderName: (externalAccount as BankAccount).account_holder_name,
+        user: externalAccount?.metadata?.userId! || "",
+        accountNumber: externalAccount.account,
+        routingNumber: (externalAccount as BankAccount).routing_number,
+        bankName: (externalAccount as BankAccount).bank_name,
+      }
+    );
+
+    return NextResponse.json({ message: "OK", bank: newExternalAccount });
   }
 
   return new Response("", { status: 200 });

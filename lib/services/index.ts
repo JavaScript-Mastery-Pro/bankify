@@ -74,7 +74,6 @@ export const loginUser = async (user: LoginUser) => {
   }
 };
 
-//
 // LOGOUT USER
 export async function logoutAccount() {
   try {
@@ -85,7 +84,6 @@ export async function logoutAccount() {
   }
 }
 
-//
 // GET TRANSACTIONS
 export async function getTransactions(userId: string) {
   try {
@@ -97,6 +95,22 @@ export async function getTransactions(userId: string) {
 
     if (!transactions) throw Error;
     return transactions;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// GET TRANSACTIONS
+export async function getBankAccounts(userId: string) {
+  try {
+    const bankAccounts = databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.banksCollectionId,
+      [Query.equal("user", userId)]
+    );
+
+    if (!bankAccounts) throw Error;
+    return bankAccounts;
   } catch (error) {
     console.log(error);
   }

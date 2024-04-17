@@ -8,6 +8,8 @@ export const appwriteConfig = {
     .NEXT_PUBLIC_APPWRITE_USER_COLLECTION_ID as string,
   transactionsCollectionId: process.env
     .NEXT_PUBLIC_APPWRITE_TRANSACTIONS_COLLECTION_ID as string,
+  banksCollectionId: process.env
+    .NEXT_PUBLIC_APPWRITE_BANKS_COLLECTION_ID as string,
 };
 
 export const client = new Client();

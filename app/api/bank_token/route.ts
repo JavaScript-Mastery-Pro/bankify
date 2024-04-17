@@ -20,7 +20,7 @@ export const POST = async (request: Request) => {
     return NextResponse.json({ token });
   } catch (error) {
     console.error(
-      "An error occurred when calling the Stripe API to create an account:",
+      "An error occurred when calling the Stripe API to generate token:",
       error
     );
   }

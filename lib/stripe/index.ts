@@ -138,3 +138,59 @@ export const sendDesposit = async ({
     );
   }
 };
+
+// GENERATE BANK TOKEN
+export const generateBankToken = async ({
+  accountHolderName,
+  accountNumber,
+  routingNumber,
+}: {
+  accountHolderName: string;
+  accountNumber: string;
+  routingNumber: string;
+}) => {
+  try {
+    const token = await stripe.tokens.create({
+      bank_account: {
+        country: "US",
+        currency: "usd",
+        account_holder_name: accountHolderName,
+        account_holder_type: "individual",
+        account_number: accountNumber, // "000123456789"
+        routing_number: routingNumber, // "110000000"
+      },
+    });
+
+    return JSON.parse(JSON.stringify(token));
+  } catch (error) {
+    console.error(
+      "An error occurred when calling the Stripe API to generate token:",
+      error
+    );
+  }
+};
+
+// CREATE BANK
+export const createExternalAccount = async ({
+  stripeId,
+  bankToken,
+}: {
+  stripeId: string;
+  bankToken: string;
+}) => {
+  try {
+    const externalAccount = await stripe.accounts.createExternalAccount(
+      stripeId,
+      {
+        external_account: bankToken,
+      }
+    );
+
+    return JSON.parse(JSON.stringify(externalAccount));
+  } catch (error) {
+    console.error(
+      "An error occurred when calling the Stripe API to add a bank:",
+      error
+    );
+  }
+};

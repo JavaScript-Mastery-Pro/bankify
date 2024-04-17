@@ -6,6 +6,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { generateBankToken } from "@/lib/stripe";
+
 import { Button } from "./ui/button";
 import {
   Form,
@@ -21,32 +23,44 @@ const formSchema = z.object({
   accountHolderName: z.string().min(4, "Name is too short"),
   accountNumber: z
     .string()
-    .min(15, "account number must be exact 15 character")
-    .max(15),
-  bankCode: z.string().min(4, "code must be exact 4 character").max(4),
-  branchcode: z.string().min(4, "code must be 4 character").max(4),
+    .min(12, "account number must be exact 12 character")
+    .max(12),
+  routingNumber: z
+    .string()
+    .min(9, "routing number must be exact 9 character")
+    .max(9),
 });
 
 const ConnectAccountForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       accountHolderName: "",
       accountNumber: "",
-      bankCode: "",
-      branchcode: "",
+      routingNumber: "",
     },
   });
 
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    setTimeout(() => {
-      console.log(data);
-      alert("Bank account connected successfully");
-      setIsLoading(false);
-    }, 3000);
+    try {
+      const tokenData = {
+        accountHolderName: data.accountHolderName,
+        accountNumber: data.accountNumber,
+        routingNumber: data.routingNumber,
+      };
+
+      const bankToken = await generateBankToken(tokenData);
+
+      console.log(bankToken);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
   };
+
   return (
     <Form {...form}>
       <form
@@ -101,12 +115,12 @@ const ConnectAccountForm = () => {
         />
         <FormField
           control={form.control}
-          name="bankCode"
+          name="routingNumber"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
               <div className="md::flex-row flex w-full max-w-[850px] flex-col gap-3 py-5 lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                  Bank Code
+                  Routing Number
                 </FormLabel>
                 <div className="flex w-full flex-col">
                   <FormControl>
@@ -122,7 +136,7 @@ const ConnectAccountForm = () => {
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="branchcode"
           render={({ field }) => (
@@ -144,7 +158,7 @@ const ConnectAccountForm = () => {
               </div>
             </FormItem>
           )}
-        />
+        /> */}
         <div className="flex w-full max-w-[850px] gap-3 border-t border-gray-200 py-5">
           <Button
             variant="outline"
