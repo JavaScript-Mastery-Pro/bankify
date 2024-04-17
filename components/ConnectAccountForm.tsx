@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -36,6 +37,7 @@ const formSchema = z.object({
 const ConnectAccountForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useUserContext();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -74,13 +76,16 @@ const ConnectAccountForm = () => {
             stripeBankId: externalAccount.id,
             accountHolderName: externalAccount.account_holder_name,
             user: externalAccount?.metadata?.userId! || "",
-            externalAccountId: externalAccount.externalAccountId,
+            externalAccount: externalAccount.id,
             routingNumber: externalAccount.routing_number,
             bankName: externalAccount.bank_name,
           };
 
+          console.log({ externalAccountData });
+
           const newBank = await createBankAccount(externalAccountData);
           console.log({ newBank });
+          router.push("/connect-bank-account");
           form.reset();
         }
       }

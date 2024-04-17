@@ -25,7 +25,7 @@ export const BankAccounts = () => {
       if (data) {
         const tableData = data.documents.map((bank) => ({
           bankName: bank.bankName,
-          accountNumber: bank.accountNumber,
+          externalAccount: bank.externalAccount,
           date: bank.$createdAt,
         }));
         setBanks(tableData);
@@ -50,7 +50,7 @@ export const BankAccounts = () => {
         {banks.map((item, index) => (
           <TableRow key={index + 1}>
             <TableCell className="px-0">{item.bankName}</TableCell>
-            <TableCell className="px-0">{item.accountNumber}</TableCell>
+            <TableCell className="px-0">{item.externalAccount}</TableCell>
             <TableCell className="px-0">
               {formatDateTime(new Date(item.date)).dateTime}
             </TableCell>
