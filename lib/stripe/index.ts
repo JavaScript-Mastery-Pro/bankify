@@ -174,15 +174,20 @@ export const generateBankToken = async ({
 export const createExternalAccount = async ({
   stripeId,
   bankToken,
+  userId,
 }: {
   stripeId: string;
   bankToken: string;
+  userId: string;
 }) => {
   try {
     const externalAccount = await stripe.accounts.createExternalAccount(
       stripeId,
       {
         external_account: bankToken,
+        metadata: {
+          userId,
+        },
       }
     );
 

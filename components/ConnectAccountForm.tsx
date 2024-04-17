@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { createBankAccount } from "@/lib/services";
 import { createExternalAccount, generateBankToken } from "@/lib/stripe";
 
 import { Button } from "./ui/button";
@@ -58,10 +59,25 @@ const ConnectAccountForm = () => {
         const bankData = {
           stripeId: "acct_1P6EBHFfGXceq6zI", // Shone
           bankToken: bankToken.id,
+          userId: "661e9cdc0a1f3a357702",
         };
         const externalAccount = await createExternalAccount(bankData);
+        console.log({ externalAccount });
+
         if (externalAccount) {
-          console.log({ externalAccount });
+          const externalAccountData = {
+            stripeBankId: externalAccount.id,
+            accountHolderName: externalAccount.account_holder_name,
+            user: externalAccount?.metadata?.userId! || "",
+            accountNumber: externalAccount.account,
+            routingNumber: externalAccount.routing_number,
+            bankName: externalAccount.bank_name,
+          };
+          console.log({ externalAccountData });
+
+          const newBank = await createBankAccount(externalAccountData);
+          console.log({ newBank });
+          form.reset();
         }
       }
     } catch (error) {

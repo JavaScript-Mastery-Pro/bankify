@@ -6,12 +6,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { useUserContext } from "@/context/AuthContext";
+import { sendDesposit } from "@/lib/stripe";
+
 import { Button } from "./ui/button";
 import { Dialog, DialogContent } from "./ui/dialog";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,27 +30,39 @@ import {
 import { Textarea } from "./ui/textarea";
 
 const formSchema = z.object({
-  amount: z.string().min(3, "amount should be min 3 character"),
+  amount: z.string().min(1),
   category: z.enum(["Subscribtions", "Food", "Income", "Groceries", "Deposit"]),
-  name: z.string().min(4, "name should be min 4 character"),
   note: z.string().optional(),
 });
 
 const DepositModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useUserContext();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: "",
       category: "Deposit",
-      name: "",
       note: "",
     },
   });
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    console.log(data);
+    const despositData = {
+      amountInDollar: parseFloat(data.amount),
+      stripeId: user.stripeId,
+      userId: user.id,
+      category: "Deposit",
+      name: user.name,
+      note: data.note || "",
+    };
+    try {
+      const session = await sendDesposit(despositData);
+      if (session) {
+        window.location.href = session.url;
+      }
+    } catch (error) {}
   };
   return (
     <>
@@ -74,29 +88,6 @@ const DepositModal = () => {
             >
               <FormField
                 control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex w-full flex-col gap-2">
-                      <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                        Sender&apos;s Name
-                      </FormLabel>
-                      <div className="flex w-full flex-col">
-                        <FormControl>
-                          <Input
-                            placeholder="Nikky eva"
-                            className="input-class"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-12 text-red-500" />
-                      </div>
-                    </div>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
                 name="amount"
                 render={({ field }) => (
                   <FormItem>
@@ -106,11 +97,7 @@ const DepositModal = () => {
                       </FormLabel>
                       <div className="flex w-full flex-col">
                         <FormControl>
-                          <Input
-                            placeholder="5"
-                            className="input-class"
-                            {...field}
-                          />
+                          <Input className="input-class" {...field} />
                         </FormControl>
                         <FormMessage className="text-12 text-red-500" />
                       </div>
@@ -128,16 +115,11 @@ const DepositModal = () => {
                         <FormLabel className="text-14 font-medium text-gray-700">
                           Transfer Note (Optional)
                         </FormLabel>
-                        <FormDescription className="text-12 text-end font-normal text-gray-600">
-                          Please provide any additional information or
-                          instructions related to the transfer
-                        </FormDescription>
                       </div>
                       <div className="flex w-full flex-col">
                         <FormControl>
                           <Textarea
-                            placeholder="Dear Nikky,
-                      I hope this message finds you well. I am transferring $100 to your account for fun. Please confirm once you receive it."
+                            placeholder="Write your note here"
                             className="input-class"
                             {...field}
                           />

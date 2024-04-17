@@ -115,3 +115,40 @@ export async function getBankAccounts(userId: string) {
     console.log(error);
   }
 }
+
+// GET TRANSACTIONS
+export async function createBankAccount({
+  stripeBankId,
+  accountHolderName,
+  user,
+  accountNumber,
+  routingNumber,
+  bankName,
+}: {
+  stripeBankId: string;
+  accountHolderName: string;
+  user: string;
+  accountNumber: string;
+  routingNumber: string;
+  bankName: string;
+}) {
+  try {
+    const newBank = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.banksCollectionId,
+      ID.unique(),
+      {
+        stripeBankId,
+        accountHolderName,
+        user,
+        accountNumber,
+        routingNumber,
+        bankName,
+      }
+    );
+    if (!newBank) throw Error;
+    return newBank;
+  } catch (error) {
+    console.log(error);
+  }
+}
