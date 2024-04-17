@@ -17,7 +17,7 @@ const ConnectBankAccount = () => {
         <ConnectAccountForm />
       </section>
 
-      <section className="mt-10 size-full border-t border-gray-200">
+      <section className="mt-10 size-full max-w-[850px] border-t border-gray-200 ">
         <BankAccounts />
       </section>
     </section>

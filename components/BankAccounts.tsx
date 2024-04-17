@@ -37,8 +37,6 @@ export const BankAccounts = () => {
     getTransactionsData();
   }, [user.id]);
 
-  console.log({ banks });
-
   return (
     <Table>
       <TableHeader>
