@@ -13,7 +13,7 @@ import { Button } from "./ui/button";
 const RecentTransactions = () => {
   const { user } = useUserContext();
   const [transactions, setTransaction] = useState<any[]>([]);
-  console.log({ user });
+
   useEffect(() => {
     const getTransactionsData = async () => {
       const transactions = await getTransactions(user.id);
@@ -29,7 +29,7 @@ const RecentTransactions = () => {
         }));
         setTransaction(transformedData);
       }
-      console.log(transactions);
+
       return transactions;
     };
 

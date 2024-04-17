@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { useUserContext } from "@/context/AuthContext";
 import { createBankAccount } from "@/lib/services";
 import { createExternalAccount, generateBankToken } from "@/lib/stripe";
 
@@ -34,6 +35,7 @@ const formSchema = z.object({
 
 const ConnectAccountForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useUserContext();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,10 +59,13 @@ const ConnectAccountForm = () => {
 
       if (bankToken) {
         const bankData = {
-          stripeId: "acct_1P6EBHFfGXceq6zI", // Shone
+          stripeId: user.stripeId,
           bankToken: bankToken.id,
-          userId: "661e9cdc0a1f3a357702",
+          userId: user.id,
         };
+
+        console.log({ bankToken });
+
         const externalAccount = await createExternalAccount(bankData);
         console.log({ externalAccount });
 
@@ -73,7 +78,6 @@ const ConnectAccountForm = () => {
             routingNumber: externalAccount.routing_number,
             bankName: externalAccount.bank_name,
           };
-          console.log({ externalAccountData });
 
           const newBank = await createBankAccount(externalAccountData);
           console.log({ newBank });

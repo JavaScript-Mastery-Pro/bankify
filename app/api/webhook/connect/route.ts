@@ -4,8 +4,7 @@ import { ID } from "appwrite";
 import { NextResponse } from "next/server";
 import stripe from "stripe";
 
-import { appwriteConfig } from "@/lib/appwrite/config";
-import { databases } from "@/lib/appwrite/serverConfig";
+import { appwriteConfig, databases } from "@/lib/appwrite/config";
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -23,29 +22,6 @@ export async function POST(request: Request) {
 
   // Get the ID and type
   const eventType = event.type;
-
-  // CREATE DEPOSIT SUCCESS
-  if (eventType === "checkout.session.completed") {
-    const { id, metadata } = event.data.object;
-
-    const newTransaction = await databases.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.transactionsCollectionId,
-      ID.unique(),
-      {
-        stripeTransactionId: id,
-        amount: metadata?.amountInDollar
-          ? (parseInt(metadata?.amountInDollar) / 100).toString()
-          : "0",
-        user: metadata?.userId! || "",
-        category: metadata?.category! || "",
-        name: metadata?.name! || "",
-        note: metadata?.note! || "",
-      }
-    );
-
-    return NextResponse.json({ message: "OK", transaction: newTransaction });
-  }
 
   // CREATE BANK SUCCESS
   if (eventType === "account.external_account.created") {

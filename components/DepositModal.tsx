@@ -1,5 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ID } from "appwrite";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -7,6 +8,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { useUserContext } from "@/context/AuthContext";
+import { databases, appwriteConfig } from "@/lib/appwrite/config";
 import { sendDesposit } from "@/lib/stripe";
 
 import { Button } from "./ui/button";
@@ -60,10 +62,30 @@ const DepositModal = () => {
 
     try {
       const session = await sendDesposit(despositData);
+
       if (session) {
-        window.location.href = session.url;
+        const transaction = await databases.createDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.transactionsCollectionId,
+          ID.unique(),
+          {
+            stripeTransactionId: session.id,
+            amount: data.amount,
+            user: user.id,
+            category: "Deposit",
+            name: user.name,
+            note: data.note || "",
+          }
+        );
+
+        if (transaction) {
+          window.location.href = session.url;
+        }
       }
-    } catch (error) {}
+      setIsLoading(true);
+    } catch (error) {
+      console.log({ error });
+    }
   };
   return (
     <>

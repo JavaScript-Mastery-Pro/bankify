@@ -116,7 +116,7 @@ export async function getBankAccounts(userId: string) {
   }
 }
 
-// GET TRANSACTIONS
+// CREATE BANK ACCOUNT
 export async function createBankAccount({
   stripeBankId,
   accountHolderName,

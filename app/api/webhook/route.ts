@@ -3,8 +3,7 @@ import { ID } from "appwrite";
 import { NextResponse } from "next/server";
 import stripe from "stripe";
 
-import { appwriteConfig } from "@/lib/appwrite/config";
-import { databases } from "@/lib/appwrite/serverConfig";
+import { appwriteConfig, databases } from "@/lib/appwrite/config";
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -27,34 +26,19 @@ export async function POST(request: Request) {
   if (eventType === "checkout.session.completed") {
     const { id, metadata } = event.data.object;
 
-    // const newTransaction = await databases.createDocument(
-    //   appwriteConfig.databaseId,
-    //   appwriteConfig.transactionsCollectionId,
-    //   ID.unique(),
-    //   {
-    //     stripeTransactionId: id,
-    //     amount: metadata?.amountInDollar
-    //       ? (parseInt(metadata?.amountInDollar) / 100).toString()
-    //       : "0",
-    //     user: metadata?.userId! || "",
-    //     category: metadata?.category! || "",
-    //     name: metadata?.name! || "",
-    //     note: metadata?.note! || "",
-    //   }
-    // );
-
-    console.log({ metadata });
     const newTransaction = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.transactionsCollectionId,
       ID.unique(),
       {
         stripeTransactionId: id,
-        amount: "5",
-        user: "661e9cdc0a1f3a357702",
-        category: "Deposit",
-        name: "nenad baltic",
-        note: "Test depost",
+        amount: metadata?.amountInDollar
+          ? (parseInt(metadata?.amountInDollar) / 100).toString()
+          : "0",
+        user: metadata?.user! || "",
+        category: metadata?.category! || "",
+        name: metadata?.name! || "",
+        note: metadata?.note! || "",
       }
     );
 
