@@ -26,19 +26,32 @@ export async function POST(request: Request) {
   if (eventType === "checkout.session.completed") {
     const { id, metadata } = event.data.object;
 
+    // const newTransaction = await databases.createDocument(
+    //   appwriteConfig.databaseId,
+    //   appwriteConfig.transactionsCollectionId,
+    //   ID.unique(),
+    //   {
+    //     stripeTransactionId: id,
+    //     amount: metadata?.amountInDollar
+    //       ? (parseInt(metadata?.amountInDollar) / 100).toString()
+    //       : "0",
+    //     user: metadata?.userId! || "",
+    //     category: metadata?.category! || "",
+    //     name: metadata?.name! || "",
+    //     note: metadata?.note! || "",
+    //   }
+    // );
     const newTransaction = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.transactionsCollectionId,
       ID.unique(),
       {
         stripeTransactionId: id,
-        amount: metadata?.amountInDollar
-          ? (parseInt(metadata?.amountInDollar) / 100).toString()
-          : "0",
-        user: metadata?.userId! || "",
-        category: metadata?.category! || "",
-        name: metadata?.name! || "",
-        note: metadata?.note! || "",
+        amount: "5",
+        user: "661e9cdc0a1f3a357702",
+        category: "Deposit",
+        name: "Stripe Deposit",
+        note: "",
       }
     );
 
