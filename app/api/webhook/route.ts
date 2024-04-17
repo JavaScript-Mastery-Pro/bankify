@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
   // CREATE DEPOSIT SUCCESS
   if (eventType === "checkout.session.completed") {
-    const { id, metadata } = event.data.object;
+    const { id } = event.data.object;
 
     // const newTransaction = await databases.createDocument(
     //   appwriteConfig.databaseId,
