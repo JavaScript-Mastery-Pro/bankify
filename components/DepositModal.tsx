@@ -57,6 +57,7 @@ const DepositModal = () => {
       name: user.name,
       note: data.note || "",
     };
+
     try {
       const session = await sendDesposit(despositData);
       if (session) {
