@@ -105,14 +105,14 @@ export async function createBankAccount({
   stripeBankId,
   accountHolderName,
   user,
-  accountNumber,
+  externalAccountId,
   routingNumber,
   bankName,
 }: {
   stripeBankId: string;
   accountHolderName: string;
   user: string;
-  accountNumber: string;
+  externalAccountId: string;
   routingNumber: string;
   bankName: string;
 }) {
@@ -125,7 +125,7 @@ export async function createBankAccount({
         stripeBankId,
         accountHolderName,
         user,
-        accountNumber,
+        externalAccountId,
         routingNumber,
         bankName,
       }

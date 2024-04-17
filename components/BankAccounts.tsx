@@ -42,7 +42,7 @@ export const BankAccounts = () => {
       <TableHeader>
         <TableRow>
           <TableHead className="px-0">Bank Name</TableHead>
-          <TableHead className="px-0">Account Number</TableHead>
+          <TableHead className="px-0">External Account Id</TableHead>
           <TableHead className="px-0">Added</TableHead>
         </TableRow>
       </TableHeader>
