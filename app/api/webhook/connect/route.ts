@@ -4,7 +4,8 @@ import { ID } from "appwrite";
 import { NextResponse } from "next/server";
 import stripe from "stripe";
 
-import { databases, appwriteConfig } from "@/lib/appwrite/config";
+import { appwriteConfig } from "@/lib/appwrite/config";
+import { databases } from "@/lib/appwrite/serverConfig";
 
 export async function POST(request: Request) {
   const body = await request.text();
