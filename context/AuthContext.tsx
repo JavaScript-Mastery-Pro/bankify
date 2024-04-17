@@ -43,6 +43,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log({ user });
+
   const checkAuthUser = async () => {
     setIsLoading(true);
 
@@ -86,10 +88,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       cookieFallback === undefined
     ) {
       router.push("/sign-in");
+    } else {
+      setIsAuthenticated(true);
     }
 
     checkAuthUser();
-  }, []);
+  }, [isAuthenticated]);
 
   const value = {
     user,

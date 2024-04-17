@@ -2,9 +2,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { sidebarLinks } from "@/constants";
-import { useUserContext } from "@/context/AuthContext";
+import { InitialUser, useUserContext } from "@/context/AuthContext";
 import { logoutAccount } from "@/lib/services";
 import { cn } from "@/lib/utils";
 
@@ -13,10 +14,15 @@ import { Input } from "../ui/input";
 const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { user } = useUserContext();
+  const { user, setUser, setIsAuthenticated } = useUserContext();
+
+  useEffect(() => {}, [user]);
 
   const handleLogOut = async () => {
     const loggedOut = await logoutAccount();
+    setIsAuthenticated(false);
+    setUser(InitialUser);
+
     if (loggedOut) router.push("/sign-in");
   };
 
@@ -86,7 +92,7 @@ const Sidebar = () => {
         })}
       </nav>
       <footer
-        className="flex items-center gap-2 px-4 pb-8 pt-6"
+        className="flex cursor-pointer items-center gap-2 px-4 pb-8 pt-6"
         onClick={handleLogOut}
       >
         <Image
