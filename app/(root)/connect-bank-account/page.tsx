@@ -15,6 +15,7 @@ const ConnectBankAccount = () => {
       <section className="size-full">
         <ConnectAccountForm />
       </section>
+      <section></section>
     </section>
   );
 };

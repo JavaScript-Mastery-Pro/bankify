@@ -12,14 +12,19 @@ export const sidebarLinks = [
   },
   {
     imgURL: "/icons/payment-transfer.svg",
+    route: "/new-deposit",
+    label: "New Deposit",
+  },
+  {
+    imgURL: "/icons/payment-transfer.svg",
     route: "/payment-transfer",
     label: "Payment Transfer",
   },
-  {
-    imgURL: "/icons/bank-transfer.svg",
-    route: "/bank-transfer",
-    label: "Bank Transfer",
-  },
+  // {
+  //   imgURL: "/icons/bank-transfer.svg",
+  //   route: "/bank-transfer",
+  //   label: "Bank Transfer",
+  // },
   {
     imgURL: "/icons/bank-transfer.svg",
     route: "/connect-bank-account",
