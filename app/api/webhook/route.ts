@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
   // CREATE DEPOSIT SUCCESS
   if (eventType === "checkout.session.completed") {
-    const { id } = event.data.object;
+    const { id, metadata } = event.data.object;
 
     // const newTransaction = await databases.createDocument(
     //   appwriteConfig.databaseId,
@@ -47,11 +47,11 @@ export async function POST(request: Request) {
       ID.unique(),
       {
         stripeTransactionId: id,
-        amount: "5",
-        user: "661e9cdc0a1f3a357702",
-        category: "Deposit",
-        name: "Stripe Deposit",
-        note: "",
+        amount: metadata?.amountInDollar || "0",
+        user: metadata?.user! || "",
+        category: metadata?.category! || "",
+        name: metadata?.name! || "",
+        note: metadata?.note! || "",
       }
     );
 
