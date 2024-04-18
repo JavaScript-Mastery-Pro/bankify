@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 const TransactionHistory = () => {
   return (
-    <section className="flex max-h-screen w-full flex-col gap-8 overflow-y-scroll p-8 xl:py-12">
+    <section className="flex max-h-screen w-full flex-col gap-8 overflow-y-scroll bg-gray-25 p-8 xl:py-12">
       <header className="flex w-full justify-between max-sm:flex-col max-sm:gap-4">
         <div className="flex flex-1 flex-col gap-1">
           <h1 className="text-30 font-semibold text-gray-900">

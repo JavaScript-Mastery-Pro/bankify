@@ -6,8 +6,9 @@ import PageHeader from "@/components/shared/PageHeader";
 
 const ConnectBankAccount = () => {
   return (
-    <section className="no-scrollbar flex flex-col overflow-y-scroll p-8 md:max-h-screen xl:py-12">
+    <section className="no-scrollbar flex flex-col overflow-y-scroll bg-gray-25 p-8 md:max-h-screen xl:py-12">
       <PageHeader
+        connectBank
         topTitle="Connect a Bank Account"
         bottomTitle="Bank account details"
         topDescription="Securely link your bank account"

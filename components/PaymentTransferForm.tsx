@@ -21,6 +21,7 @@ import { Button } from "./ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   // FormDescription,
   FormField,
   FormItem,
@@ -28,17 +29,18 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 // import { Textarea } from "./ui/textarea";
 
 const formSchema = z.object({
   amount: z.string().min(4, "Name is too short"),
-  // emailAddress: z.string().email("Invalid email address"),
-  // transferNote: z.string().optional(),
-  // accountNumber: z
-  //   .string()
-  //   .min(15, "account number must be exact 15 character")
-  //   .max(15),
-  // branchcode: z.string().min(4, "code must be 4 character").max(4),
+  emailAddress: z.string().email("Invalid email address"),
+  transferNote: z.string().optional(),
+  accountNumber: z
+    .string()
+    .min(15, "account number must be exact 15 character")
+    .max(15),
+  name: z.string().min(4, "name must be 4 character"),
 });
 
 const PaymentTransferForm = () => {
@@ -90,16 +92,20 @@ const PaymentTransferForm = () => {
       >
         <FormField
           control={form.control}
-          name="amount"
+          name="name"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
-              <div className="flex w-full max-w-[850px] flex-col gap-3 py-5 md:flex-row lg:gap-8">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 pb-5 pt-6 md:flex-row lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                  Amount
+                  Recipient&apos;s Full Name
                 </FormLabel>
                 <div className="flex w-full flex-col">
                   <FormControl>
-                    <Input placeholder="5" className="input-class" {...field} />
+                    <Input
+                      placeholder="Nikky Eva"
+                      className="input-class"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage className="text-12 text-red-500" />
                 </div>
@@ -107,7 +113,7 @@ const PaymentTransferForm = () => {
             </FormItem>
           )}
         />
-        {/* <FormField
+        <FormField
           control={form.control}
           name="emailAddress"
           render={({ field }) => (
@@ -129,13 +135,13 @@ const PaymentTransferForm = () => {
               </div>
             </FormItem>
           )}
-        /> */}
-        {/* <FormField
+        />
+        <FormField
           control={form.control}
           name="transferNote"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
-              <div className="flex w-full max-w-[850px] flex-col gap-3 py-5 md:flex-row lg:gap-8">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 pb-6 pt-5 md:flex-row lg:gap-8">
                 <div className="flex w-full max-w-[280px] flex-col gap-2">
                   <FormLabel className="text-14 font-medium text-gray-700">
                     Transfer Note (Optional)
@@ -159,8 +165,8 @@ const PaymentTransferForm = () => {
               </div>
             </FormItem>
           )}
-        /> */}
-        {/* <div className="flex flex-col gap-1 border-t border-gray-200 py-6">
+        />
+        <div className="flex flex-col gap-1 border-t border-gray-200 pb-5 pt-6">
           <h2 className="text-18 font-semibold text-gray-900">
             Bank account details
           </h2>
@@ -173,7 +179,7 @@ const PaymentTransferForm = () => {
           name="accountNumber"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
-              <div className="flex w-full max-w-[850px] flex-col gap-3 py-5 md:flex-row lg:gap-8">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 pb-5 pt-6 md:flex-row lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
                   Recipient&apos;s Bank Account Number
                 </FormLabel>
@@ -193,28 +199,24 @@ const PaymentTransferForm = () => {
         />
         <FormField
           control={form.control}
-          name="branchcode"
+          name="amount"
           render={({ field }) => (
-            <FormItem className="border-t border-gray-200">
+            <FormItem className="border-y border-gray-200">
               <div className="flex w-full max-w-[850px] flex-col gap-3 py-5 md:flex-row lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                  IFSC/Bank branch
+                  Amount
                 </FormLabel>
                 <div className="flex w-full flex-col">
                   <FormControl>
-                    <Input
-                      placeholder="UTC−08:00"
-                      className="input-class"
-                      {...field}
-                    />
+                    <Input placeholder="5" className="input-class" {...field} />
                   </FormControl>
                   <FormMessage className="text-12 text-red-500" />
                 </div>
               </div>
             </FormItem>
           )}
-        /> */}
-        <div className="flex w-full max-w-[850px] gap-3 border-t border-gray-200 py-5">
+        />
+        <div className="mt-5 flex w-full max-w-[850px] gap-3 border-t border-gray-200 py-5">
           <Button
             variant="outline"
             className="text-14 w-full border-gray-300 font-semibold text-gray-700 shadow-form"
