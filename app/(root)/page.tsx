@@ -55,11 +55,21 @@ const Home = async () => {
               </div>
             </header>
             <div className="max-xl:flex-center relative">
-              <CreditCard icon="/icons/visa.svg" />
+              <CreditCard
+                icon="/icons/visa.svg"
+                cardNumber="1234 1234 1234 1234"
+                bankName="JS Mastery."
+                expiryDate="12/24"
+                cardOwner="Adrian Hajdin"
+              />
               <div className="absolute left-7 top-10 -z-10 w-full md:left-48 xl:left-7">
                 <CreditCard
                   bgClassName="bg-bank-gradient"
                   icon="icons/mastercard.svg"
+                  cardNumber="1234 1234 1234 1234"
+                  bankName="JS Mastery."
+                  expiryDate="12/24"
+                  cardOwner="Adrian Hajdin"
                 />
               </div>
             </div>

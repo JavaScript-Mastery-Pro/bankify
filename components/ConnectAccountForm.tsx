@@ -93,6 +93,7 @@ const ConnectAccountForm = () => {
       console.log(error);
     }
     setIsLoading(false);
+    console.log(data);
   };
 
   return (
@@ -106,7 +107,7 @@ const ConnectAccountForm = () => {
           name="accountHolderName"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
-              <div className="md::flex-row flex w-full max-w-[850px] flex-col gap-3 py-5 lg:gap-8">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 pb-5 pt-6 md:flex-row lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
                   Bank Account Holder Name
                 </FormLabel>
@@ -129,7 +130,7 @@ const ConnectAccountForm = () => {
           name="accountNumber"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
-              <div className="md::flex-row flex w-full max-w-[850px] flex-col gap-3 py-5 lg:gap-8">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 py-5 md:flex-row lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
                   Bank Account Number
                 </FormLabel>
@@ -152,7 +153,7 @@ const ConnectAccountForm = () => {
           name="routingNumber"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
-              <div className="md::flex-row flex w-full max-w-[850px] flex-col gap-3 py-5 lg:gap-8">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 py-5 md:flex-row lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
                   Routing Number
                 </FormLabel>
@@ -175,7 +176,7 @@ const ConnectAccountForm = () => {
           name="branchcode"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
-              <div className="md::flex-row flex w-full max-w-[850px] flex-col gap-3 py-5 lg:gap-8">
+              <div className="md:flex-row flex w-full max-w-[850px] flex-col gap-3 py-5 lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
                   IFSC/Bank branch
                 </FormLabel>
