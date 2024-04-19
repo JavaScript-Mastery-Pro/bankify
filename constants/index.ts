@@ -11,7 +11,7 @@ export const sidebarLinks = [
     label: "Transaction History",
   },
   {
-    imgURL: "/icons/payment-transfer.svg",
+    imgURL: "/icons/deposit.svg",
     route: "/new-deposit",
     label: "New Deposit",
   },
@@ -20,13 +20,8 @@ export const sidebarLinks = [
     route: "/payment-transfer",
     label: "Payment Transfer",
   },
-  // {
-  //   imgURL: "/icons/bank-transfer.svg",
-  //   route: "/bank-transfer",
-  //   label: "Bank Transfer",
-  // },
   {
-    imgURL: "/icons/bank-transfer.svg",
+    imgURL: "/icons/connect-bank.svg",
     route: "/connect-bank-account",
     label: "Connect Bank Account",
   },

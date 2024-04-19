@@ -2,13 +2,23 @@ import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
+interface CreditCardProps {
+  bgClassName?: string;
+  icon: string;
+  bankName: string;
+  cardOwner: string;
+  expiryDate: string;
+  cardNumber: string;
+}
+
 const CreditCard = ({
   bgClassName,
   icon,
-}: {
-  bgClassName?: string;
-  icon: string;
-}) => {
+  bankName,
+  cardOwner,
+  expiryDate,
+  cardNumber,
+}: CreditCardProps) => {
   return (
     <section
       className={cn(
@@ -22,14 +32,14 @@ const CreditCard = ({
           { "bg-transparent": bgClassName }
         )}
       >
-        <h1 className="text-16 font-semibold text-white">JS Mastery Pro.</h1>
+        <h1 className="text-16 font-semibold text-white">{bankName}</h1>
         <article className="flex flex-col gap-2">
           <div className="flex justify-between">
-            <h1 className="text-12 font-semibold text-white">Adrian Hajdin</h1>
-            <h2 className="text-12 font-semibold text-white">12/24</h2>
+            <h1 className="text-12 font-semibold text-white">{cardOwner}</h1>
+            <h2 className="text-12 font-semibold text-white">{expiryDate}</h2>
           </div>
           <p className="text-16 font-semibold tracking-[1.1px] text-white">
-            1234 1234 1234 1234
+            {cardNumber}
           </p>
         </article>
       </div>

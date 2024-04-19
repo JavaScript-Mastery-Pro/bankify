@@ -14,6 +14,7 @@ import { Button } from "./ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -88,14 +89,14 @@ const DepositForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="flex flex-col gap-5"
+        className="flex flex-col"
       >
         <FormField
           control={form.control}
           name="amount"
           render={({ field }) => (
-            <FormItem>
-              <div className="flex w-full max-w-[850px] flex-col gap-2">
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 pb-5 pt-6 md:flex-row lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
                   Amount
                 </FormLabel>
@@ -113,12 +114,16 @@ const DepositForm = () => {
           control={form.control}
           name="note"
           render={({ field }) => (
-            <FormItem>
-              <div className="flex w-full max-w-[850px] flex-col gap-2">
-                <div className="flex w-full justify-between gap-2">
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 py-5 md:flex-row lg:gap-8">
+                <div className="flex w-full max-w-[280px] flex-col gap-2">
                   <FormLabel className="text-14 font-medium text-gray-700">
                     Transfer Note (Optional)
                   </FormLabel>
+                  <FormDescription className="text-12 font-normal text-gray-600">
+                    Please provide any additional information or instructions
+                    related to the transfer
+                  </FormDescription>
                 </div>
                 <div className="flex w-full flex-col">
                   <FormControl>
@@ -138,8 +143,8 @@ const DepositForm = () => {
           control={form.control}
           name="category"
           render={({ field }) => (
-            <FormItem>
-              <div className="flex w-full max-w-[850px] flex-col gap-2">
+            <FormItem className="border-y border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 py-5 md:flex-row lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
                   Select Category
                 </FormLabel>
