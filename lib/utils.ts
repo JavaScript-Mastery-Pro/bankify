@@ -1,11 +1,9 @@
 import { type ClassValue, clsx } from "clsx";
-import Stripe from "stripe";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!);
 
 export const calculateStripeFee = (amount: number) => {
   const percentageFee = 0.029; // 2.9%

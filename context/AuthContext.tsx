@@ -1,10 +1,7 @@
 "use client";
 
-import { Query } from "appwrite";
 import { useRouter, usePathname } from "next/navigation";
 import { createContext, useContext, useState, useEffect } from "react";
-
-import { account, appwriteConfig, databases } from "@/lib/appwrite/config";
 
 export const InitialUser = {
   id: "",
@@ -49,29 +46,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
 
     try {
+      // Todo set current user
       // Check if there's a logged in user
-      const currentAccount = await account.get();
-      setIsAuthenticated(true);
-
+      // const currentAccount = await account.get();
+      // setIsAuthenticated(true);
+      // console.log(currentAccount);
       // Get current user's details
-      const result = await databases.listDocuments(
-        appwriteConfig.databaseId,
-        appwriteConfig.usersCollectionId,
-        [Query.equal("accountId", currentAccount.$id)]
-      );
-
-      const currentUser = result.documents[0];
-
-      if (currentUser) {
-        setUser({
-          id: currentUser.$id,
-          accountId: currentUser.accountId,
-          stripeId: currentUser.stripeId,
-          name: currentUser.name,
-          email: currentUser.email,
-          image: currentUser.image,
-        });
-      }
+      // const result = await databases.listDocuments(
+      //   appwriteConfig.databaseId,
+      //   appwriteConfig.usersCollectionId,
+      //   [Query.equal("accountId", currentAccount.$id)]
+      // );
+      // const currentUser = result.documents[0];
+      // if (currentUser) {
+      //   setUser({
+      //     id: currentUser.$id,
+      //     accountId: currentUser.accountId,
+      //     name: currentUser.name,
+      //     email: currentUser.email,
+      //     image: currentUser.image,
+      //   });
+      // }
     } catch (error) {
       console.error("An error occurred while setting user context:", error);
     } finally {
@@ -93,7 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     checkAuthUser();
-  }, [isAuthenticated]);
+  }, []);
 
   const value = {
     user,

@@ -2,14 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
-import { useUserContext } from "@/context/AuthContext";
-import { createBankAccount } from "@/lib/services";
-import { createExternalAccount, generateBankToken } from "@/lib/stripe";
 
 import { Button } from "./ui/button";
 import {
@@ -36,8 +31,6 @@ const formSchema = z.object({
 
 const ConnectAccountForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUserContext();
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,50 +43,8 @@ const ConnectAccountForm = () => {
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    try {
-      const tokenData = {
-        accountHolderName: data.accountHolderName,
-        accountNumber: data.accountNumber,
-        routingNumber: data.routingNumber,
-      };
-
-      const bankToken = await generateBankToken(tokenData);
-
-      if (bankToken) {
-        const bankData = {
-          stripeId: user.stripeId,
-          bankToken: bankToken.id,
-          userId: user.id,
-        };
-
-        console.log({ bankToken });
-
-        const externalAccount = await createExternalAccount(bankData);
-        console.log({ externalAccount });
-
-        if (externalAccount) {
-          const externalAccountData = {
-            stripeBankId: externalAccount.id,
-            accountHolderName: externalAccount.account_holder_name,
-            user: externalAccount?.metadata?.userId! || "",
-            externalAccount: externalAccount.id,
-            routingNumber: externalAccount.routing_number,
-            bankName: externalAccount.bank_name,
-          };
-
-          console.log({ externalAccountData });
-
-          const newBank = await createBankAccount(externalAccountData);
-          console.log({ newBank });
-          router.push("/");
-          form.reset();
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    console.log({ data });
     setIsLoading(false);
-    console.log(data);
   };
 
   return (

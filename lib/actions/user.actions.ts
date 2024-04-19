@@ -14,7 +14,7 @@ client
   .setProject(process.env.APPWRITE_PROJECT_ID!)
   .setKey(process.env.APPWRITE_SECRET!);
 
-// CREATE LINK
+// CREATE PLAID LINK TOKEN
 export const createLinkToken = async (accountId: string) => {
   const tokeParams = {
     user: {
@@ -39,7 +39,7 @@ export const createLinkToken = async (accountId: string) => {
   }
 };
 
-// EXCHANGE PUBLIC TOKEN
+// EXCHANGE PLAID PUBLIC TOKEN
 export const exchangePublicToken = async (publicToken: string) => {
   try {
     // Create appwrite user
@@ -64,7 +64,7 @@ export const exchangePublicToken = async (publicToken: string) => {
   }
 };
 
-// GET ACCOUNTS
+// GET USER PLAID ACCOUNTS
 export const getAccounts = async () => {
   console.log("db", appwriteConfig.databaseId);
   try {
@@ -94,3 +94,13 @@ export const getAccounts = async () => {
     );
   }
 };
+
+// LOGOUT USER
+export async function logoutAccount() {
+  try {
+    await account.deleteSession("current");
+    return { loggedOut: true };
+  } catch (error) {
+    console.log(error);
+  }
+}

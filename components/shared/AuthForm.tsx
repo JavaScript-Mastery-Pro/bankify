@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { PlaidLink } from "@/components/shared/PlaidLink";
-import { loginUser } from "@/lib/services/index";
 
 import { Button } from "../ui/button";
 import {
@@ -33,9 +32,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
   //   router.push("/");
   // }
 
-  const [linkToken, setLinkToken] = useState(null);
-  // console.log({ linkToken });
-
+  const [linkToken, setLinkToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
@@ -65,33 +62,12 @@ const AuthForm = ({ type }: AuthFormProps) => {
     setIsLoading(true);
     try {
       // ========================================
-      // SIGN-UP TO APPWRITE & CREATE PLAID PUBLIC TOKEN
-      // if (type === "sign-in") {
-      //   const session = await loginUser({
-      //     email: data.email,
-      //     password: data.password,
-      //   });
-
-      //   if (session) {
-      //     await fetch(
-      //       `${process.env.NEXT_PUBLIC_SITE_URL}/api/plaid/create_link_token`,
-      //       {
-      //         method: "POST",
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //         },
-      //         body: JSON.stringify({ userId: session.userId }),
-      //       }
-      //     )
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         const { publicToken } = data;
-      //         if (publicToken) {
-      //           setLinkToken(publicToken);
-      //         }
-      //       });
-      //   }
-      // }
+      // SIGN-UP WITH APPWRITE & CREATE PLAID LINK TOKEN
+      if (type === "sign-in") {
+        // 1. Create appwrite user account
+        // 2. Create Link Token and pass that to Plaid Link
+        setLinkToken("[LINK_TOKEN]");
+      }
 
       // ========================================
       // SANDBOX DATA
@@ -161,34 +137,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
           }
         });
 
-      // ========================================
-
-      // if (type === "sign-up" && data.name && data.ssn) {
-      //   const userData = {
-      //     email: data.email,
-      //     name: data.name,
-      //     password: data.password,
-      //     ssn: data.ssn,
-      //   };
-
-      //   const onboardingLink = await signUpUser(userData);
-
-      //   if (onboardingLink) {
-      //     window.location.href = onboardingLink.url;
-      //   }
-      // }
-
-      // if (type === "sign-in") {
-      //   const session = await loginUser({
-      //     email: data.email,
-      //     password: data.password,
-      //   });
-
-      //   if (session) {
-      //     setIsAuthenticated(true);
-      //     router.push("/");
-      //   }
-      // }
       setIsLoading(false);
     } catch (error) {
       console.log(error);

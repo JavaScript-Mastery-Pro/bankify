@@ -1,23 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-
-import { useUserContext } from "@/context/AuthContext";
-import { getBalance } from "@/lib/stripe";
 
 const AccountHeader = () => {
-  const { user } = useUserContext();
-  const [balance, setBalance] = useState(0);
-
-  useEffect(() => {
-    async function fetchBalance() {
-      const balance = await getBalance(user.stripeId);
-      const actualAmount = balance.pending[0].amount / 100;
-      setBalance(actualAmount);
-    }
-    fetchBalance();
-  });
-
   return (
     <article className="flex w-full flex-1 flex-col gap-6">
       <h1 className="text-16 font-semibold text-gray-900">Primary account</h1>
@@ -25,7 +9,7 @@ const AccountHeader = () => {
         <h1 className="text-14 font-medium text-gray-600">Current balance</h1>
         <div className="flex w-full items-center justify-between">
           <h1 className="text-24 lg:text-30 flex-1 font-semibold text-gray-900">
-            ${balance}
+            $20.00
           </h1>
           <div className="text-14  flex h-fit items-center rounded-2xl bg-success-50 px-2 font-medium text-success-700 max-sm:hidden">
             <Image

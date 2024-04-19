@@ -1,21 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { ID } from "appwrite";
-// import { ID } from "appwrite";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
-// import { metadata } from "@/app/layout";
-// import { useUserContext } from "@/context/AuthContext";
-// import { databases, appwriteConfig } from "@/lib/appwrite/config";
-
-// import { databases, appwriteConfig } from "@/lib/appwrite/config";
-// import { sendDesposit } from "@/lib/stripe";
-
-import { sendDesposit } from "@/lib/stripe";
 
 import { Button } from "./ui/button";
 import {
@@ -61,26 +50,7 @@ const PaymentTransferForm = () => {
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     console.log("submit handler");
-    try {
-      const despositData = {
-        amountInDollar: 5,
-        stripeId: "acct_1P6AdtC5KCyJFI0K",
-        userId: "661e67ba159984138bab",
-        category: "Deposit",
-        name: "Stripe Deposit",
-        note: "",
-      };
 
-      const session = await sendDesposit(despositData);
-      if (session) {
-        window.location.href = session.url;
-      }
-
-      console.log(session);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
     setIsLoading(false);
   };
 

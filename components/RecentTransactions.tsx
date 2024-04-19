@@ -1,40 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
-
-import { useUserContext } from "@/context/AuthContext";
-import { getTransactions } from "@/lib/services";
-
-import NextPrevButton from "./shared/NextPrevButton";
 import TransactionTable from "./TransactionTable";
 import { Button } from "./ui/button";
 
 const RecentTransactions = () => {
-  const { user } = useUserContext();
-  const [transactions, setTransaction] = useState<any[]>([]);
+  //  Form recent transactions table data
+  // const getTransactionsData = async () => {
+  //   const transactions = await getTransactions(user.id);
+  //   if (transactions) {
+  //     const transformedData = transactions.documents.map((document) => ({
+  //       id: document.$id,
+  //       name: document.name,
+  //       companyLogo: "/icons/a-coffee.svg",
+  //       amount: document.amount,
+  //       date: document.$createdAt,
+  //       category: document.category,
+  //       status: "credited",
+  //     }));
+  //     setTransaction(transformedData);
+  //   }
 
-  useEffect(() => {
-    const getTransactionsData = async () => {
-      const transactions = await getTransactions(user.id);
-      if (transactions) {
-        const transformedData = transactions.documents.map((document) => ({
-          id: document.$id,
-          name: document.name,
-          companyLogo: "/icons/a-coffee.svg",
-          amount: document.amount,
-          date: document.$createdAt,
-          category: document.category,
-          status: "credited",
-        }));
-        setTransaction(transformedData);
-      }
+  //   return transactions;
+  // };
 
-      return transactions;
-    };
-
-    getTransactionsData();
-  }, [user.id]);
   return (
     <section className="flex w-full flex-col gap-6">
       <header className="flex justify-between">
@@ -48,8 +36,8 @@ const RecentTransactions = () => {
           View all
         </Button>
       </header>
-      <TransactionTable data={transactions} />
-      {transactions.length > 5 && (
+      <TransactionTable data={[]} />
+      {/* {transactions.length > 5 && (
         <div className="flex-center w-full pt-5">
           <ReactPaginate
             breakLabel="..."
@@ -64,7 +52,7 @@ const RecentTransactions = () => {
             previousClassName="flex-center border rounded border-sky-1 size-10 w-fit px-4"
           />
         </div>
-      )}
+      )} */}
     </section>
   );
 };

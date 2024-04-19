@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 import { sidebarLinks } from "@/constants";
 import { InitialUser, useUserContext } from "@/context/AuthContext";
-import { logoutAccount } from "@/lib/services";
+import { logoutAccount } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
 
 import { Input } from "../ui/input";

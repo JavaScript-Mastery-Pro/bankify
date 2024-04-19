@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
-import { logoutAccount } from "@/lib/services";
+import { logoutAccount } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
 
 const MobileNav = () => {

@@ -1,15 +1,10 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ID } from "appwrite";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
-import { useUserContext } from "@/context/AuthContext";
-import { databases, appwriteConfig } from "@/lib/appwrite/config";
-import { sendDesposit } from "@/lib/stripe";
 
 import { Button } from "./ui/button";
 import { Dialog, DialogContent } from "./ui/dialog";
@@ -40,7 +35,7 @@ const formSchema = z.object({
 const DepositModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUserContext();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,41 +46,8 @@ const DepositModal = () => {
   });
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    const despositData = {
-      amountInDollar: parseFloat(data.amount),
-      stripeId: user.stripeId,
-      userId: user.id,
-      category: "Deposit",
-      name: user.name,
-      note: data.note || "",
-    };
-
-    try {
-      const session = await sendDesposit(despositData);
-
-      if (session) {
-        const transaction = await databases.createDocument(
-          appwriteConfig.databaseId,
-          appwriteConfig.transactionsCollectionId,
-          ID.unique(),
-          {
-            stripeTransactionId: session.id,
-            amount: data.amount,
-            user: user.id,
-            category: "Deposit",
-            name: user.name,
-            note: data.note || "",
-          }
-        );
-
-        if (transaction) {
-          window.location.href = session.url;
-        }
-      }
-      setIsLoading(true);
-    } catch (error) {
-      console.log({ error });
-    }
+    console.log({ data });
+    setIsLoading(true);
   };
   return (
     <>
