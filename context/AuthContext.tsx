@@ -1,7 +1,7 @@
 "use client";
 
 import { Query } from "appwrite";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { createContext, useContext, useState, useEffect } from "react";
 
 import { account, appwriteConfig, databases } from "@/lib/appwrite/config";
@@ -39,11 +39,11 @@ const AuthContext = createContext<ContextType>(InitialState);
 // Context provider
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
+
   const [user, setUser] = useState<User>(InitialUser);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log({ user });
 
   const checkAuthUser = async () => {
     setIsLoading(true);
@@ -87,7 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       cookieFallback === null ||
       cookieFallback === undefined
     ) {
-      router.push("/sign-in");
+      router.push(pathname);
     } else {
       setIsAuthenticated(true);
     }

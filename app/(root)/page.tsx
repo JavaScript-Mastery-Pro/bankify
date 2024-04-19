@@ -7,8 +7,12 @@ import DoughnutChart from "@/components/DoughnutChart";
 import RecentTransactions from "@/components/RecentTransactions";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
 import { budgetCards } from "@/constants";
+import { getAccounts } from "@/lib/actions/user.actions";
 
 const Home = async () => {
+  const accounts = await getAccounts();
+
+  console.log({ accounts });
   return (
     <section className="no-scrollbar flex w-full flex-col max-xl:max-h-screen max-xl:overflow-y-scroll xl:flex-row">
       <div className="no-scrollbar flex w-full flex-1 flex-col gap-8 px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll">

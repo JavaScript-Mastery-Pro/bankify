@@ -9,7 +9,7 @@ export const createStripeAccount = async (user: {
   try {
     const account = await stripe.accounts.create({
       type: "custom",
-      country: "US",
+      country: "SG",
       email: user.email,
       business_type: "individual",
       individual: {
@@ -17,12 +17,12 @@ export const createStripeAccount = async (user: {
         id_number: user.ssn,
       },
       capabilities: {
-        card_payments: {
-          requested: true,
-        },
         transfers: {
           requested: true,
         },
+      },
+      tos_acceptance: {
+        service_agreement: "recipient",
       },
       settings: {
         payouts: {

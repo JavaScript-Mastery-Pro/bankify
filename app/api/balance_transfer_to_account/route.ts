@@ -12,6 +12,8 @@ export const POST = async (request: Request) => {
       destination: account,
     });
 
+    // console.log({ transfer });
+
     return NextResponse.json({ transfer });
   } catch (error) {
     console.error(

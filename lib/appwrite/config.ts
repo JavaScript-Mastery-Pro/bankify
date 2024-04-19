@@ -1,15 +1,10 @@
 import { Client, Account, Databases, Avatars } from "appwrite";
 
 export const appwriteConfig = {
-  url: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT as string,
-  projectId: process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID as string,
-  databaseId: process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-  usersCollectionId: process.env
-    .NEXT_PUBLIC_APPWRITE_USER_COLLECTION_ID as string,
-  transactionsCollectionId: process.env
-    .NEXT_PUBLIC_APPWRITE_TRANSACTIONS_COLLECTION_ID as string,
-  banksCollectionId: process.env
-    .NEXT_PUBLIC_APPWRITE_BANKS_COLLECTION_ID as string,
+  url: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!,
+  projectId: process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!,
+  databaseId: process.env.APPWRITE_DATABASE_ID!,
+  usersCollectionId: process.env.APPWRITE_USER_COLLECTION_ID!,
 };
 
 export const client = new Client();

@@ -5,20 +5,13 @@ declare type SearchParamProps = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-declare type CreateAppwriteUser = {
-  email: string;
-  name: string | undefined;
-  password: string;
-  stripeId: string;
-};
-
 // ========================================
 
 declare type CreateNewUser = {
+  accountId: string;
   email: string;
   name: string;
   password: string;
-  ssn: string;
 };
 
 declare type LoginUser = {
