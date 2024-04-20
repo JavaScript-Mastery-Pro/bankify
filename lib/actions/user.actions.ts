@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { Client, Account, ID, Databases } from "node-appwrite";
+import { Client, Account, ID, Databases, Query } from "node-appwrite";
 import { CountryCode, Products } from "plaid";
 
 import { plaidClient } from "@/lib/plaid/config";
@@ -57,11 +57,11 @@ export async function createEmailSession(email: string, password: string) {
     );
 
     // get cookies
-    const responseCookie = response.headers.get("set-cookie");
+    const responseCookie = response.headers.get("Set-Cookie");
     console.log({ responseCookie });
 
     // set cookie
-    cookies().set("appwrite-session", responseCookie!);
+    cookies().set("appwrite-cookie", responseCookie!);
 
     const result = await response.json();
     console.log({ session: result });
@@ -100,13 +100,51 @@ export const signUp = async ({ name, email, password }: SignUpParams) => {
 
 export async function getLoggedInUser() {
   try {
-    const { account } = await createSessionClient();
+    const appWriteCookie = cookies().get("appwrite-cookie");
 
-    return await account.get();
+    console.log({ appWriteCookie });
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/account`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Appwrite-Response-Format": "1.4.0",
+          "X-Appwrite-Project": process.env.NEXT_PUBLIC_APPWRITE_PROJECT!,
+          "X-Appwrite-Key": process.env.APPWRITE_SECRET!,
+          Cookie: appWriteCookie?.value!,
+        },
+      }
+    );
+
+    const result = await response.json();
+
+    const { database } = await createAdminClient();
+    const user = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_USER_COLLECTION_ID!,
+      [Query.equal("userId", [result.$id])]
+    );
+
+    console.log({ documents: user.documents, total: user.total });
+
+    return JSON.parse(JSON.stringify(result));
   } catch (error) {
+    console.error("Error", error);
     return null;
   }
 }
+
+// export async function getLoggedInUser() {
+//   try {
+//     const { account } = await createSessionClient();
+
+//     return await account.get();
+//   } catch (error) {
+//     return null;
+//   }
+// }
 
 // CREATE PLAID LINK TOKEN
 export const createLinkToken = async (userId: string) => {

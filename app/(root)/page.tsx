@@ -1,15 +1,22 @@
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
+import { budgetCards } from "@/constants";
 import AccountHeader from "@/components/AccountHeader";
 import BudgetCard from "@/components/BudgetCard";
 import CreditCard from "@/components/CreditCard";
 import DoughnutChart from "@/components/DoughnutChart";
 import RecentTransactions from "@/components/RecentTransactions";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
-import { budgetCards } from "@/constants";
 import { getAccounts, getTransactions } from "@/lib/actions/bank.actions";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
 
 const Home = async () => {
+  const user = await getLoggedInUser();
+  if (!user) redirect("/sign-in");
+
+  console.log(user);
+
   const { accounts } = await getAccounts();
   const { transactions, hasMore } = await getTransactions();
 
