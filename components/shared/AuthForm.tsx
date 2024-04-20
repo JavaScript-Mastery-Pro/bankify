@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { PlaidLink } from "@/components/shared/PlaidLink";
+import { signUp } from "@/lib/actions/user.actions";
 
 import { Button } from "../ui/button";
 import {
@@ -41,10 +42,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
         ? z.string().optional()
         : z.string().min(3, "name cannot be empty"),
     email: z.string().email(),
-    ssn:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "ssn cannot be empty"),
     password: z.string().min(8, "password must be 8 character"),
   });
 
@@ -53,89 +50,68 @@ const AuthForm = ({ type }: AuthFormProps) => {
     defaultValues: {
       name: "",
       email: "",
-      ssn: "",
       password: "",
     },
   });
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
+
     try {
       // ========================================
       // SIGN-UP WITH APPWRITE & CREATE PLAID LINK TOKEN
-      if (type === "sign-in") {
-        // 1. Create appwrite user account
-        // 2. Create Link Token and pass that to Plaid Link
-        setLinkToken("[LINK_TOKEN]");
+      if (type === "sign-up") {
+        const user = {
+          name: data.name!,
+          email: data.email,
+          password: data.password,
+        };
+
+        // Create appwrite user account & link token
+        const response = await signUp(user);
+        setLinkToken(response.linkToken);
       }
 
       // ========================================
       // SANDBOX DATA
-      await fetch(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/api/plaid/sandbox_link_tokens_create`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then(async (data) => {
-          const { accessToken, accountId } = data;
-          console.log({ accessToken });
-          console.log({ accountId });
+      // await fetch(
+      //   `${process.env.NEXT_PUBLIC_SITE_URL}/api/plaid/sandbox_link_tokens_create`,
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // )
+      //   .then((response) => response.json())
+      //   .then(async (data) => {
+      //     const { accessToken, accountId } = data;
+      //     console.log({ accessToken });
+      //     console.log({ accountId });
 
-          if (accessToken) {
-            // ========================================
-            // TRANSFER
-            // await fetch(
-            //   `${process.env.NEXT_PUBLIC_SITE_URL}/api/plaid/transfer/create`,
-            //   {
-            //     method: "POST",
-            //     headers: {
-            //       "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({
-            //       accountId,
-            //       accessToken,
-            //     }),
-            //   }
-            // )
-            //   .then((response) => response.json())
-            //   .then((data) => {
-            //     const { transfer } = data;
-            //     if (transfer) {
-            //       console.log(transfer);
-            //     }
-            //   });
-
-            // ========================================
-            // TRANSACTIONS
-            await fetch(
-              `${process.env.NEXT_PUBLIC_SITE_URL}/api/plaid/transactions`,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  accountId,
-                  accessToken,
-                  startDate: "2018-01-01",
-                  endDate: "2018-02-01",
-                }),
-              }
-            )
-              .then((response) => response.json())
-              .then((data) => {
-                const { added } = data;
-                if (added) {
-                  console.log(added);
-                }
-              });
-          }
-        });
+      //     if (accessToken) {
+      //       // ========================================
+      //       // TRANSFER
+      //       await fetch(
+      //         `${process.env.NEXT_PUBLIC_SITE_URL}/api/plaid/transfer/create`,
+      //         {
+      //           method: "POST",
+      //           headers: {
+      //             "Content-Type": "application/json",
+      //           },
+      //           body: JSON.stringify({
+      //             accountId,
+      //             accessToken,
+      //           }),
+      //         }
+      //       )
+      //         .then((response) => response.json())
+      //         .then((data) => {
+      //           const { transfer } = data;
+      //           if (transfer) {
+      //             console.log(transfer);
+      //           }
+      //         });
 
       setIsLoading(false);
     } catch (error) {
@@ -214,31 +190,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
               </FormItem>
             )}
           />
-          {type === "sign-up" && (
-            <FormField
-              control={form.control}
-              name="ssn"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex flex-col gap-1.5">
-                    <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                      Social Security Number
-                    </FormLabel>
-                    <div className="flex w-full flex-col">
-                      <FormControl>
-                        <Input
-                          placeholder="000000000"
-                          className="input-class"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-12 text-red-500" />
-                    </div>
-                  </div>
-                </FormItem>
-              )}
-            />
-          )}
 
           <FormField
             control={form.control}

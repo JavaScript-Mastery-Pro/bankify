@@ -7,12 +7,12 @@ import DoughnutChart from "@/components/DoughnutChart";
 import RecentTransactions from "@/components/RecentTransactions";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
 import { budgetCards } from "@/constants";
-import { getAccounts } from "@/lib/actions/user.actions";
+import { getAccounts, getTransactions } from "@/lib/actions/bank.actions";
 
 const Home = async () => {
-  const accounts = await getAccounts();
+  const { accounts } = await getAccounts();
+  const { transactions, hasMore } = await getTransactions();
 
-  console.log({ accounts });
   return (
     <section className="no-scrollbar flex w-full flex-col max-xl:max-h-screen max-xl:overflow-y-scroll xl:flex-row">
       <div className="no-scrollbar flex w-full flex-1 flex-col gap-8 px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll">
@@ -21,9 +21,9 @@ const Home = async () => {
           <div className="size-full max-w-[120px]">
             <DoughnutChart />
           </div>
-          <AccountHeader />
+          <AccountHeader account={accounts[0]} />
         </section>
-        <RecentTransactions />
+        <RecentTransactions transactions={transactions} hasMore={hasMore} />
       </div>
       <aside className="no-scrollbar flex w-full flex-col border-l border-gray-200 xl:max-h-screen xl:w-[390px] xl:overflow-y-scroll">
         <section className="flex flex-col">

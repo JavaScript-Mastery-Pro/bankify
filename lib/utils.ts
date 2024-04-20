@@ -78,3 +78,20 @@ export const formatDateTime = (dateString: Date) => {
     timeOnly: formattedTime,
   };
 };
+
+export const formatAmount = (value: string | number) => {
+  const amount = typeof value === "string" ? parseFloat(value) : value;
+
+  const formattedAmount = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+
+  return formattedAmount;
+};
+
+export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
+
+export const removeSpecialCharacters = (value: string) => {
+  return value.replace(/[^\w\s]/gi, "");
+};

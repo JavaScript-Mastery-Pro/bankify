@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 
+import { useRouter } from "next/navigation";
 import React, { useCallback } from "react";
 import {
   PlaidLinkOnSuccess,
@@ -7,23 +8,18 @@ import {
   usePlaidLink,
 } from "react-plaid-link";
 
+import { exchangePublicToken } from "@/lib/actions/user.actions";
+
 type PlaidLinkProps = {
   linkToken: string | null;
 };
 
 export const PlaidLink = ({ linkToken }: PlaidLinkProps) => {
+  const router = useRouter();
   const onSuccess = useCallback<PlaidLinkOnSuccess>(
     async (public_token: string, metadata: PlaidLinkOnSuccessMetadata) => {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/api/plaid/exchange_public_token`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ publicToken: public_token }),
-        }
-      );
+      await exchangePublicToken(public_token);
+      router.push("/");
     },
     []
   );

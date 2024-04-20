@@ -7,8 +7,7 @@ declare type SearchParamProps = {
 
 // ========================================
 
-declare type CreateNewUser = {
-  accountId: string;
+declare type SignUpParams = {
   email: string;
   name: string;
   password: string;
@@ -28,7 +27,25 @@ declare type User = {
   image: string;
 };
 
-declare type Balance = {
+declare type Account = {
+  id: string;
+  availableBalance: number;
+  currentBalance: number;
+  name: string;
+  officialName: string;
+  mask: string;
   type: string;
+  subtype: string;
+};
+
+declare type Transaction = {
+  id: string;
+  name: string;
+  paymentChannel: string;
+  type: string;
+  accountId: string;
   amount: number;
+  pending: boolean;
+  category: string[];
+  date: string;
 };

@@ -3,8 +3,10 @@ import Image from "next/image";
 import DepositModal from "@/components/DepositModal";
 import TransactionHistoryTable from "@/components/TransactionHistoryTable";
 import { Button } from "@/components/ui/button";
+import { getTransactions } from "@/lib/actions/bank.actions";
 
-const TransactionHistory = () => {
+const TransactionHistory = async () => {
+  const { transactions } = await getTransactions();
   return (
     <section className="flex max-h-screen w-full flex-col gap-8 overflow-y-scroll bg-gray-25 p-8 xl:py-12">
       <header className="flex w-full justify-between max-sm:flex-col max-sm:gap-4">
@@ -41,7 +43,7 @@ const TransactionHistory = () => {
             &nbsp; Apply
           </Button>
         </div>
-        <TransactionHistoryTable />
+        <TransactionHistoryTable transactions={transactions} />
       </div>
     </section>
   );
