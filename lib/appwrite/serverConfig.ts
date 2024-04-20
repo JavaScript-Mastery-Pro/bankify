@@ -1,8 +1,8 @@
 import * as sdk from "node-appwrite";
 
 export const appwriteConfig = {
-  url: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!,
-  projectId: process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!,
+  url: process.env.NEXT_PUBLIC_NEXT_PUBLIC_APPWRITE_ENDPOINT!,
+  projectId: process.env.NEXT_PUBLIC_NEXT_PUBLIC_APPWRITE_PROJECT!,
   databaseId: process.env.APPWRITE_DATABASE_ID!,
   usersCollectionId: process.env.APPWRITE_USER_COLLECTION_ID!,
   secret: process.env.APPWRITE_SECRET!,

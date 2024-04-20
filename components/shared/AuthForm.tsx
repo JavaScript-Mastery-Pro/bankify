@@ -34,6 +34,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
   // }
 
   const [linkToken, setLinkToken] = useState<string | null>(null);
+  const [user, setUser] = useState<NewUserParams | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
@@ -70,6 +71,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
         // Create appwrite user account & link token
         const response = await signUp(user);
         setLinkToken(response.linkToken);
+        setUser(response.user);
       }
 
       // ========================================
@@ -235,7 +237,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
       </Form>
 
       <footer className="flex justify-center gap-1">
-        {linkToken != null ? <PlaidLink linkToken={linkToken} /> : <></>}
+        {linkToken != null ? (
+          <PlaidLink linkToken={linkToken} user={user!} />
+        ) : (
+          <></>
+        )}
         <p className="text-14 font-normal text-gray-600">
           {type === "sign-in"
             ? "Don't have an account?"

@@ -12,13 +12,18 @@ import { exchangePublicToken } from "@/lib/actions/user.actions";
 
 type PlaidLinkProps = {
   linkToken: string | null;
+  user: NewUserParams;
 };
 
-export const PlaidLink = ({ linkToken }: PlaidLinkProps) => {
+export const PlaidLink = ({ linkToken, user }: PlaidLinkProps) => {
   const router = useRouter();
+
   const onSuccess = useCallback<PlaidLinkOnSuccess>(
     async (public_token: string, metadata: PlaidLinkOnSuccessMetadata) => {
-      await exchangePublicToken(public_token);
+      await exchangePublicToken({
+        publicToken: public_token,
+        user,
+      });
       router.push("/");
     },
     []

@@ -27,6 +27,13 @@ declare type User = {
   image: string;
 };
 
+declare type NewUserParams = {
+  userId: string;
+  email: string;
+  name: string;
+  password: string;
+};
+
 declare type Account = {
   id: string;
   availableBalance: number;
