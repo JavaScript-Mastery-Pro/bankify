@@ -9,6 +9,7 @@ import {
 } from "react-plaid-link";
 
 import { exchangePublicToken } from "@/lib/actions/user.actions";
+import { Button } from "../ui/button";
 
 type PlaidLinkProps = {
   linkToken: string | null;
@@ -37,8 +38,12 @@ export const PlaidLink = ({ linkToken, user }: PlaidLinkProps) => {
   const { open, ready } = usePlaidLink(config);
 
   return (
-    <button onClick={() => open()} disabled={!ready}>
+    <Button
+      onClick={() => open()}
+      disabled={!ready}
+      className="text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form"
+    >
       Link account
-    </button>
+    </Button>
   );
 };

@@ -1,24 +1,38 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { Client, Account, ID } from "node-appwrite";
+import { Client, Account, ID, Databases } from "node-appwrite";
 import { CountryCode, Products } from "plaid";
 
 import { plaidClient } from "@/lib/plaid/config";
-
-import { account, appwriteConfig, databases } from "../appwrite/serverConfig";
-
-const client = new Client();
-client
-  .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-  .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
-  .setKey(process.env.APPWRITE_SECRET!);
 
 export async function createAdminClient() {
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
-    .setKey(process.env.NEXT_APPWRITE_KEY!);
+    .setKey(process.env.APPWRITE_SECRET!);
+
+  return {
+    get account() {
+      return new Account(client);
+    },
+    get database() {
+      return new Databases(client);
+    },
+  };
+}
+
+export async function createSessionClient() {
+  const client = new Client()
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
+
+  // // get cookie from request 'appwrite-cookie'
+  // const appWriteCookie = cookies().get("appwrite-cookie");
+
+  // if (appWriteCookie) {
+  //   client.setKey(appWriteCookie.value);
+  // }
 
   return {
     get account() {
@@ -58,32 +72,13 @@ export async function createEmailSession(email: string, password: string) {
   }
 }
 
-export async function createSessionClient() {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
-
-  const session = cookies().get("my-custom-session");
-  if (!session || !session.value) {
-    throw new Error("No session");
-  }
-
-  client.setSession(session.value);
-
-  return {
-    get account() {
-      return new Account(client);
-    },
-  };
-}
-
 // ### SIGN-UP FLOW
 // 1.Create appwrite user
 // 2.Create a plaid link token and pass to Link widget
 // 3.Exchange plaid public token
 export const signUp = async ({ name, email, password }: SignUpParams) => {
   // create appwrite user
-  const { account } = await createAdminClient();
+  const { account } = await createSessionClient();
   await account.create(ID.unique(), email, password, name);
 
   // get userId from session
@@ -99,7 +94,7 @@ export const signUp = async ({ name, email, password }: SignUpParams) => {
     password,
   };
 
-  console.log(linkToken);
+  console.log({ linkToken, user });
   return JSON.parse(JSON.stringify({ linkToken, user }));
 };
 
@@ -145,7 +140,7 @@ export const exchangePublicToken = async ({
   publicToken: string;
   user: NewUserParams;
 }) => {
-  console.log(publicToken);
+  console.log({ publicToken, user });
 
   try {
     const response = await plaidClient.itemPublicTokenExchange({
@@ -157,10 +152,12 @@ export const exchangePublicToken = async ({
     const accessToken = response.data.access_token;
     const itemId = response.data.item_id;
 
+    const { database } = await createAdminClient();
+
     // create add user to the user collection
-    await databases.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.usersCollectionId,
+    const newUser = await database.createDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_USER_COLLECTION_ID!,
       ID.unique(),
       {
         name: user.name,
@@ -171,6 +168,8 @@ export const exchangePublicToken = async ({
         items: [itemId],
       }
     );
+
+    console.log({ newUser });
 
     return JSON.parse(
       JSON.stringify({
@@ -185,13 +184,14 @@ export const exchangePublicToken = async ({
   }
 };
 
-//= ================================
 // LOGOUT USER
 export async function logoutAccount() {
   try {
+    const { account } = await createSessionClient();
+
+    cookies().delete("appwrite-cookie");
     await account.deleteSession("current");
-    return { loggedOut: true };
   } catch (error) {
-    console.log(error);
+    return null;
   }
 }

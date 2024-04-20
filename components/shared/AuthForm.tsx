@@ -132,128 +132,137 @@ const AuthForm = ({ type }: AuthFormProps) => {
         </Link>
         <div className="flex flex-col gap-1 md:gap-3">
           <h1 className="text-24 lg:text-36 font-semibold text-gray-900">
-            {type === "sign-in" ? "Sign in" : "Sign up"}
+            {linkToken
+              ? "Link Account"
+              : type === "sign-in"
+                ? "Sign in"
+                : "Sign up"}
           </h1>
           <p className="text-16 font-normal text-gray-600">
-            Please enter your details.
+            {linkToken
+              ? "Link your account to get started"
+              : "Please enter your details."}
           </p>
         </div>
       </header>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col gap-5 md:gap-8"
-        >
-          {type === "sign-up" && (
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex flex-col gap-1.5">
-                    <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                      Name
-                    </FormLabel>
-                    <div className="flex w-full flex-col">
-                      <FormControl>
-                        <Input
-                          placeholder="Enter account holder name"
-                          className="input-class"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-12 text-red-500" />
-                    </div>
-                  </div>
-                </FormItem>
-              )}
-            />
-          )}
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex flex-col gap-1.5">
-                  <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                    Email
-                  </FormLabel>
-                  <div className="flex w-full flex-col">
-                    <FormControl>
-                      <Input
-                        placeholder="Enter your email"
-                        className="input-class"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-12 text-red-500" />
-                  </div>
-                </div>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex flex-col gap-1.5">
-                  <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                    Password
-                  </FormLabel>
-                  <div className="flex w-full flex-col">
-                    <FormControl>
-                      <Input
-                        placeholder="••••••••"
-                        className="input-class"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-12 text-red-500" />
-                  </div>
-                </div>
-              </FormItem>
-            )}
-          />
-          <div className="flex flex-col gap-4">
-            <Button
-              type="submit"
-              className="text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 size={20} className="animate-spin" /> &nbsp;
-                  Loading...
-                </>
-              ) : type === "sign-in" ? (
-                "Sign in"
-              ) : (
-                "Sign up"
-              )}
-            </Button>
-          </div>
-        </form>
-      </Form>
-
-      <footer className="flex justify-center gap-1">
-        {linkToken != null ? (
+      {linkToken ? (
+        <div className="flex flex-col gap-4">
           <PlaidLink linkToken={linkToken} user={user!} />
-        ) : (
-          <></>
-        )}
-        <p className="text-14 font-normal text-gray-600">
-          {type === "sign-in"
-            ? "Don't have an account?"
-            : "Already have an account?"}
-        </p>
-        <Link
-          href={type === "sign-in" ? "/sign-up" : "/sign-in"}
-          className="text-14 cursor-pointer font-medium text-bankGradient"
-        >
-          {type === "sign-in" ? "Sign up" : "Sign in"}
-        </Link>
-      </footer>
+        </div>
+      ) : (
+        <>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="flex flex-col gap-5 md:gap-8"
+            >
+              {type === "sign-up" && (
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex flex-col gap-1.5">
+                        <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                          Name
+                        </FormLabel>
+                        <div className="flex w-full flex-col">
+                          <FormControl>
+                            <Input
+                              placeholder="Enter account holder name"
+                              className="input-class"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-12 text-red-500" />
+                        </div>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              )}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-col gap-1.5">
+                      <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                        Email
+                      </FormLabel>
+                      <div className="flex w-full flex-col">
+                        <FormControl>
+                          <Input
+                            placeholder="Enter your email"
+                            className="input-class"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-12 text-red-500" />
+                      </div>
+                    </div>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-col gap-1.5">
+                      <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                        Password
+                      </FormLabel>
+                      <div className="flex w-full flex-col">
+                        <FormControl>
+                          <Input
+                            placeholder="••••••••"
+                            className="input-class"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-12 text-red-500" />
+                      </div>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <div className="flex flex-col gap-4">
+                <Button
+                  type="submit"
+                  className="text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 size={20} className="animate-spin" /> &nbsp;
+                      Loading...
+                    </>
+                  ) : type === "sign-in" ? (
+                    "Sign in"
+                  ) : (
+                    "Sign up"
+                  )}
+                </Button>
+              </div>
+            </form>
+          </Form>
+
+          <footer className="flex justify-center gap-1">
+            <p className="text-14 font-normal text-gray-600">
+              {type === "sign-in"
+                ? "Don't have an account?"
+                : "Already have an account?"}
+            </p>
+            <Link
+              href={type === "sign-in" ? "/sign-up" : "/sign-in"}
+              className="text-14 cursor-pointer font-medium text-bankGradient"
+            >
+              {type === "sign-in" ? "Sign up" : "Sign in"}
+            </Link>
+          </footer>
+        </>
+      )}
     </section>
   );
 };
