@@ -11,32 +11,39 @@ import { parseStringify } from "../utils";
 // 1. Get user's accessToken from DB
 // 2. Create link token and exhange token
 // 3. Get accounts & format
-export const getAccounts = async (appwriteItemId: string) => {
+export const getAccounts = async () => {
   try {
-    // 1. Get user's accessToken from DB
-    // Todo
-    const accessToken = ITEMS.filter((bank) => bank.id === appwriteItemId)[0]
-      .accessToken;
+    // Todo replace ITEMS with the list of items from DB
+    const accounts = await Promise.all(
+      ITEMS.map(async (bank) => {
+        const response = await plaidClient.accountsGet({
+          access_token: bank.accessToken,
+        });
+        const data = response.data.accounts[0];
 
-    const response = await plaidClient.accountsGet({
-      access_token: accessToken,
-    });
+        // Format data
+        const account = {
+          id: data.account_id,
+          availableBalance: data.balances.available!,
+          currentBalance: data.balances.current!,
+          name: data.name,
+          officialName: data.official_name!,
+          mask: data.mask!,
+          type: data.type as string,
+          subtype: data.subtype! as string,
+          appwriteItemId: bank.id,
+        };
 
-    // Format data
-    const accounts = response.data.accounts.map((item) => ({
-      id: item.account_id,
-      availableBalance: item.balances.available!,
-      currentBalance: item.balances.current!,
-      name: item.name,
-      officialName: item.official_name!,
-      mask: item.mask!,
-      type: item.type as string,
-      subtype: item.subtype! as string,
-    }));
+        return account;
+      })
+    );
 
-    console.log({ accounts });
+    const totalBanks = accounts.length;
+    const totalCurrentBalance = accounts.reduce((total, account) => {
+      return total + account.currentBalance;
+    }, 0);
 
-    return parseStringify({ accounts });
+    return parseStringify({ accounts, totalBanks, totalCurrentBalance });
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
   }
@@ -62,7 +69,6 @@ export const getTransactions = async (appwriteItemId: string) => {
 
       const data = response.data;
 
-      console.log(data);
       transactions = response.data.added.map((transaction) => ({
         id: transaction.transaction_id,
         name: transaction.name,

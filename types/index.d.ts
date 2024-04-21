@@ -43,6 +43,7 @@ declare type Account = {
   mask: string;
   type: string;
   subtype: string;
+  appwriteItemId: string;
 };
 
 declare type Transaction = {

@@ -2,6 +2,7 @@
 
 import ReactPaginate from "react-paginate";
 
+import BankCard from "./BankCard";
 import NextPrevButton from "./shared/NextPrevButton";
 import TransactionTable from "./TransactionTable";
 import { Button } from "./ui/button";
@@ -9,14 +10,18 @@ import { Button } from "./ui/button";
 const RecentTransactions = ({
   transactions,
   hasMore,
+  account,
+  appwriteItemId,
 }: {
   transactions: Transaction[];
   hasMore: boolean;
+  account: Account;
+  appwriteItemId: string;
 }) => {
   return (
     <section className="flex w-full flex-col gap-6">
-      <header className="flex justify-between">
-        <h2 className="text-18 font-semibold text-gray-900">
+      <header className="flex items-center justify-between">
+        <h2 className="text-20 font-semibold text-gray-900">
           Recent transactions
         </h2>
         <Button
@@ -26,6 +31,7 @@ const RecentTransactions = ({
           View all
         </Button>
       </header>
+      <BankCard account={account} appwriteItemId={appwriteItemId} type="full" />
       <TransactionTable transactions={transactions} />
       {transactions.length > 5 && (
         <div className="flex-center w-full pt-5">

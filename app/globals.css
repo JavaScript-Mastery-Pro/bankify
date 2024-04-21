@@ -46,6 +46,9 @@
   .text-18 {
     @apply text-[18px] leading-[22px];
   }
+  .text-20 {
+    @apply text-[20px] leading-[24px];
+  }
   .text-24 {
     @apply text-[24px] leading-[30px];
   }

@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 import { sidebarLinks } from "@/constants";
 import { InitialUser, useUserContext } from "@/context/AuthContext";
@@ -15,8 +14,6 @@ const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { user, setUser, setIsAuthenticated } = useUserContext();
-
-  useEffect(() => {}, [user]);
 
   const handleLogOut = async () => {
     const loggedOut = await logoutAccount();
