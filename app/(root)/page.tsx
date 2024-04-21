@@ -13,7 +13,7 @@ const Home = async ({ searchParams }: SearchParamProps) => {
   const appwriteItemId = (searchParams?.id as string) || "6624c02e00367128945e";
   // const user = await getLoggedInUser();
   // if (!user) redirect("/sign-in");
-  console.log({ appwriteItemId });
+
   const { accounts } = await getAccounts(appwriteItemId);
   const { transactions, hasMore } = await getTransactions(appwriteItemId);
 

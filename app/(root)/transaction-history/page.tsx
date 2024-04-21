@@ -5,8 +5,9 @@ import TransactionHistoryTable from "@/components/TransactionHistoryTable";
 import { Button } from "@/components/ui/button";
 import { getTransactions } from "@/lib/actions/bank.actions";
 
-const TransactionHistory = async () => {
-  const { transactions } = await getTransactions();
+const TransactionHistory = async ({ searchParams }: SearchParamProps) => {
+  const appwriteItemId = (searchParams?.id as string) || "6624c02e00367128945e";
+  const { transactions } = await getTransactions(appwriteItemId);
   return (
     <section className="flex max-h-screen w-full flex-col gap-8 overflow-y-scroll bg-gray-25 p-8 xl:py-12">
       <header className="flex w-full justify-between max-sm:flex-col max-sm:gap-4">
