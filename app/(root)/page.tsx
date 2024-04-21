@@ -1,25 +1,23 @@
 import Image from "next/image";
-import { redirect } from "next/navigation";
 
-import { budgetCards } from "@/constants";
 import AccountHeader from "@/components/AccountHeader";
-import BudgetCard from "@/components/BudgetCard";
+import BankCard from "@/components/BankCard";
 import CreditCard from "@/components/CreditCard";
 import DoughnutChart from "@/components/DoughnutChart";
 import RecentTransactions from "@/components/RecentTransactions";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
+import { bankCards } from "@/constants";
 import { getAccounts, getTransactions } from "@/lib/actions/bank.actions";
-import { getLoggedInUser } from "@/lib/actions/user.actions";
 
-const Home = async () => {
-  const user = await getLoggedInUser();
-  if (!user) redirect("/sign-in");
+const Home = async ({ searchParams }: SearchParamProps) => {
+  const appwriteItemId = (searchParams?.id as string) || "6624c02e00367128945e";
+  // const user = await getLoggedInUser();
+  // if (!user) redirect("/sign-in");
+  console.log({ appwriteItemId });
+  const { accounts } = await getAccounts(appwriteItemId);
+  const { transactions, hasMore } = await getTransactions(appwriteItemId);
 
-  console.log(user);
-
-  const { accounts } = await getAccounts();
-  const { transactions, hasMore } = await getTransactions();
-
+  console.log({ accounts });
   return (
     <section className="no-scrollbar flex w-full flex-col max-xl:max-h-screen max-xl:overflow-y-scroll xl:flex-row">
       <div className="no-scrollbar flex w-full flex-1 flex-col gap-8 px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll">
@@ -86,14 +84,10 @@ const Home = async () => {
             </div>
           </div>
           <section className="flex flex-1 flex-col gap-6 pt-10">
-            <h1 className="text-18 font-semibold text-gray-900">My budgets</h1>
+            <h1 className="text-18 font-semibold text-gray-900">My Banks</h1>
             <div className="flex flex-col gap-3">
-              {budgetCards.map((budgetCard) => (
-                <BudgetCard
-                  key={budgetCard.type}
-                  type={budgetCard.type}
-                  amountLeft={budgetCard.amountLeft}
-                />
+              {bankCards.map((bank) => (
+                <BankCard key={bank.id} bank={bank} />
               ))}
             </div>
           </section>

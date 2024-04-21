@@ -1,3 +1,5 @@
+import BankCard from "@/components/BankCard";
+
 export const sidebarLinks = [
   {
     imgURL: "/icons/home.svg",
@@ -93,24 +95,43 @@ export const transactionHistory = [
   },
 ];
 
-interface BudgetCardProps {
-  type: "Subscriptions" | "Food and booze" | "Savings";
-  amountLeft: number;
-}
-
-export const budgetCards: BudgetCardProps[] = [
+export const bankCards: BankCard[] = [
   {
-    type: "Subscriptions",
-    amountLeft: 25,
+    id: "6624c02e00367128945e",
+    name: "Plaid Bank",
+    type: "checking",
+    currentBalance: 110.0,
   },
   {
-    type: "Food and booze",
-    amountLeft: 125,
-  },
-  {
-    type: "Savings",
-    amountLeft: 50,
+    id: "6624bf700008ee34603c",
+    name: "Chase Bank",
+    type: "savings",
+    currentBalance: 2588.12,
   },
 ];
 
-export const AppFixedFee = 0.2;
+// good_user / good_password - Bank of America
+export const TEST_USER_ID = "6624bf1e0022238a30a6";
+
+// custom_user -> Chase Bank
+// export const TEST_ACCESS_TOKEN =
+//   "access-sandbox-da44dac8-7d31-4f66-ab36-2238d63a3017";
+
+// custom_user -> Chase Bank
+export const TEST_ACCESS_TOKEN =
+  "access-sandbox-229476cf-25bc-46d2-9ed5-fba9df7a5d63";
+
+export const ITEMS = [
+  {
+    id: "6624c02e00367128945e",
+    accessToken: "access-sandbox-da44dac8-7d31-4f66-ab36-2238d63a3017",
+    itemId: "MA4zpXMbzMIreAvLgRqEf1olAgNnnxt9GQj9b",
+    userId: "6624bf1e0022238a30a6",
+  },
+  {
+    id: "6624bf700008ee34603c",
+    accessToken: "access-sandbox-229476cf-25bc-46d2-9ed5-fba9df7a5d63",
+    itemId: "Z7BjW4XDQ7fBxVyBqkNruBAgbgrX1Xcg97onW",
+    userId: "6624bf1e0022238a30a6",
+  },
+];

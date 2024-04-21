@@ -41,6 +41,7 @@ export async function createSessionClient() {
   };
 }
 
+// CREATE EMAIL SESSION
 export async function createEmailSession(email: string, password: string) {
   try {
     const response = await fetch(
@@ -72,32 +73,33 @@ export async function createEmailSession(email: string, password: string) {
   }
 }
 
-// ### SIGN-UP FLOW
-// 1.Create appwrite user
-// 2.Create a plaid link token and pass to Link widget
-// 3.Exchange plaid public token
+// SIGN UP
 export const signUp = async ({ name, email, password }: SignUpParams) => {
   // create appwrite user
   const { account } = await createSessionClient();
-  await account.create(ID.unique(), email, password, name);
+  const newAccount = await account.create(ID.unique(), email, password, name);
 
-  // get userId from session
-  const { userId } = await createEmailSession(email, password);
+  // create new user document
+  const { database } = await createAdminClient();
+  const newUser = await database.createDocument(
+    process.env.APPWRITE_DATABASE_ID!,
+    process.env.APPWRITE_USER_COLLECTION_ID!,
+    ID.unique(),
+    {
+      name,
+      email,
+      password,
+      userId: newAccount.$id,
+    }
+  );
 
-  // create Plaid token
-  const { linkToken } = await createLinkToken(userId);
+  // create email session
+  await createEmailSession(email, password);
 
-  const user = {
-    userId,
-    email,
-    name,
-    password,
-  };
-
-  console.log({ linkToken, user });
-  return JSON.parse(JSON.stringify({ linkToken, user }));
+  return JSON.parse(JSON.stringify({ user: newUser.$id }));
 };
 
+// GET LOGGEDIN USER
 export async function getLoggedInUser() {
   try {
     const appWriteCookie = cookies().get("appwrite-cookie");
@@ -176,7 +178,7 @@ export const exchangePublicToken = async ({
   user,
 }: {
   publicToken: string;
-  user: NewUserParams;
+  user: string;
 }) => {
   console.log({ publicToken, user });
 
@@ -193,21 +195,18 @@ export const exchangePublicToken = async ({
     const { database } = await createAdminClient();
 
     // create add user to the user collection
-    const newUser = await database.createDocument(
+    const newItem = await database.createDocument(
       process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_USER_COLLECTION_ID!,
+      process.env.APPWRITE_ITEM_COLLECTION_ID!,
       ID.unique(),
       {
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        userId: user.userId,
+        itemId,
         accessToken,
-        items: [itemId],
+        user,
       }
     );
 
-    console.log({ newUser });
+    console.log({ newItem });
 
     return JSON.parse(
       JSON.stringify({

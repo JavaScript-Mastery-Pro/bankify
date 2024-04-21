@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import qs from "query-string";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -79,19 +80,38 @@ export const formatDateTime = (dateString: Date) => {
   };
 };
 
-export const formatAmount = (value: string | number) => {
-  const amount = typeof value === "string" ? parseFloat(value) : value;
-
-  const formattedAmount = new Intl.NumberFormat("en-US", {
+export function formatAmount(amount: number): string {
+  const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-  }).format(amount);
+    minimumFractionDigits: 2,
+  });
 
-  return formattedAmount;
-};
+  return formatter.format(amount);
+}
 
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
 export const removeSpecialCharacters = (value: string) => {
   return value.replace(/[^\w\s]/gi, "");
 };
+
+interface UrlQueryParams {
+  params: string;
+  key: string;
+  value: string;
+}
+
+export function formUrlQuery({ params, key, value }: UrlQueryParams) {
+  const currentUrl = qs.parse(params);
+
+  currentUrl[key] = value;
+
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true }
+  );
+}

@@ -1,5 +1,9 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
+import { ITEMS } from "@/constants";
+
 import { plaidClient } from "../plaid/config";
 import { parseStringify } from "../utils";
 
@@ -7,30 +11,30 @@ import { parseStringify } from "../utils";
 // 1. Get user's accessToken from DB
 // 2. Create link token and exhange token
 // 3. Get accounts & format
-export const getAccounts = async () => {
+export const getAccounts = async (appwriteItemId: string) => {
   try {
     // 1. Get user's accessToken from DB
-    const accessToken = "access-sandbox-3f2c1164-08a1-413c-8322-255cd546d04a";
+    // Todo
+    const accessToken = ITEMS.filter((bank) => bank.id === appwriteItemId)[0]
+      .accessToken;
 
-    // 2. Create link token and exhange token
-    // ----
-
-    // 3. Get accounts
     const response = await plaidClient.accountsGet({
       access_token: accessToken,
     });
 
     // Format data
-    const accounts = response.data.accounts.map((account) => ({
-      id: account.account_id,
-      availableBalance: account.balances.available,
-      currentBalance: account.balances.current,
-      name: account.name,
-      officialName: account.official_name,
-      mask: account.mask,
-      type: account.type,
-      subtype: account.subtype,
+    const accounts = response.data.accounts.map((item) => ({
+      id: item.account_id,
+      availableBalance: item.balances.available!,
+      currentBalance: item.balances.current!,
+      name: item.name,
+      officialName: item.official_name!,
+      mask: item.mask!,
+      type: item.type as string,
+      subtype: item.subtype! as string,
     }));
+
+    console.log({ accounts });
 
     return parseStringify({ accounts });
   } catch (error) {
@@ -42,13 +46,14 @@ export const getAccounts = async () => {
 // 1. Get user's accessToken from DB
 // 2. Create link token and exhange token
 // 3. Get trasnactions & format
-export const getTransactions = async () => {
+export const getTransactions = async (appwriteItemId: string) => {
   let hasMore = true;
   let transactions: any = [];
 
   try {
     // 1. Get user's accessToken from DB
-    const accessToken = "access-sandbox-3f2c1164-08a1-413c-8322-255cd546d04a";
+    const accessToken = ITEMS.filter((bank) => bank.id === appwriteItemId)[0]
+      .accessToken;
     // Iterate through each page of new transaction updates for item
     while (hasMore) {
       const response = await plaidClient.transactionsSync({
@@ -56,16 +61,19 @@ export const getTransactions = async () => {
       });
 
       const data = response.data;
+
+      console.log(data);
       transactions = response.data.added.map((transaction) => ({
         id: transaction.transaction_id,
         name: transaction.name,
         paymentChannel: transaction.payment_channel,
-        type: transaction.transaction_type,
+        type: transaction.payment_channel,
         accountId: transaction.account_id,
         amount: transaction.amount,
         pending: transaction.pending,
-        category: transaction.category,
+        category: transaction.category ? transaction.category[0] : "",
         date: transaction.date,
+        image: transaction.logo_url,
       }));
 
       hasMore = data.has_more;
@@ -73,6 +81,7 @@ export const getTransactions = async () => {
 
     // Format data
     const transactionsData = { transactions, hasMore };
+    revalidatePath("/");
 
     return parseStringify(transactionsData);
   } catch (error) {

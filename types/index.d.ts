@@ -53,6 +53,14 @@ declare type Transaction = {
   accountId: string;
   amount: number;
   pending: boolean;
-  category: string[];
+  category: string;
   date: string;
+  image: string;
+};
+
+declare type BankCard = {
+  id: string;
+  name: string;
+  type: "checking" | "savings";
+  currentBalance: number;
 };

@@ -33,8 +33,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
   //   router.push("/");
   // }
 
-  const [linkToken, setLinkToken] = useState<string | null>(null);
-  const [user, setUser] = useState<NewUserParams | null>(null);
+  // const [linkToken, setLinkToken] = useState<string | null>(null);
+  const [user, setUser] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
@@ -70,7 +70,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
         // Create appwrite user account & link token
         const response = await signUp(user);
-        setLinkToken(response.linkToken);
+        // setLinkToken(response.linkToken);
         setUser(response.user);
       }
 
@@ -132,22 +132,18 @@ const AuthForm = ({ type }: AuthFormProps) => {
         </Link>
         <div className="flex flex-col gap-1 md:gap-3">
           <h1 className="text-24 lg:text-36 font-semibold text-gray-900">
-            {linkToken
-              ? "Link Account"
-              : type === "sign-in"
-                ? "Sign in"
-                : "Sign up"}
+            {user ? "Link Account" : type === "sign-in" ? "Sign in" : "Sign up"}
           </h1>
           <p className="text-16 font-normal text-gray-600">
-            {linkToken
+            {user
               ? "Link your account to get started"
               : "Please enter your details."}
           </p>
         </div>
       </header>
-      {linkToken ? (
+      {user ? (
         <div className="flex flex-col gap-4">
-          <PlaidLink linkToken={linkToken} user={user!} />
+          <PlaidLink user={user!} />
         </div>
       ) : (
         <>

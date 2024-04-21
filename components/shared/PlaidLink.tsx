@@ -1,23 +1,35 @@
 /* eslint-disable camelcase */
 
 import { useRouter } from "next/navigation";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   PlaidLinkOnSuccess,
   PlaidLinkOnSuccessMetadata,
   usePlaidLink,
 } from "react-plaid-link";
 
-import { exchangePublicToken } from "@/lib/actions/user.actions";
+import {
+  createLinkToken,
+  exchangePublicToken,
+} from "@/lib/actions/user.actions";
+
 import { Button } from "../ui/button";
 
 type PlaidLinkProps = {
-  linkToken: string | null;
-  user: NewUserParams;
+  user: string;
 };
 
-export const PlaidLink = ({ linkToken, user }: PlaidLinkProps) => {
+export const PlaidLink = ({ user }: PlaidLinkProps) => {
   const router = useRouter();
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    const getLinkToken = async () => {
+      const { linkToken } = await createLinkToken(user);
+      setToken(linkToken);
+    };
+    getLinkToken();
+  }, []);
 
   const onSuccess = useCallback<PlaidLinkOnSuccess>(
     async (public_token: string, metadata: PlaidLinkOnSuccessMetadata) => {
@@ -31,7 +43,7 @@ export const PlaidLink = ({ linkToken, user }: PlaidLinkProps) => {
   );
 
   const config: Parameters<typeof usePlaidLink>[0] = {
-    token: linkToken!,
+    token,
     onSuccess,
   };
 
@@ -43,7 +55,7 @@ export const PlaidLink = ({ linkToken, user }: PlaidLinkProps) => {
       disabled={!ready}
       className="text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form"
     >
-      Link account
+      Add bank
     </Button>
   );
 };

@@ -1,4 +1,9 @@
-import { cn, formatDateTime, removeSpecialCharacters } from "@/lib/utils";
+import {
+  cn,
+  formatAmount,
+  formatDateTime,
+  removeSpecialCharacters,
+} from "@/lib/utils";
 
 import {
   Table,
@@ -15,24 +20,24 @@ const CategoryBadge = ({ category }: { category: string }) => {
       className={cn(
         "flex-center w-fit gap-1 rounded-2xl border-[1.5px] border-blue-600 py-[2px] pl-1.5 pr-2",
         {
-          "border-pink-600": category === "Food and dining",
-          "border-success-600": category === "Payment",
-          "border-indigo-500": category === "Transfer",
+          "border-pink-600": category === "Food and Drink",
+          "border-success-600": ["Payment", "Bank Fees"].includes(category),
+          "border-red-700": category === "Transfer",
         }
       )}
     >
       <div
         className={cn("size-2 rounded-full bg-blue-500", {
-          "bg-pink-500": category === "Food and dining",
-          "bg-green-600": category === "Payment",
-          "bg-indigo-500": category === "Transfer",
+          "bg-pink-500": category === "Food and Drink",
+          "bg-green-600": ["Payment", "Bank Fees"].includes(category),
+          "bg-red-700": category === "Transfer",
         })}
       />
       <h2
         className={cn("text-12 font-medium text-blue-700", {
-          "text-pink-700": category === "Food and dining",
-          "text-success-700": category === "Payment",
-          "text-indigo-700": category === "Transfer",
+          "text-pink-700": category === "Food and Drink",
+          "text-success-700": ["Payment", "Bank Fees"].includes(category),
+          "text-red-700": category === "Transfer",
         })}
       >
         {category}
@@ -53,14 +58,14 @@ const TransactionTable = ({
           <TableHead className="px-0">Transaction</TableHead>
           <TableHead className="px-0">Amount</TableHead>
           <TableHead className="px-0">Date</TableHead>
+          <TableHead className="px-0 max-md:hidden">Channel</TableHead>
           <TableHead className="px-0 max-md:hidden">Category</TableHead>
-          <TableHead className="px-0 max-md:hidden">Type</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {transactions.map((transaction: Transaction) => (
           <TableRow key={transaction.id}>
-            <TableCell className="truncate px-0">
+            <TableCell className="max-w-[250px] pl-0 pr-10">
               <div className="flex items-center gap-3">
                 {/* <Image
                   src={transaction.companyLogo}
@@ -68,20 +73,22 @@ const TransactionTable = ({
                   height={40}
                   alt="company logo"
                 /> */}
-                <h1 className="text-14 font-medium text-gray-900">
+                <h1 className="text-14 truncate font-medium text-gray-900">
                   {removeSpecialCharacters(transaction.name)}
                 </h1>
               </div>
             </TableCell>
-            <TableCell className="px-0">
-              {transaction.amount < 0 ? "-" : "+"}${transaction.amount}
+            <TableCell className="px-0  pr-10">
+              {formatAmount(transaction.amount)}
             </TableCell>
-            <TableCell className="px-0">
+            <TableCell className="px-0  pr-10">
               {formatDateTime(new Date(transaction.date)).dateTime}
             </TableCell>
-            <TableCell className="px-0">{transaction.type}</TableCell>
+            <TableCell className="px-0  pr-10 capitalize">
+              {transaction.paymentChannel}
+            </TableCell>
             <TableCell className="px-0 max-md:hidden">
-              <CategoryBadge category={transaction.category[0]} />
+              <CategoryBadge category={transaction.category} />
             </TableCell>
           </TableRow>
         ))}

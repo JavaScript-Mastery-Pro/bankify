@@ -1,11 +1,14 @@
 "use client";
 
+import { PlaidLink } from "@/components/shared/PlaidLink";
+import { TEST_USER_ID } from "@/constants";
 import { useUserContext } from "@/context/AuthContext";
-
-import { Button } from "../ui/button";
 
 export const DashboardHeader = () => {
   const { user } = useUserContext();
+
+  // Todo - get actual userId
+  const userId = TEST_USER_ID;
 
   return (
     <header className="flex justify-between">
@@ -18,9 +21,8 @@ export const DashboardHeader = () => {
           Access & manage your account and transactions efficiently.
         </p>
       </div>
-      <Button className="text-14 bg-bank-gradient px-4 py-2.5 font-semibold text-white shadow-form">
-        Send funds
-      </Button>
+
+      <PlaidLink user={userId} />
     </header>
   );
 };
