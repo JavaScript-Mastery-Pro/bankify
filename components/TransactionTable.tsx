@@ -33,15 +33,15 @@ const CategoryBadge = ({ category }: { category: string }) => {
           "bg-red-700": category === "Transfer",
         })}
       />
-      <h2
-        className={cn("text-12 font-medium text-blue-700", {
+      <p
+        className={cn("text-[12px] font-medium text-blue-700", {
           "text-pink-700": category === "Food and Drink",
           "text-success-700": ["Payment", "Bank Fees"].includes(category),
           "text-red-700": category === "Transfer",
         })}
       >
         {category}
-      </h2>
+      </p>
     </div>
   );
 };
@@ -67,12 +67,6 @@ const TransactionTable = ({
           <TableRow key={transaction.id}>
             <TableCell className="max-w-[250px] pl-0 pr-10">
               <div className="flex items-center gap-3">
-                {/* <Image
-                  src={transaction.companyLogo}
-                  width={40}
-                  height={40}
-                  alt="company logo"
-                /> */}
                 <h1 className="text-14 truncate font-medium text-gray-900">
                   {removeSpecialCharacters(transaction.name)}
                 </h1>
@@ -81,10 +75,10 @@ const TransactionTable = ({
             <TableCell className="px-0  pr-10">
               {formatAmount(transaction.amount)}
             </TableCell>
-            <TableCell className="min-w-32  px-0 pr-10">
+            <TableCell className="min-w-28 px-0 pr-10">
               {formatDateTime(new Date(transaction.date)).dateTime}
             </TableCell>
-            <TableCell className="min-w-32 px-0 pr-10 capitalize">
+            <TableCell className="min-w-24 px-0 pr-10 capitalize">
               {transaction.paymentChannel}
             </TableCell>
             <TableCell className="px-0 max-md:hidden">

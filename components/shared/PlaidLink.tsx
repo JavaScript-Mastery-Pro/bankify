@@ -76,7 +76,7 @@ export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
           />
           <p
             className={cn(
-              "text-[16px] font-semibold text-black-2 max-lg:hidden"
+              "text-[16px] font-semibold text-black-2 max-xl:hidden"
             )}
           >
             Add Bank
