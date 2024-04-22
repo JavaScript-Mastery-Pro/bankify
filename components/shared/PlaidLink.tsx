@@ -26,8 +26,6 @@ export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
   const router = useRouter();
   const [token, setToken] = useState("");
 
-  console.log(user);
-
   useEffect(() => {
     const getLinkToken = async () => {
       const { linkToken } = await createLinkToken(user);

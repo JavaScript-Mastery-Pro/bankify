@@ -1,11 +1,11 @@
 "use client";
 
-import { BankCard } from "@/components/BankCard";
+import { Bank } from "@/components/Bank";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const SelectBank = ({
   appwriteItemId,
-  accounts,
+  accounts = [],
 }: {
   appwriteItemId: string;
   accounts: Account[];
@@ -22,7 +22,7 @@ export const SelectBank = ({
           <h1 className="text-18 font-semibold text-gray-900">My Banks</h1>
           <div className="flex flex-col gap-3">
             {accounts.map((account: Account) => (
-              <BankCard
+              <Bank
                 key={account.id}
                 account={account}
                 appwriteItemId={appwriteItemId}

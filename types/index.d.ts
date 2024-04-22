@@ -38,9 +38,10 @@ declare type Account = {
   id: string;
   availableBalance: number;
   currentBalance: number;
-  name: string;
   officialName: string;
   mask: string;
+  institutionId: string;
+  institutionName: string;
   type: string;
   subtype: string;
   appwriteItemId: string;
@@ -59,9 +60,16 @@ declare type Transaction = {
   image: string;
 };
 
-declare type BankCard = {
+declare type Bank = {
   id: string;
   name: string;
   type: "checking" | "savings";
   currentBalance: number;
 };
+
+declare type AccountTypes =
+  | "depository"
+  | "credit"
+  | "loan "
+  | "investment"
+  | "other";

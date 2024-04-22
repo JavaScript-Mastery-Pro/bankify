@@ -3,7 +3,7 @@
 import Link from "next/link";
 import ReactPaginate from "react-paginate";
 
-import { BankCard } from "./BankCard";
+import { Bank } from "./Bank";
 import NextPrevButton from "./shared/NextPrevButton";
 import TransactionTable from "./TransactionTable";
 
@@ -25,13 +25,13 @@ export const RecentTransactions = ({
           Recent transactions
         </h2>
         <Link
-          href={`/transaction-history/?id=${appwriteItemId}`}
+          href={`/transactions/?id=${appwriteItemId}`}
           className="text-14 rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
         >
           View all
         </Link>
       </header>
-      <BankCard account={account} appwriteItemId={appwriteItemId} type="full" />
+      <Bank account={account} appwriteItemId={appwriteItemId} type="full" />
       <TransactionTable transactions={transactions} />
       {transactions.length > 5 && (
         <div className="flex-center w-full pt-5">

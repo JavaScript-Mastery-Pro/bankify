@@ -1,36 +1,38 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { CountryCode } from "plaid";
 
 import { ITEMS } from "@/constants";
 
 import { plaidClient } from "../plaid/config";
 import { parseStringify } from "../utils";
 
-// GET ACCOUNTS FROM PLAID
-// 1. Get user's accessToken from DB
-// 2. Create link token and exhange token
-// 3. Get accounts & format
 export const getAccounts = async () => {
   try {
     // Todo replace ITEMS with the list of items from DB
     const accounts = await Promise.all(
       ITEMS.map(async (bank) => {
-        const response = await plaidClient.accountsGet({
+        const accountsResponse = await plaidClient.accountsGet({
           access_token: bank.accessToken,
         });
-        const data = response.data.accounts[0];
+        const accountData = accountsResponse.data.accounts[0];
+
+        const institution = await getInstitution(
+          accountsResponse.data.item.institution_id!
+        );
 
         // Format data
         const account = {
-          id: data.account_id,
-          availableBalance: data.balances.available!,
-          currentBalance: data.balances.current!,
-          name: data.name,
-          officialName: data.official_name!,
-          mask: data.mask!,
-          type: data.type as string,
-          subtype: data.subtype! as string,
+          id: accountData.account_id,
+          availableBalance: accountData.balances.available!,
+          currentBalance: accountData.balances.current!,
+          institutionId: institution.institution_id,
+          institutionName: institution.name,
+          officialName: accountData.official_name,
+          mask: accountData.mask!,
+          type: accountData.type as string,
+          subtype: accountData.subtype! as string,
           appwriteItemId: bank.id,
         };
 
@@ -43,11 +45,12 @@ export const getAccounts = async () => {
       return total + account.currentBalance;
     }, 0);
 
-    return parseStringify({ accounts, totalBanks, totalCurrentBalance });
+    return parseStringify({ data: accounts, totalBanks, totalCurrentBalance });
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
   }
 };
+
 export const getAccount = async (appwriteItemId: string) => {
   try {
     // Todo replace ITEMS with the list of items from DB
@@ -66,12 +69,28 @@ export const getAccount = async (appwriteItemId: string) => {
       name: data.name,
       officialName: data.official_name!,
       mask: data.mask!,
+      institutionId: response.data.item.institution_id,
       type: data.type as string,
       subtype: data.subtype! as string,
       appwriteItemId: bank.id,
     };
 
     return parseStringify({ account });
+  } catch (error) {
+    console.error("An error occurred while getting the accounts:", error);
+  }
+};
+
+export const getInstitution = async (institutionId: string) => {
+  try {
+    const institutionResponse = await plaidClient.institutionsGetById({
+      institution_id: institutionId,
+      country_codes: ["US"] as CountryCode[],
+    });
+
+    const intitution = institutionResponse.data.institution;
+
+    return parseStringify(intitution);
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
   }
@@ -113,11 +132,9 @@ export const getTransactions = async (appwriteItemId: string) => {
       hasMore = data.has_more;
     }
 
-    // Format data
-    const transactionsData = { transactions, hasMore };
     revalidatePath("/");
 
-    return parseStringify(transactionsData);
+    return parseStringify({ data: transactions, hasMore });
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
   }

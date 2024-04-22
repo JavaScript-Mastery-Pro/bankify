@@ -4,91 +4,24 @@ export const sidebarLinks = [
     route: "/",
     label: "Home",
   },
-
-  {
-    imgURL: "/icons/transaction.svg",
-    route: "/transaction-history",
-    label: "Transaction History",
-  },
   {
     imgURL: "/icons/deposit.svg",
-    route: "/new-deposit",
+    route: "/banks",
     label: "My Banks",
+  },
+  {
+    imgURL: "/icons/transaction.svg",
+    route: "/transactions",
+    label: "Transactions",
   },
   {
     imgURL: "/icons/payment-transfer.svg",
     route: "/payment-transfer",
-    label: "Payment Transfer",
+    label: "Transfer",
   },
 ];
 
-export const transactionHistory = [
-  {
-    id: "Spotify",
-    name: "Spotify",
-    companyLogo: "/icons/spotify.svg",
-    amount: 12.99,
-    date: "Wed 1:00pm",
-    category: "Subscriptions",
-    status: "debited",
-  },
-  {
-    id: "A coffee",
-    name: "A coffee",
-    companyLogo: "/icons/a-coffee.svg",
-    amount: 18.99,
-    date: "Wed 7:20pm",
-    category: "Food and dining",
-    status: "debited",
-  },
-  {
-    id: "Stripe",
-    name: "Stripe",
-    companyLogo: "/icons/stripe.svg",
-    amount: 88.0,
-    date: "Wed 2:45pm",
-    category: "Income",
-    status: "credited",
-  },
-  {
-    id: "Figma",
-    name: "Figma",
-    companyLogo: "/icons/figma.svg",
-    amount: 15.0,
-    date: "Tue 6:10pm",
-    category: "Subscriptions",
-    status: "debited",
-  },
-  {
-    id: "TBF Bakery",
-    name: "TBF Bakery",
-    companyLogo: "/icons/tbfBakery.svg",
-    amount: 35.5,
-    date: "Tue 7:52am",
-    category: "Food and dining",
-    status: "debited",
-  },
-  {
-    id: "Fresh F&V",
-    name: "Fresh F&V",
-    companyLogo: "/icons/fresh-fv.svg",
-    amount: 25.5,
-    date: "Tue 7:52am",
-    category: "Groceries",
-    status: "debited",
-  },
-  {
-    id: "Stripe",
-    name: "Stripe",
-    companyLogo: "/icons/stripe.svg",
-    amount: 88.0,
-    date: "Wed 2:45pm",
-    category: "Income",
-    status: "credited",
-  },
-];
-
-export const bankCards: BankCard[] = [
+export const Banks: Bank[] = [
   {
     id: "6624c02e00367128945e",
     name: "Plaid Bank",
@@ -98,6 +31,12 @@ export const bankCards: BankCard[] = [
   {
     id: "6624bf700008ee34603c",
     name: "Chase Bank",
+    type: "savings",
+    currentBalance: 2588.12,
+  },
+  {
+    id: "6624bf700008ee34603c",
+    name: "First Platypus Bank",
     type: "savings",
     currentBalance: 2588.12,
   },
@@ -125,6 +64,12 @@ export const ITEMS = [
     id: "6624bf700008ee34603c",
     accessToken: "access-sandbox-229476cf-25bc-46d2-9ed5-fba9df7a5d63",
     itemId: "Z7BjW4XDQ7fBxVyBqkNruBAgbgrX1Xcg97onW",
+    userId: "6624bf1e0022238a30a6",
+  },
+  {
+    id: "66261280000ceea516e1",
+    accessToken: "access-sandbox-2611c8c9-0e66-4ef8-8339-66f340a866e2",
+    itemId: "oVQeB3l8prH5PBJwA1lEixxoA4WBpaCRvnoBz",
     userId: "6624bf1e0022238a30a6",
   },
 ];

@@ -1,35 +1,36 @@
 import Image from "next/image";
 
-import { BankCard } from "@/components/BankCard";
+import { Bank } from "@/components/Bank";
 import { RecentTransactions } from "@/components/RecentTransactions";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
 import { getAccounts, getTransactions } from "@/lib/actions/bank.actions";
 
 const Home = async ({ searchParams }: SearchParamProps) => {
-  const { accounts, totalBanks, totalCurrentBalance } = await getAccounts();
+  const accounts = await getAccounts();
+
+  if (!accounts) return;
   const appwriteItemId =
-    (searchParams?.id as string) || accounts[0].appwriteItemId;
+    (searchParams?.id as string) ||
+    (accounts && accounts?.data[0].appwriteItemId);
   // const user = await getLoggedInUser();
   // if (!user) redirect("/sign-in");
 
-  const account = accounts.find(
-    (account: Account) => account.appwriteItemId === appwriteItemId
+  const account = accounts?.data.find(
+    (account: Account) => account?.appwriteItemId === appwriteItemId
   );
-  const { transactions, hasMore } = await getTransactions(appwriteItemId);
-
-  console.log({ account });
+  const transactions = await getTransactions(appwriteItemId);
 
   return (
     <section className="no-scrollbar flex w-full flex-col max-xl:max-h-screen max-xl:overflow-y-scroll xl:flex-row">
       <div className="no-scrollbar flex w-full flex-1 flex-col gap-8 px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll">
         <DashboardHeader
-          accounts={accounts}
-          totalBanks={totalBanks}
-          totalCurrentBalance={totalCurrentBalance}
+          accounts={accounts?.data}
+          totalBanks={accounts?.totalBanks}
+          totalCurrentBalance={accounts?.totalCurrentBalance}
         />
         <RecentTransactions
-          transactions={transactions}
-          hasMore={hasMore}
+          transactions={transactions?.data}
+          hasMore={transactions?.hasMore}
           account={account}
           appwriteItemId={appwriteItemId}
         />
@@ -55,8 +56,8 @@ const Home = async ({ searchParams }: SearchParamProps) => {
           <section className="flex flex-1 flex-col gap-6 border-t pt-8">
             <h1 className="text-18 font-semibold text-gray-900">My Banks</h1>
             <div className="flex flex-col gap-3">
-              {accounts.map((account: Account) => (
-                <BankCard
+              {accounts?.data.map((account: Account) => (
+                <Bank
                   key={account.id}
                   account={account}
                   appwriteItemId={appwriteItemId}

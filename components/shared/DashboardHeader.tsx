@@ -1,14 +1,12 @@
 "use client";
 
-import { PlaidLink } from "@/components/shared/PlaidLink";
-import { TEST_USER_ID } from "@/constants";
 import { useUserContext } from "@/context/AuthContext";
 import { formatAmount } from "@/lib/utils";
 
 import DoughnutChart from "../DoughnutChart";
 
 export const DashboardHeader = ({
-  accounts,
+  accounts = [],
   totalBanks,
   totalCurrentBalance,
 }: {
@@ -17,7 +15,6 @@ export const DashboardHeader = ({
   totalCurrentBalance: number;
 }) => {
   const { user } = useUserContext();
-  const userId = TEST_USER_ID;
 
   return (
     <header className="flex flex-col justify-between gap-8">
@@ -39,12 +36,10 @@ export const DashboardHeader = ({
         </div>
 
         <article className="flex w-full flex-1 flex-col gap-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-16 font-semibold text-gray-900">
-              {totalBanks} Bank Accounts
-            </h1>
-            <PlaidLink user={userId} />
-          </div>
+          <h1 className="text-16 font-semibold text-gray-900">
+            {totalBanks} Bank Accounts Connected
+          </h1>
+
           <div className="flex flex-col gap-2">
             <h1 className="text-14 font-medium text-gray-600">
               Total Current Balance
