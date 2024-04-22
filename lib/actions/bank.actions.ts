@@ -48,6 +48,34 @@ export const getAccounts = async () => {
     console.error("An error occurred while getting the accounts:", error);
   }
 };
+export const getAccount = async (appwriteItemId: string) => {
+  try {
+    // Todo replace ITEMS with the list of items from DB
+
+    const bank = ITEMS.find((account) => account.id === appwriteItemId)!;
+    const response = await plaidClient.accountsGet({
+      access_token: bank?.accessToken,
+    });
+    const data = response.data.accounts[0];
+
+    // Format data
+    const account = {
+      id: data.account_id,
+      availableBalance: data.balances.available!,
+      currentBalance: data.balances.current!,
+      name: data.name,
+      officialName: data.official_name!,
+      mask: data.mask!,
+      type: data.type as string,
+      subtype: data.subtype! as string,
+      appwriteItemId: bank.id,
+    };
+
+    return parseStringify({ account });
+  } catch (error) {
+    console.error("An error occurred while getting the accounts:", error);
+  }
+};
 
 // GET TRANSACTIONS FROM PLAID
 // 1. Get user's accessToken from DB

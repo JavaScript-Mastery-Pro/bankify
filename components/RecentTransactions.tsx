@@ -1,13 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import ReactPaginate from "react-paginate";
 
-import BankCard from "./BankCard";
+import { BankCard } from "./BankCard";
 import NextPrevButton from "./shared/NextPrevButton";
 import TransactionTable from "./TransactionTable";
-import { Button } from "./ui/button";
 
-const RecentTransactions = ({
+export const RecentTransactions = ({
   transactions,
   hasMore,
   account,
@@ -24,12 +24,12 @@ const RecentTransactions = ({
         <h2 className="text-20 font-semibold text-gray-900">
           Recent transactions
         </h2>
-        <Button
-          variant="outline"
-          className="text-14 rounded-lg border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
+        <Link
+          href={`/transaction-history/?id=${appwriteItemId}`}
+          className="text-14 rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
         >
           View all
-        </Button>
+        </Link>
       </header>
       <BankCard account={account} appwriteItemId={appwriteItemId} type="full" />
       <TransactionTable transactions={transactions} />
@@ -52,5 +52,3 @@ const RecentTransactions = ({
     </section>
   );
 };
-
-export default RecentTransactions;

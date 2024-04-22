@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-import { sidebarLinks } from "@/constants";
+import { PlaidLink } from "@/components/shared/PlaidLink";
+import { TEST_USER_ID, sidebarLinks } from "@/constants";
 import { InitialUser, useUserContext } from "@/context/AuthContext";
 import { logoutAccount } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
@@ -14,6 +15,7 @@ const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { user, setUser, setIsAuthenticated } = useUserContext();
+  const userId = TEST_USER_ID;
 
   const handleLogOut = async () => {
     const loggedOut = await logoutAccount();
@@ -25,8 +27,11 @@ const Sidebar = () => {
 
   return (
     <section className="sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between  border-r border-gray-200 bg-white p-6 pt-8 text-white max-md:hidden lg:w-[355px]">
-      <nav className="flex flex-col gap-6">
-        <Link href="/" className="flex cursor-pointer items-center gap-1 px-4">
+      <nav className="flex flex-col gap-4">
+        <Link
+          href="/"
+          className="mb-4 flex cursor-pointer items-center gap-1 px-4"
+        >
           <Image
             src="/icons/logo.svg"
             alt="logo"
@@ -87,6 +92,7 @@ const Sidebar = () => {
             </Link>
           );
         })}
+        <PlaidLink user={userId} variant="ghost" />
       </nav>
       <footer
         className="flex cursor-pointer items-center gap-2 px-4 pb-8 pt-6"

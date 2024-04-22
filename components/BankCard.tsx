@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 import { cn, formUrlQuery, formatAmount } from "@/lib/utils";
 
-const BankCard = ({
+export const BankCard = ({
   account,
   appwriteItemId,
   type,
@@ -59,38 +59,38 @@ const BankCard = ({
           className="m-2 min-w-5"
         />
       </figure>
-      <div className="flex w-full flex-1 flex-col justify-center">
-        <div className="text-16 flex items-center justify-between gap-2 overflow-hidden">
+      <div className="flex w-full flex-1 flex-col justify-center gap-2">
+        <div className="text-14 flex flex-1 items-center justify-between gap-2 overflow-hidden">
           <h2
-            className={cn("font-bold text-pink-900 flex-1 line-clamp-1", {
+            className={cn("font-medium text-pink-900 flex-1 line-clamp-1", {
               "text-blue-900": account.subtype === "checking",
               "text-success-900": account.subtype === "savings",
             })}
           >
             {account.officialName}
           </h2>
-          <p
-            className={cn("font-bold text-[16px]", {
-              "text-blue-700": account.subtype === "checking",
-              "text-success-700": account.subtype === "savings",
-            })}
-          >
-            {formatAmount(account.currentBalance)}
-          </p>
+          {type === "full" && (
+            <p
+              className={cn("text-[14px]", {
+                "text-blue-700 bg-blue-700/5 px-3 py-1 rounded-full":
+                  account.subtype === "checking",
+                "text-success-700 bg-success-700/5 px-3 py-1 rounded-full":
+                  account.subtype === "savings",
+              })}
+            >
+              {account.subtype}
+            </p>
+          )}
         </div>
-        {type === "full" && (
-          <p
-            className={cn("text-[14px] flex-1 mt-1", {
-              "text-blue-700": account.subtype === "checking",
-              "text-success-700": account.subtype === "savings",
-            })}
-          >
-            {account.subtype}
-          </p>
-        )}
+        <p
+          className={cn("font-bold text-[16px]", {
+            "text-blue-700": account.subtype === "checking",
+            "text-success-700": account.subtype === "savings",
+          })}
+        >
+          {formatAmount(account.currentBalance)}
+        </p>
       </div>
     </div>
   );
 };
-
-export default BankCard;

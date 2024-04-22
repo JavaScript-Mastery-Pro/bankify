@@ -1,5 +1,3 @@
-import BankCard from "@/components/BankCard";
-
 export const sidebarLinks = [
   {
     imgURL: "/icons/home.svg",
@@ -15,17 +13,12 @@ export const sidebarLinks = [
   {
     imgURL: "/icons/deposit.svg",
     route: "/new-deposit",
-    label: "New Deposit",
+    label: "My Banks",
   },
   {
     imgURL: "/icons/payment-transfer.svg",
     route: "/payment-transfer",
     label: "Payment Transfer",
-  },
-  {
-    imgURL: "/icons/connect-bank.svg",
-    route: "/connect-bank-account",
-    label: "Connect Bank Account",
   },
 ];
 

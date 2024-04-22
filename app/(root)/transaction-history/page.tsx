@@ -1,50 +1,37 @@
-import Image from "next/image";
-
-import DepositModal from "@/components/DepositModal";
+import { BankCard } from "@/components/BankCard";
+import { SelectBank } from "@/components/shared/SelectBank";
 import TransactionHistoryTable from "@/components/TransactionHistoryTable";
-import { Button } from "@/components/ui/button";
-import { getTransactions } from "@/lib/actions/bank.actions";
+import { getAccounts, getTransactions } from "@/lib/actions/bank.actions";
 
 const TransactionHistory = async ({ searchParams }: SearchParamProps) => {
-  const appwriteItemId = (searchParams?.id as string) || "6624c02e00367128945e";
-
+  const { accounts } = await getAccounts();
+  const appwriteItemId =
+    (searchParams?.id as string) || accounts[0].appwriteItemId;
+  const account = accounts.find(
+    (account: Account) => account.appwriteItemId === appwriteItemId
+  );
   const { transactions } = await getTransactions(appwriteItemId);
+
   return (
     <section className="flex max-h-screen w-full flex-col gap-8 overflow-y-scroll bg-gray-25 p-8 xl:py-12">
-      <header className="flex w-full justify-between max-sm:flex-col max-sm:gap-4">
+      <header className="flex w-full items-start justify-between max-sm:flex-col max-sm:gap-4">
         <div className="flex flex-1 flex-col gap-1">
           <h1 className="text-30 font-semibold text-gray-900">
             Transaction History
           </h1>
           <p className="text-16 font-normal text-gray-600">
-            Welcome back, Adrian
+            Below is the list of {account.name}&apos;s recent transaction
+            records.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <DepositModal />
-          <Button className="text14_padding10 bg-bank-gradient text-white shadow-form">
-            Send fund
-          </Button>
-        </div>
+        <SelectBank appwriteItemId={appwriteItemId} accounts={accounts} />
       </header>
       <div className="flex flex-col gap-6">
-        <div className="flex w-full justify-between">
-          <h1 className="text-18 font-semibold text-gray-900">
-            Transaction history
-          </h1>
-          <Button
-            variant="outline"
-            className="text14_padding10 border-gray-300 text-gray-700 shadow-form"
-          >
-            <Image
-              src="/icons/filter-lines.svg"
-              width={20}
-              height={20}
-              alt="dollar icon"
-            />
-            &nbsp; Apply
-          </Button>
-        </div>
+        <BankCard
+          account={account}
+          appwriteItemId={appwriteItemId}
+          type="full"
+        />
         <TransactionHistoryTable transactions={transactions} />
       </div>
     </section>

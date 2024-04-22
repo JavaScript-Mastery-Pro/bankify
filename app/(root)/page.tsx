@@ -1,8 +1,7 @@
 import Image from "next/image";
 
-import BankCard from "@/components/BankCard";
-import CreditCard from "@/components/CreditCard";
-import RecentTransactions from "@/components/RecentTransactions";
+import { BankCard } from "@/components/BankCard";
+import { RecentTransactions } from "@/components/RecentTransactions";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
 import { getAccounts, getTransactions } from "@/lib/actions/bank.actions";
 
@@ -35,14 +34,14 @@ const Home = async ({ searchParams }: SearchParamProps) => {
           appwriteItemId={appwriteItemId}
         />
       </div>
-      <aside className="no-scrollbar flex w-full flex-col border-l border-gray-200 xl:max-h-screen xl:w-[390px] xl:overflow-y-scroll">
+      <aside className="no-scrollbar flex w-full flex-col border-l border-gray-200 xl:max-h-screen xl:w-[355px] xl:overflow-y-scroll">
         <section className="flex flex-col">
           <div className="h-[120px] w-full bg-gradient-mesh bg-cover bg-no-repeat" />
           <div className="relative flex px-6 max-xl:justify-center">
             <div className="flex-center absolute -top-8 size-24 rounded-full bg-white shadow-profile">
               <Image src="/icons/jsm.svg" width={80} height={80} alt="jsm" />
             </div>
-            <div className="flex flex-col pt-28">
+            <div className="flex flex-col pt-24">
               <h1 className="text-24 font-semibold text-gray-900">
                 Adrain Hajdin
               </h1>
@@ -53,9 +52,22 @@ const Home = async ({ searchParams }: SearchParamProps) => {
           </div>
         </section>
         <section className="flex flex-col justify-between gap-8 px-6 py-8">
-          <div className="flex flex-1 flex-col gap-6">
+          <section className="flex flex-1 flex-col gap-6 border-t pt-8">
+            <h1 className="text-18 font-semibold text-gray-900">My Banks</h1>
+            <div className="flex flex-col gap-3">
+              {accounts.map((account: Account) => (
+                <BankCard
+                  key={account.id}
+                  account={account}
+                  appwriteItemId={appwriteItemId}
+                  type="card"
+                />
+              ))}
+            </div>
+          </section>
+          {/* <div className="flex flex-1 flex-col gap-6">
             <header className="flex w-full justify-between">
-              <h1 className="text-18 font-semibold text-gray-900">My Banks</h1>
+              <h1 className="text-18 font-semibold text-gray-900">My Cards</h1>
               <div className="flex gap-2">
                 <Image
                   src="/icons/plus.svg"
@@ -87,20 +99,7 @@ const Home = async ({ searchParams }: SearchParamProps) => {
                 />
               </div>
             </div>
-          </div>
-          <section className="flex flex-1 flex-col gap-6 pt-10">
-            <h1 className="text-18 font-semibold text-gray-900">My Banks</h1>
-            <div className="flex flex-col gap-3">
-              {accounts.map((account: Account) => (
-                <BankCard
-                  key={account.id}
-                  account={account}
-                  appwriteItemId={appwriteItemId}
-                  type="card"
-                />
-              ))}
-            </div>
-          </section>
+          </div> */}
         </section>
       </aside>
     </section>

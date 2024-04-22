@@ -28,6 +28,9 @@
   .input-class {
     @apply text-16 placeholder:text-16 rounded-lg border border-gray-300 text-gray-500 placeholder:text-gray-500;
   }
+  .sheet-content button {
+    @apply focus:ring-0 focus-visible:ring-transparent focus:ring-offset-0 focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:border-none !important;
+  }
   .text14_padding10 {
     @apply text-14 px-4 py-2.5 font-semibold;
   }
