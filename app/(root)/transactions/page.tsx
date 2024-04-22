@@ -34,26 +34,28 @@ const TransactionHistory = async ({ searchParams }: SearchParamProps) => {
       </header>
       <div className="space-y-6">
         <div
-          className={`flex justify-between ${colors?.bg} border-y px-4 py-5`}
+          className={`flex justify-between bg-blue-25 ${colors?.bg} border-y px-4 py-5`}
         >
           <div className="flex flex-col gap-2">
-            <h2 className={`text-18 font-bold ${colors?.title}`}>
+            <h2 className={`text-18 font-bold text-blue-900 ${colors?.title}`}>
               {account.institutionName}
             </h2>
-            <p className={`text-14 ${colors?.subText}`}>
+            <p className={`text-14 text-blue-700 ${colors?.subText}`}>
               {account.officialName}
             </p>
-            <p className={`text-14 font-medium ${colors?.subText}`}>
+            <p
+              className={`text-14 font-medium text-blue-700 ${colors?.subText}`}
+            >
               ●●●● ●●●● ●●●● {account.mask}
             </p>
           </div>
-          <div className="flex flex-col items-end gap-2">
+          <div className="flex flex-col items-end gap-2 text-blue-700">
             <p className={`text-14 ${colors?.subText}`}>Current Balance</p>
             <p className={`text-18 text-right font-bold ${colors?.subText}`}>
               {formatAmount(account.currentBalance)}
             </p>
             <p
-              className={`text-12 w-fit rounded-full ${colors?.lightBg} px-3 py-1 ${colors?.subText}`}
+              className={`text-12 w-fit rounded-full bg-blue-100 ${colors?.lightBg} px-3 py-1 ${colors?.subText}`}
             >
               {account.type}
             </p>

@@ -40,7 +40,7 @@ export const Bank = ({
     <div
       onClick={handleBankChange}
       className={cn(
-        `gap-[18px] flex p-4 transition-all border border-transparent ${colors.bg}`,
+        `gap-[18px] flex p-4 transition-all border bg-blue-25 border-transparent ${colors.bg}`,
         {
           "shadow-sm border-blue-700": type === "card" && isActive,
           "rounded-xl": type === "card",
@@ -48,7 +48,9 @@ export const Bank = ({
         }
       )}
     >
-      <figure className={`flex-center h-fit rounded-full ${colors.lightBg}`}>
+      <figure
+        className={`flex-center h-fit rounded-full bg-blue-100 ${colors.lightBg}`}
+      >
         <Image
           src="/icons/connect-bank.svg"
           width={20}
@@ -60,19 +62,21 @@ export const Bank = ({
       <div className="flex w-full flex-1 flex-col justify-center gap-1">
         <div className="flex flex-1 items-center justify-between gap-2 overflow-hidden">
           <h2
-            className={`text-16 line-clamp-1 flex-1 font-bold ${colors.title}`}
+            className={`text-16 line-clamp-1 flex-1 font-bold text-blue-900 ${colors.title}`}
           >
             {account.institutionName}
           </h2>
           {type === "full" && (
             <p
-              className={`rounded-full px-3 py-1 text-[12px] font-medium ${colors.subText} ${colors.lightBg}`}
+              className={`rounded-full px-3 py-1 text-[12px] font-medium text-blue-700 ${colors.subText} ${colors.lightBg}`}
             >
               {account.subtype}
             </p>
           )}
         </div>
-        <p className={`text-[16px] font-medium ${colors.subText}`}>
+        <p
+          className={`text-[16px] font-medium text-blue-700 ${colors.subText}`}
+        >
           {formatAmount(account.currentBalance)}
         </p>
       </div>

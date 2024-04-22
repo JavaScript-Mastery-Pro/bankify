@@ -14,11 +14,11 @@ export const sidebarLinks = [
     route: "/transactions",
     label: "Transactions",
   },
-  {
-    imgURL: "/icons/payment-transfer.svg",
-    route: "/payment-transfer",
-    label: "Transfer",
-  },
+  // {
+  //   imgURL: "/icons/payment-transfer.svg",
+  //   route: "/payment-transfer",
+  //   label: "Transfer",
+  // },
 ];
 
 export const Banks: Bank[] = [
