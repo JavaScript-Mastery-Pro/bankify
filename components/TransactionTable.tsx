@@ -18,7 +18,7 @@ const CategoryBadge = ({ category }: { category: string }) => {
   return (
     <div
       className={cn(
-        "flex-center w-fit gap-1 rounded-2xl border-[1.5px] border-blue-600 py-[2px] pl-1.5 pr-2",
+        "flex-center truncate w-fit gap-1 rounded-2xl border-[1.5px] border-blue-600 py-[2px] pl-1.5 pr-2",
         {
           "border-pink-600": category === "Food and Drink",
           "border-success-600": ["Payment", "Bank Fees"].includes(category),
@@ -81,10 +81,10 @@ const TransactionTable = ({
             <TableCell className="px-0  pr-10">
               {formatAmount(transaction.amount)}
             </TableCell>
-            <TableCell className="px-0  pr-10">
+            <TableCell className="min-w-32  px-0 pr-10">
               {formatDateTime(new Date(transaction.date)).dateTime}
             </TableCell>
-            <TableCell className="px-0  pr-10 capitalize">
+            <TableCell className="min-w-32 px-0 pr-10 capitalize">
               {transaction.paymentChannel}
             </TableCell>
             <TableCell className="px-0 max-md:hidden">
