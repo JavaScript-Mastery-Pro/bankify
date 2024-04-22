@@ -1,4 +1,4 @@
-import { CreditCard } from "@/components/CreditCard";
+import { BankCard } from "@/components/BankCard";
 import { getAccounts } from "@/lib/actions/bank.actions";
 
 const page = async () => {
@@ -17,7 +17,7 @@ const page = async () => {
       <div className="flex flex-wrap gap-6">
         {accounts &&
           accounts.data.map((account: Account) => (
-            <CreditCard
+            <BankCard
               key={account.id}
               account={account}
               userName={"Adrian Hajdin"}

@@ -43,7 +43,7 @@ const TransactionHistory = async ({ searchParams }: SearchParamProps) => {
             <p className={`text-14 ${colors?.subText}`}>
               {account.officialName}
             </p>
-            <p className={`text-14 ${colors?.subText}`}>
+            <p className={`text-14 font-medium ${colors?.subText}`}>
               ●●●● ●●●● ●●●● {account.mask}
             </p>
           </div>

@@ -6,7 +6,7 @@ interface CreditCardProps {
   userName: string;
 }
 
-export const CreditCard = ({ account, userName }: CreditCardProps) => {
+export const BankCard = ({ account, userName }: CreditCardProps) => {
   return (
     <Link
       href={`/transactions/?id=${account.appwriteItemId}`}

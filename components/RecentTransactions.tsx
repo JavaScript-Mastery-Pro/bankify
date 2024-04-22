@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import ReactPaginate from "react-paginate";
 
 import { Bank } from "./Bank";
@@ -9,15 +10,28 @@ import TransactionTable from "./TransactionTable";
 
 export const RecentTransactions = ({
   transactions,
-  hasMore,
   account,
   appwriteItemId,
 }: {
   transactions: Transaction[];
-  hasMore: boolean;
   account: Account;
   appwriteItemId: string;
 }) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const transactionsPerPage = 10;
+  const pageCount = Math.ceil(transactions.length / transactionsPerPage);
+
+  const handlePageClick = (data: { selected: number }) => {
+    setCurrentPage(data.selected);
+  };
+
+  const indexOfLastTransaction = (currentPage + 1) * transactionsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+  const currentTransactions = transactions.slice(
+    indexOfFirstTransaction,
+    indexOfLastTransaction
+  );
+
   return (
     <section className="flex w-full flex-col gap-6">
       <header className="flex items-center justify-between">
@@ -32,20 +46,23 @@ export const RecentTransactions = ({
         </Link>
       </header>
       <Bank account={account} appwriteItemId={appwriteItemId} type="full" />
-      <TransactionTable transactions={transactions} />
-      {transactions.length > 5 && (
+      <TransactionTable transactions={currentTransactions} />
+      {transactions.length > 10 && (
         <div className="flex-center w-full pt-5">
           <ReactPaginate
             breakLabel="..."
             nextLabel={<NextPrevButton type="next" />}
-            pageRangeDisplayed={3}
-            pageCount={10}
+            pageCount={pageCount}
+            onPageChange={handlePageClick}
+            forcePage={currentPage}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
             previousLabel={<NextPrevButton type="prev" />}
-            renderOnZeroPageCount={null}
-            className="flex-center w-full gap-3"
-            pageClassName="flex-center border text-gray-600 rounded border-sky-1 size-10 text-14 font-semibold"
-            nextClassName="flex-center border rounded border-sky-1 size-10 w-fit px-4"
-            previousClassName="flex-center border rounded border-sky-1 size-10 w-fit px-4"
+            containerClassName="flex flex-row gap-2 items-center"
+            pageClassName="cursor-pointer mx-1 py-1 px-3 rounded hover:bg-gray-200 transition-all"
+            activeClassName="bg-blue-500 text-white hover:text-gray-500 transition-all" //
+            previousLinkClassName="px-3 py-1 rounded "
+            nextLinkClassName="px-3 py-1 rounded"
           />
         </div>
       )}

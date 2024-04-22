@@ -134,7 +134,7 @@ export const getTransactions = async (appwriteItemId: string) => {
 
     revalidatePath("/");
 
-    return parseStringify({ data: transactions, hasMore });
+    return parseStringify({ data: transactions });
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
   }
