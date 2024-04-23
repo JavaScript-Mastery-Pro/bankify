@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { PlaidLink } from "@/components/shared/PlaidLink";
-import { signUp } from "@/lib/actions/user.actions";
+import { createEmailSession, signIn, signUp } from "@/lib/actions/user.actions";
 
 import { Button } from "../ui/button";
 import {
@@ -65,6 +65,14 @@ const AuthForm = ({ type }: AuthFormProps) => {
         const response = await signUp(user);
 
         setUser(response.user);
+      }
+
+      if (type === "sign-in") {
+        const response = await signIn({
+          email: data.email,
+          password: data.password,
+        })
+        
       }
 
       // ========================================
