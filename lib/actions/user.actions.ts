@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { Client, Account, ID, Databases, Query } from "node-appwrite";
+import { Client, Account, ID, Databases, Query, Users } from "node-appwrite";
 import { CountryCode, Products } from "plaid";
 
 import { plaidClient } from "@/lib/plaid/config";
@@ -20,6 +20,9 @@ export async function createAdminClient() {
     get database() {
       return new Databases(client);
     },
+    get user() {
+      return new Users(client);
+    },
   };
 }
 
@@ -28,13 +31,6 @@ export async function createSessionClient() {
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
 
-  // // get cookie from request 'appwrite-cookie'
-  // const appWriteCookie = cookies().get("appwrite-cookie");
-
-  // if (appWriteCookie) {
-  //   client.setKey(appWriteCookie.value);
-  // }
-
   return {
     get account() {
       return new Account(client);
@@ -42,7 +38,6 @@ export async function createSessionClient() {
   };
 }
 
-// CREATE EMAIL SESSION
 export async function createEmailSession(email: string, password: string) {
   try {
     const response = await fetch(
@@ -76,31 +71,47 @@ export async function createEmailSession(email: string, password: string) {
 
 // SIGN UP
 export const signUp = async ({ name, email, password }: SignUpParams) => {
-  // create appwrite user
-  const { account } = await createSessionClient();
-  const newAccount = await account.create(ID.unique(), email, password, name);
-
-  // create new user document
-  const { database } = await createAdminClient();
-  const newUser = await database.createDocument(
-    process.env.APPWRITE_DATABASE_ID!,
-    process.env.APPWRITE_USER_COLLECTION_ID!,
-    ID.unique(),
-    {
-      name,
+  try {
+    // create appwrite user
+    const { user } = await createAdminClient();
+    await user.create(
+      ID.unique(),
       email,
+      undefined, // password
       password,
-      userId: newAccount.$id,
-    }
-  );
+      name
+    );
 
-  // create email session
-  await createEmailSession(email, password);
+    // get userId from session
+    const newUser = await createEmailSession(email, password);
 
-  return JSON.parse(JSON.stringify({ id: newUser.$id, name }));
+    return JSON.parse(JSON.stringify({ id: newUser.$id, name }));
+  } catch (error) {
+    console.error("Error", error);
+    return null;
+  }
 };
 
-// GET LOGGEDIN USER
+export const signIn = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  try {
+    const response = await createEmailSession(email, password);
+
+    // get user info
+    const user = await getUserInfo(response.$id);
+
+    console.log({ user });
+  } catch (error) {
+    console.error("Error", error);
+    return null;
+  }
+};
+
 export async function getLoggedInUser() {
   try {
     const appWriteCookie = cookies().get("appwrite-cookie");
@@ -122,17 +133,9 @@ export async function getLoggedInUser() {
     );
 
     const result = await response.json();
+    const user = await getUserInfo(result.$id);
 
-    const { database } = await createAdminClient();
-    const user = await database.listDocuments(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_USER_COLLECTION_ID!,
-      [Query.equal("userId", [result.$id])]
-    );
-
-    console.log({ documents: user.documents, total: user.total });
-
-    return JSON.parse(JSON.stringify(result));
+    return JSON.parse(JSON.stringify(user));
   } catch (error) {
     console.error("Error", error);
     return null;
@@ -225,6 +228,25 @@ export async function logoutAccount() {
     cookies().delete("appwrite-cookie");
     await account.deleteSession("current");
   } catch (error) {
+    return null;
+  }
+}
+
+export async function getUserInfo(userId: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    const user = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_USER_COLLECTION_ID!,
+      [Query.equal("userId", [userId])]
+    );
+
+    if (!user.documents.length) return null;
+
+    return JSON.parse(JSON.stringify(user.documents[0]));
+  } catch (error) {
+    console.error("Error", error);
     return null;
   }
 }
