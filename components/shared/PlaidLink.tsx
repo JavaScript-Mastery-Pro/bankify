@@ -17,7 +17,7 @@ import {
 import { Button } from "../ui/button";
 
 type PlaidLinkProps = {
-  user: string;
+  user: User;
   variant?: "primary" | "ghost";
 };
 
@@ -25,13 +25,16 @@ export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
   const router = useRouter();
   const [token, setToken] = useState("");
 
+  console.log({ user });
+  console.log({ token });
+
   useEffect(() => {
     const getLinkToken = async () => {
-      const { linkToken } = await createLinkToken(user);
-      setToken(linkToken);
+      const data = await createLinkToken(user);
+      setToken(data?.linkToken);
     };
     getLinkToken();
-  }, []);
+  }, [user]);
 
   const onSuccess = useCallback<PlaidLinkOnSuccess>(
     async (public_token: string, metadata: PlaidLinkOnSuccessMetadata) => {
@@ -41,7 +44,7 @@ export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
       });
       router.push("/");
     },
-    [user]
+    [user.id]
   );
 
   const config: Parameters<typeof usePlaidLink>[0] = {

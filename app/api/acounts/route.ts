@@ -10,8 +10,6 @@ export const GET = async (request: Request) => {
       access_token: accessToken,
     });
 
-    console.log({ response });
-
     return NextResponse.json(response.data);
   } catch (error) {
     console.error(

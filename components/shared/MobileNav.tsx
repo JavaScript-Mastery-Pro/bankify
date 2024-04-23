@@ -79,7 +79,10 @@ const MobileNav = () => {
                     </SheetClose>
                   );
                 })}
-                <PlaidLink user={userId} variant="ghost" />
+                <PlaidLink
+                  user={{ id: userId, name: "John Doe" }}
+                  variant="ghost"
+                />
               </nav>
             </SheetClose>
             <footer

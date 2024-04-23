@@ -20,11 +20,11 @@ declare type LoginUser = {
 
 declare type User = {
   id: string;
-  accountId: string;
-  stripeId: string;
+  accountId?: string;
+  stripeId?: string;
   name: string;
-  email: string;
-  image: string;
+  email?: string;
+  image?: string;
 };
 
 declare type NewUserParams = {

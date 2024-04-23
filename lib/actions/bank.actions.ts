@@ -71,10 +71,14 @@ export const getAccount = async (appwriteItemId: string) => {
     });
     const accountData = accountsResponse.data.accounts[0];
 
+    // console.log("=================== accountData", accountData);
+
     // get institution info from plaid
     const institution = await getInstitution(
       accountsResponse.data.item.institution_id!
     );
+
+    // console.log("=================== institution", institution);
 
     const transactions = await getTransactions(appwriteItemId);
 
@@ -153,8 +157,7 @@ export const getTransactions = async (appwriteItemId: string) => {
 };
 
 export const transferFund = async ({
-  appwriteItemId,
-  amount = "5.00",
+  amount,
   description,
   name,
   userId,
@@ -170,9 +173,6 @@ export const transferFund = async ({
   userId: string;
 }) => {
   try {
-    // const accessToken = ITEMS.filter((bank) => bank.id === appwriteItemId)[0]
-    //   .accessToken;
-
     const transferIntentCreateRequest = {
       mode: "PAYMENT" as TransferIntentCreateMode,
       amount,
@@ -205,12 +205,15 @@ export const transferFund = async ({
       transfer: {
         intent_id: transferIntentId as any,
       },
-      link_customization_name: "bankify" as any,
+      link_customization_name: "horizon" as any,
     };
     const linkTokenResponse =
       await plaidClient.linkTokenCreate(linkTokenParams);
 
     // console.log("==========linkTokenResponse.data", linkTokenResponse.data);
+
+    // const accessToken = ITEMS.filter((bank) => bank.id === appwriteItemId)[0]
+    //   .accessToken;
 
     // const transferAuthorizatioRequest: TransferAuthorizationCreateRequest = {
     //   access_token: accessToken,

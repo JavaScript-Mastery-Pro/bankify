@@ -28,6 +28,7 @@ const page = async () => {
           </div>
         </div>
       </div>
+      {/* <RightSidebar transactions={account?.transactions} /> */}
     </section>
   );
 };

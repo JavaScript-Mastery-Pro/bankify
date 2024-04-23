@@ -27,7 +27,7 @@ interface AuthFormProps {
 }
 
 const AuthForm = ({ type }: AuthFormProps) => {
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
@@ -62,9 +62,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
         };
 
         // Create appwrite user account & link token
-        const response = await signUp(user);
+        const newUser = await signUp(user);
 
-        setUser(response.user);
+        setUser(newUser);
       }
 
       // ========================================

@@ -85,7 +85,7 @@ const Sidebar = () => {
             </Link>
           );
         })}
-        <PlaidLink user={userId} variant="ghost" />
+        <PlaidLink user={{ id: userId, name: "John Doe" }} variant="ghost" />
       </nav>
       <footer
         className="flex cursor-pointer items-center justify-between gap-2 py-6"

@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { Client, Account, ID, Databases, Query } from "node-appwrite";
 import { CountryCode, Products } from "plaid";
@@ -96,7 +97,7 @@ export const signUp = async ({ name, email, password }: SignUpParams) => {
   // create email session
   await createEmailSession(email, password);
 
-  return JSON.parse(JSON.stringify({ user: newUser.$id }));
+  return JSON.parse(JSON.stringify({ id: newUser.$id, name }));
 };
 
 // GET LOGGEDIN USER
@@ -139,13 +140,13 @@ export async function getLoggedInUser() {
 }
 
 // CREATE PLAID LINK TOKEN
-export const createLinkToken = async (userId: string) => {
+export const createLinkToken = async (user: User) => {
   try {
     const tokeParams = {
       user: {
-        client_user_id: userId,
+        client_user_id: user.id,
       },
-      client_name: "Horizon",
+      client_name: user.name,
       products: ["auth"] as Products[],
       language: "en",
       country_codes: ["US"] as CountryCode[],
@@ -168,10 +169,8 @@ export const exchangePublicToken = async ({
   user,
 }: {
   publicToken: string;
-  user: string;
+  user: User;
 }) => {
-  console.log({ publicToken, user });
-
   try {
     const response = await plaidClient.itemPublicTokenExchange({
       public_token: publicToken,
@@ -184,19 +183,26 @@ export const exchangePublicToken = async ({
 
     const { database } = await createAdminClient();
 
-    // create add user to the user collection
-    const newItem = await database.createDocument(
+    // get account info from plaid
+    const accountsResponse = await plaidClient.accountsGet({
+      access_token: accessToken,
+    });
+    const accountData = accountsResponse.data.accounts[0];
+
+    // create new user to the user collection
+    await database.createDocument(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_ITEM_COLLECTION_ID!,
       ID.unique(),
       {
         itemId,
         accessToken,
-        user,
+        user: user.id,
+        accountId: accountData.account_id,
       }
     );
 
-    console.log({ newItem });
+    revalidatePath("/");
 
     return JSON.parse(
       JSON.stringify({

@@ -2,6 +2,7 @@ import { RecentTransactions } from "@/components/RecentTransactions";
 import { HeaderBox } from "@/components/shared/HeaderBox";
 import { RightSidebar } from "@/components/shared/RightSidebar";
 import { TotalBalanceBox } from "@/components/shared/TotalBalanceBox";
+// import { TEST_USER_ID } from "@/constants";
 import {
   getAccount,
   getAccounts,
@@ -20,12 +21,12 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
 
   // const data = {
   //   appwriteItemId,
-  //   senderAccountId: "1ZWwERd3NZfxjzgxA783CQGjpor7A4ipVx4Gq",
-  //   receiverAccountId: "6z63RDWx3WTANod5ZKLmCnM6vGNanzCn4VX1b",
+  //   senderAccountId: "X7LMJkE5vnskJBxwPeXaUWDBxAyZXwi9DNEWJ",
+  //   receiverAccountId: "x1GQb1lDrDHWX4BwkqQbI4qpQP1lL6tJ3VVo9",
   //   amount: "5.00",
   //   description: "Transfer note",
   //   name: "John Doe",
-  //   userId: "6624bf1e0022238a30a6",
+  //   userId: TEST_USER_ID,
   // };
   // const transferData = await transferFund(data);
 
