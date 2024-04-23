@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { PlaidLink } from "@/components/shared/PlaidLink";
-import { createEmailSession, signIn, signUp } from "@/lib/actions/user.actions";
+import { signIn, signUp } from "@/lib/actions/user.actions";
 
 import { Button } from "../ui/button";
 import {
@@ -29,6 +29,8 @@ interface AuthFormProps {
 const AuthForm = ({ type }: AuthFormProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log({ user });
 
   const formSchema = z.object({
     name:
@@ -71,8 +73,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
         const response = await signIn({
           email: data.email,
           password: data.password,
-        })
-        
+        });
+
+        console.log("=============signin response", response);
       }
 
       // ========================================
