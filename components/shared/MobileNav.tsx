@@ -4,18 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { PlaidLink } from "@/components/shared/PlaidLink";
 import {
   Sheet,
   SheetClose,
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { sidebarLinks } from "@/constants";
+import { TEST_USER_ID, sidebarLinks } from "@/constants";
 import { logoutAccount } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
 
 const MobileNav = () => {
   const pathname = usePathname();
+  const userId = TEST_USER_ID;
 
   return (
     <section className="w-full max-w-[264px]">
@@ -77,6 +79,7 @@ const MobileNav = () => {
                     </SheetClose>
                   );
                 })}
+                <PlaidLink user={userId} variant="ghost" />
               </nav>
             </SheetClose>
             <footer

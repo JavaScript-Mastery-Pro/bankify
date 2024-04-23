@@ -24,6 +24,25 @@
   -webkit-backdrop-filter: blur(4px);
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #dddddd;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #5c5c7b;
+  border-radius: 50px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #7878a3;
+}
+
 @layer utilities {
   .input-class {
     @apply text-16 placeholder:text-16 rounded-lg border border-gray-300 text-gray-500 placeholder:text-gray-500;
@@ -34,8 +53,13 @@
   .text14_padding10 {
     @apply text-14 px-4 py-2.5 font-semibold;
   }
+
   .flex-center {
     @apply flex items-center justify-center;
+  }
+
+  .header-2 {
+    @apply text-18 font-semibold text-gray-900;
   }
   .text-10 {
     @apply text-[10px] leading-[14px];
@@ -66,5 +90,99 @@
   }
   .text-16 {
     @apply text-[16px] leading-[24px];
+  }
+
+  /* Home */
+  .home {
+    @apply no-scrollbar flex w-full flex-row max-xl:max-h-screen max-xl:overflow-y-scroll;
+  }
+  .home-content {
+    @apply no-scrollbar flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll;
+  }
+  .home-header {
+    @apply flex flex-col justify-between gap-8;
+  }
+  .total-balance {
+    @apply flex w-full items-center gap-4 rounded-xl border border-gray-200 p-4 shadow-chart sm:gap-6 sm:p-6;
+  }
+  .total-balance-chart {
+    @apply flex size-full max-w-[100px] items-center sm:max-w-[120px];
+  }
+  .total-balance-label {
+    @apply text-14 font-medium text-gray-600;
+  }
+  .total-balance-amount {
+    @apply text-24 lg:text-30 flex-1 font-semibold text-gray-900;
+  }
+  .recent-transactions {
+    @apply flex w-full flex-col gap-6;
+  }
+  .view-all-btn {
+    @apply text-14 rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700;
+  }
+  .recent-transactions {
+    @apply flex w-full flex-col gap-6;
+  }
+  .recent-transactions-label {
+    @apply text-20 md:text-24 font-semibold text-gray-900;
+  }
+  .recent-transactions-tablist {
+    @apply custom-scrollbar mb-8 flex w-full flex-nowrap;
+  }
+  /* Right sidebar */
+  .right-sidebar {
+    @apply no-scrollbar hidden h-screen max-h-screen flex-col border-l border-gray-200 xl:flex min-w-[300px] 2xl:min-w-[355px] xl:overflow-y-scroll !important;
+  }
+  .profile-banner {
+    @apply h-[120px] w-full bg-gradient-mesh bg-cover bg-no-repeat;
+  }
+  .profile {
+    @apply relative flex px-6 max-xl:justify-center;
+  }
+  .profile-img {
+    @apply flex-center absolute -top-8 size-24 rounded-full bg-white p-2 shadow-profile;
+  }
+  .profile-details {
+    @apply flex flex-col pt-24;
+  }
+  .profile-name {
+    @apply text-24 font-semibold text-gray-900;
+  }
+  .profile-email {
+    @apply text-16 font-normal text-gray-600;
+  }
+  .banks {
+    @apply flex border-t flex-col justify-between gap-8 px-6 py-4;
+  }
+  .banks {
+    @apply flex flex-col justify-between gap-8 px-6 py-8;
+  }
+
+  /* My Banks */
+  .my-banks {
+    @apply flex h-screen max-h-screen w-full flex-col gap-8 bg-gray-25 p-8 xl:py-12;
+  }
+
+  /* My Banks */
+  .transactions {
+    @apply flex max-h-screen w-full flex-col gap-8 overflow-y-scroll bg-gray-25 p-8 xl:py-12;
+  }
+  .transactions-header {
+    @apply flex w-full flex-col items-start justify-between gap-8 md:flex-row;
+  }
+  .transactions-account {
+    @apply flex flex-col justify-between gap-4 rounded-lg border-y bg-blue-600 px-4 py-5 md:flex-row;
+  }
+  .transactions-account-balance {
+    @apply flex-center flex-col  gap-2 rounded-md bg-blue-25/20 px-4 py-2 text-white;
+  }
+  .header-box {
+    @apply flex flex-col gap-1;
+  }
+  .header-box-title {
+    @apply text-24 lg:text-30 font-semibold text-gray-900;
+  }
+  .header-box-subtext {
+    @apply text-14 lg:text-16 font-normal text-gray-600;
   }
 }

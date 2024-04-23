@@ -5,20 +5,15 @@ export const sidebarLinks = [
     label: "Home",
   },
   {
-    imgURL: "/icons/deposit.svg",
-    route: "/banks",
+    imgURL: "/icons/dollar-circle.svg",
+    route: "/my-banks",
     label: "My Banks",
   },
   {
     imgURL: "/icons/transaction.svg",
-    route: "/transactions",
-    label: "Transactions",
+    route: "/transaction-history",
+    label: "Transaction History",
   },
-  // {
-  //   imgURL: "/icons/payment-transfer.svg",
-  //   route: "/payment-transfer",
-  //   label: "Transfer",
-  // },
 ];
 
 export const Banks: Bank[] = [

@@ -1,71 +1,81 @@
 "use client";
 
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import Link from "next/link";
-import { useState } from "react";
-import ReactPaginate from "react-paginate";
 
 import { Bank } from "./Bank";
-import NextPrevButton from "./shared/NextPrevButton";
+import { BankTabItem } from "./shared/BankTabItem";
+import { Pagination } from "./shared/Pagination";
 import TransactionTable from "./TransactionTable";
 
 export const RecentTransactions = ({
+  accounts,
   transactions,
-  account,
   appwriteItemId,
+  page = 1,
 }: {
+  accounts: Account[];
   transactions: Transaction[];
-  account: Account;
   appwriteItemId: string;
+  page: number;
 }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const transactionsPerPage = 10;
-  const pageCount = Math.ceil(transactions.length / transactionsPerPage);
+  const limit = 10;
+  const totalPages = Math.ceil(transactions.length / limit);
 
-  const handlePageClick = (data: { selected: number }) => {
-    setCurrentPage(data.selected);
-  };
-
-  const indexOfLastTransaction = (currentPage + 1) * transactionsPerPage;
-  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+  const indexOfLastTransaction = page * limit;
+  const indexOfFirstTransaction = indexOfLastTransaction - limit;
   const currentTransactions = transactions.slice(
     indexOfFirstTransaction,
     indexOfLastTransaction
   );
 
   return (
-    <section className="flex w-full flex-col gap-6">
+    <section className="recent-transactions">
       <header className="flex items-center justify-between">
-        <h2 className="text-20 font-semibold text-gray-900">
-          Recent transactions
-        </h2>
+        <h2 className="recent-transactions-label">Recent transactions</h2>
         <Link
           href={`/transactions/?id=${appwriteItemId}`}
-          className="text-14 rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
+          className="view-all-btn"
         >
           View all
         </Link>
       </header>
-      <Bank account={account} appwriteItemId={appwriteItemId} type="full" />
-      <TransactionTable transactions={currentTransactions} />
-      {transactions.length > 10 && (
-        <div className="flex-center w-full pt-5">
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel={<NextPrevButton type="next" />}
-            pageCount={pageCount}
-            onPageChange={handlePageClick}
-            forcePage={currentPage}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            previousLabel={<NextPrevButton type="prev" />}
-            containerClassName="flex flex-row gap-2 items-center"
-            pageClassName="cursor-pointer mx-1 py-1 px-3 rounded hover:bg-gray-200 transition-all"
-            activeClassName="bg-blue-500 text-white hover:text-gray-500 transition-all" //
-            previousLinkClassName="px-3 py-1 rounded "
-            nextLinkClassName="px-3 py-1 rounded"
-          />
-        </div>
-      )}
+
+      <Tabs defaultValue={appwriteItemId} className="w-full">
+        <TabsList className="recent-transactions-tablist">
+          {accounts.map((account: Account) => (
+            <TabsTrigger key={account.id} value={account.appwriteItemId}>
+              <BankTabItem
+                key={account.id}
+                account={account}
+                appwriteItemId={appwriteItemId}
+              />
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {accounts.map((account: Account) => (
+          <TabsContent
+            value={account.appwriteItemId}
+            key={account.id}
+            className="space-y-4"
+          >
+            <Bank
+              account={account}
+              appwriteItemId={appwriteItemId}
+              type="full"
+            />
+
+            <TransactionTable transactions={currentTransactions} />
+
+            {totalPages > 1 && (
+              <div className="my-4 w-full">
+                <Pagination totalPages={totalPages} page={page} />
+              </div>
+            )}
+          </TabsContent>
+        ))}
+      </Tabs>
     </section>
   );
 };

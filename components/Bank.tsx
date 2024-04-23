@@ -32,8 +32,6 @@ export const Bank = ({
     router.push(newUrl, { scroll: false });
   };
 
-  console.log(account);
-
   const colors = getAccountTypeColors(account?.type as AccountTypes);
 
   return (

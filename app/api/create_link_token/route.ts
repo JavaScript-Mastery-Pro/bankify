@@ -10,7 +10,7 @@ export const POST = async (request: Request) => {
     user: {
       client_user_id: userId,
     },
-    client_name: "Bankify",
+    client_name: "Horizon",
     products: ["auth"] as Products[],
     language: "en",
     country_codes: ["US"] as CountryCode[],

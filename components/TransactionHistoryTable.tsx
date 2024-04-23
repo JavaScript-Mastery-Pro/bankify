@@ -1,51 +1,30 @@
 "use client";
 
-import { useState } from "react";
-import ReactPaginate from "react-paginate";
-
-import NextPrevButton from "./shared/NextPrevButton";
+import { Pagination } from "./shared/Pagination";
 import TransactionTable from "./TransactionTable";
 
 const TransactionHistoryTable = ({
   transactions,
+  page,
 }: {
   transactions: Transaction[];
+  page: number;
 }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const transactionsPerPage = 10;
-  const pageCount = Math.ceil(transactions.length / transactionsPerPage);
+  const limit = 10;
+  const totalPages = Math.ceil(transactions.length / limit);
 
-  const handlePageClick = (data: { selected: number }) => {
-    setCurrentPage(data.selected);
-  };
-
-  const indexOfLastTransaction = (currentPage + 1) * transactionsPerPage;
-  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+  const indexOfLastTransaction = page * limit;
+  const indexOfFirstTransaction = indexOfLastTransaction - limit;
   const currentTransactions = transactions.slice(
     indexOfFirstTransaction,
     indexOfLastTransaction
   );
-
   return (
     <section className="flex w-full flex-col gap-6">
       <TransactionTable transactions={currentTransactions} />
-      {transactions.length > 10 && (
-        <div className="flex w-full justify-center pt-5">
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel={<NextPrevButton type="next" />}
-            pageCount={pageCount}
-            onPageChange={handlePageClick}
-            forcePage={currentPage}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            previousLabel={<NextPrevButton type="prev" />}
-            containerClassName="flex flex-row gap-2 items-center"
-            pageClassName="cursor-pointer mx-1 py-1 px-3 rounded hover:bg-gray-200 transition-all"
-            activeClassName="bg-blue-500 text-white hover:text-gray-500 transition-all" //
-            previousLinkClassName="px-3 py-1 rounded "
-            nextLinkClassName="px-3 py-1 rounded"
-          />
+      {totalPages > 1 && (
+        <div className="my-4 w-full">
+          <Pagination totalPages={totalPages} page={page} />
         </div>
       )}
     </section>

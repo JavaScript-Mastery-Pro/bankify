@@ -26,18 +26,18 @@ const Sidebar = () => {
   };
 
   return (
-    <section className="sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between  border-r border-gray-200 bg-white p-4 pt-8 text-white max-md:hidden  xl:p-6 2xl:w-[355px]">
+    <section className="sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between  border-r border-gray-200 bg-white pt-8 text-white max-md:hidden sm:p-4  xl:p-6 2xl:w-[355px]">
       <nav className="flex flex-col gap-4">
-        <Link href="/" className="mb-4 flex cursor-pointer items-center gap-1">
+        <Link href="/" className="flex cursor-pointer items-center gap-2">
           <Image
             src="/icons/logo.svg"
             alt="logo"
             width={34}
             height={34}
-            className="size-[24px] max-xl:size-14"
+            className="size-[24px]  max-xl:size-14"
           />
-          <h1 className="2xl:text-26 font-ibm-plex-serif  text-[24px] font-bold text-black-1 max-xl:hidden">
-            BANKIFY
+          <h1 className="2xl:text-26 font-ibm-plex-serif text-[26px] font-bold text-black-1 max-xl:hidden">
+            Horizon
           </h1>
         </Link>
         <div className="flex gap-1 rounded-lg border px-3 max-xl:hidden 2xl:px-4">
@@ -59,7 +59,7 @@ const Sidebar = () => {
               href={item.route}
               key={item.label}
               className={cn(
-                "flex gap-3 items-center p-3 2xl:p-4 rounded-lg justify-center xl:justify-start",
+                "flex gap-3 items-center py-1 md:p-3 2xl:p-4 rounded-lg justify-center xl:justify-start",
                 {
                   "bg-bank-gradient": isActive,
                 }
@@ -88,7 +88,7 @@ const Sidebar = () => {
         <PlaidLink user={userId} variant="ghost" />
       </nav>
       <footer
-        className="flex cursor-pointer items-center gap-2 px-4 pb-8 pt-6"
+        className="flex cursor-pointer items-center justify-between gap-2 py-6"
         onClick={handleLogOut}
       >
         <Image

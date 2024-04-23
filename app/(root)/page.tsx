@@ -1,72 +1,46 @@
-import Image from "next/image";
-
-import { Bank } from "@/components/Bank";
 import { RecentTransactions } from "@/components/RecentTransactions";
-import { DashboardHeader } from "@/components/shared/DashboardHeader";
-import { getAccounts, getTransactions } from "@/lib/actions/bank.actions";
+import { HeaderBox } from "@/components/shared/HeaderBox";
+import { RightSidebar } from "@/components/shared/RightSidebar";
+import { TotalBalanceBox } from "@/components/shared/TotalBalanceBox";
+import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 
-const Home = async ({ searchParams }: SearchParamProps) => {
+const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
+  const currentPage = Number(page as string) || 1;
   const accounts = await getAccounts();
-
   if (!accounts) return;
-  const appwriteItemId =
-    (searchParams?.id as string) ||
-    (accounts && accounts?.data[0].appwriteItemId);
-  // const user = await getLoggedInUser();
-  // if (!user) redirect("/sign-in");
 
-  const account = accounts?.data.find(
-    (account: Account) => account?.appwriteItemId === appwriteItemId
-  );
-  const transactions = await getTransactions(appwriteItemId);
+  const accountsData = accounts?.data;
+  const appwriteItemId = (id as string) || accountsData[0].appwriteItemId;
+
+  const account = await getAccount(appwriteItemId);
 
   return (
-    <section className="no-scrollbar flex w-full flex-row max-xl:max-h-screen max-xl:overflow-y-scroll">
-      <div className="no-scrollbar flex w-full flex-1 flex-col gap-8 px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll">
-        <DashboardHeader
-          accounts={accounts?.data}
-          totalBanks={accounts?.totalBanks}
-          totalCurrentBalance={accounts?.totalCurrentBalance}
-        />
+    <section className="home">
+      <div className="home-content">
+        <header className="home-header">
+          <HeaderBox
+            type="greeting"
+            title="Welcome,"
+            user="Adrian"
+            subtext="Access & manage your account and transactions efficiently."
+          />
+
+          <TotalBalanceBox
+            accounts={accountsData}
+            totalBanks={accounts?.totalBanks}
+            totalCurrentBalance={accounts?.totalCurrentBalance}
+          />
+        </header>
+
         <RecentTransactions
-          transactions={transactions?.data}
-          account={account}
+          accounts={accountsData}
+          transactions={account?.transactions}
           appwriteItemId={appwriteItemId}
+          page={currentPage}
         />
       </div>
-      <aside className="no-scrollbar hidden h-screen max-h-screen flex-col border-l border-gray-200 xl:flex xl:w-[355px] xl:overflow-y-scroll">
-        <section className="flex flex-col">
-          <div className="h-[120px] w-full bg-gradient-mesh bg-cover bg-no-repeat" />
-          <div className="relative flex px-6 max-xl:justify-center">
-            <div className="flex-center absolute -top-8 size-24 rounded-full bg-white shadow-profile">
-              <Image src="/icons/jsm.svg" width={80} height={80} alt="jsm" />
-            </div>
-            <div className="flex flex-col pt-24">
-              <h1 className="text-24 font-semibold text-gray-900">
-                Adrain Hajdin
-              </h1>
-              <p className="text-16 font-normal text-gray-600">
-                adrian@jsmastery.pro
-              </p>
-            </div>
-          </div>
-        </section>
-        <section className="flex flex-col justify-between gap-8 px-6 py-8">
-          <section className="flex flex-1 flex-col gap-6 border-t pt-8">
-            <h1 className="text-18 font-semibold text-gray-900">My Banks</h1>
-            <div className="flex flex-col gap-3">
-              {accounts?.data.map((account: Account) => (
-                <Bank
-                  key={account.id}
-                  account={account}
-                  appwriteItemId={appwriteItemId}
-                  type="card"
-                />
-              ))}
-            </div>
-          </section>
-        </section>
-      </aside>
+
+      <RightSidebar />
     </section>
   );
 };

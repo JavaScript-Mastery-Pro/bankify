@@ -13,7 +13,6 @@ import {
   createLinkToken,
   exchangePublicToken,
 } from "@/lib/actions/user.actions";
-import { cn } from "@/lib/utils";
 
 import { Button } from "../ui/button";
 
@@ -42,7 +41,7 @@ export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
       });
       router.push("/");
     },
-    []
+    [user]
   );
 
   const config: Parameters<typeof usePlaidLink>[0] = {
@@ -60,13 +59,13 @@ export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
           disabled={!ready}
           className="text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form"
         >
-          Add bank
+          Connect bank
         </Button>
       ) : (
         <Button
           onClick={() => open()}
           variant="ghost"
-          className="flex cursor-pointer items-center justify-center gap-3 rounded-lg py-7 hover:bg-white lg:justify-start"
+          className="flex cursor-pointer items-center justify-center gap-3 rounded-lg px-3 py-7 hover:bg-white lg:justify-start"
         >
           <Image
             src="/icons/connect-bank.svg"
@@ -74,12 +73,8 @@ export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
             width={24}
             height={24}
           />
-          <p
-            className={cn(
-              "text-[16px] font-semibold text-black-2 max-xl:hidden"
-            )}
-          >
-            Add Bank
+          <p className="hidden text-[16px] font-semibold text-black-2 xl:block">
+            Connect Bank
           </p>
         </Button>
       )}

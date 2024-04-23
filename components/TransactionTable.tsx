@@ -75,7 +75,7 @@ const TransactionTable = ({
             <TableCell className="px-0  pr-10">
               {formatAmount(transaction.amount)}
             </TableCell>
-            <TableCell className="min-w-28 px-0 pr-10">
+            <TableCell className="min-w-32 px-0 pr-10">
               {formatDateTime(new Date(transaction.date)).dateTime}
             </TableCell>
             <TableCell className="min-w-24 px-0 pr-10 capitalize">

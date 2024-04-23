@@ -155,7 +155,7 @@ export const createLinkToken = async (userId: string) => {
       user: {
         client_user_id: userId,
       },
-      client_name: "Bankify",
+      client_name: "Horizon",
       products: ["auth"] as Products[],
       language: "en",
       country_codes: ["US"] as CountryCode[],

@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { CountryCode } from "plaid";
 
 import { ITEMS } from "@/constants";
@@ -8,21 +7,25 @@ import { ITEMS } from "@/constants";
 import { plaidClient } from "../plaid/config";
 import { parseStringify } from "../utils";
 
+// Get multiple bank accounts
 export const getAccounts = async () => {
   try {
-    // Todo replace ITEMS with the list of items from DB
+    // get banks from db
+    const banks = ITEMS;
+
     const accounts = await Promise.all(
-      ITEMS.map(async (bank) => {
+      banks.map(async (bank) => {
+        // get each account info from plaid
         const accountsResponse = await plaidClient.accountsGet({
           access_token: bank.accessToken,
         });
         const accountData = accountsResponse.data.accounts[0];
 
+        // get institution info from plaid
         const institution = await getInstitution(
           accountsResponse.data.item.institution_id!
         );
 
-        // Format data
         const account = {
           id: accountData.account_id,
           availableBalance: accountData.balances.available!,
@@ -51,36 +54,45 @@ export const getAccounts = async () => {
   }
 };
 
+// Get one bank account
 export const getAccount = async (appwriteItemId: string) => {
   try {
-    // Todo replace ITEMS with the list of items from DB
-
+    // get bank from db
     const bank = ITEMS.find((account) => account.id === appwriteItemId)!;
-    const response = await plaidClient.accountsGet({
-      access_token: bank?.accessToken,
-    });
-    const data = response.data.accounts[0];
 
-    // Format data
+    // get account info from plaid
+    const accountsResponse = await plaidClient.accountsGet({
+      access_token: bank.accessToken,
+    });
+    const accountData = accountsResponse.data.accounts[0];
+
+    // get institution info from plaid
+    const institution = await getInstitution(
+      accountsResponse.data.item.institution_id!
+    );
+
+    const transactions = await getTransactions(appwriteItemId);
+
     const account = {
-      id: data.account_id,
-      availableBalance: data.balances.available!,
-      currentBalance: data.balances.current!,
-      name: data.name,
-      officialName: data.official_name!,
-      mask: data.mask!,
-      institutionId: response.data.item.institution_id,
-      type: data.type as string,
-      subtype: data.subtype! as string,
+      id: accountData.account_id,
+      availableBalance: accountData.balances.available!,
+      currentBalance: accountData.balances.current!,
+      institutionId: institution.institution_id,
+      institutionName: institution.name,
+      officialName: accountData.official_name,
+      mask: accountData.mask!,
+      type: accountData.type as string,
+      subtype: accountData.subtype! as string,
       appwriteItemId: bank.id,
     };
 
-    return parseStringify({ account });
+    return parseStringify({ data: account, transactions });
   } catch (error) {
-    console.error("An error occurred while getting the accounts:", error);
+    console.error("An error occurred while getting the account:", error);
   }
 };
 
+// Get bank info
 export const getInstitution = async (institutionId: string) => {
   try {
     const institutionResponse = await plaidClient.institutionsGetById({
@@ -96,10 +108,7 @@ export const getInstitution = async (institutionId: string) => {
   }
 };
 
-// GET TRANSACTIONS FROM PLAID
-// 1. Get user's accessToken from DB
-// 2. Create link token and exhange token
-// 3. Get trasnactions & format
+// Get transactions
 export const getTransactions = async (appwriteItemId: string) => {
   let hasMore = true;
   let transactions: any = [];
@@ -132,9 +141,7 @@ export const getTransactions = async (appwriteItemId: string) => {
       hasMore = data.has_more;
     }
 
-    revalidatePath("/");
-
-    return parseStringify({ data: transactions });
+    return parseStringify(transactions);
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
   }

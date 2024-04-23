@@ -17,7 +17,6 @@ const DoughnutChart = ({ accounts }: { accounts: Account[] }) => {
   const balances = accounts.map((account) => account.currentBalance);
   const accountNames = accounts.map((account) => account.institutionName);
 
-  console.log({ accounts });
   const data = {
     labels: accountNames,
     datasets: [
@@ -28,11 +27,7 @@ const DoughnutChart = ({ accounts }: { accounts: Account[] }) => {
       },
     ],
   };
-  return (
-    <div className="size-full">
-      <Doughnut data={data} options={options} />
-    </div>
-  );
+  return <Doughnut data={data} options={options} />;
 };
 
 export default DoughnutChart;
