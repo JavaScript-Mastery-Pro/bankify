@@ -66,6 +66,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
         // Create appwrite user account & link token
         const newUser = await signUp(user);
 
+        console.log("===============newUser", newUser);
+
         setUser(newUser);
       }
 

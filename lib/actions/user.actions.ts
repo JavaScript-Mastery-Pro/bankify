@@ -73,8 +73,8 @@ export async function createEmailSession(email: string, password: string) {
 export const signUp = async ({ name, email, password }: SignUpParams) => {
   try {
     // create appwrite user
-    const { user } = await createAdminClient();
-    await user.create(
+    const { user, database } = await createAdminClient();
+    const newUserAccount = await user.create(
       ID.unique(),
       email,
       undefined, // password
@@ -82,8 +82,20 @@ export const signUp = async ({ name, email, password }: SignUpParams) => {
       name
     );
 
+    const newUser = await database.createDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_USER_COLLECTION_ID!,
+      ID.unique(),
+      {
+        name,
+        email,
+        password,
+        userId: newUserAccount.$id,
+      }
+    );
+
     // get userId from session
-    const newUser = await createEmailSession(email, password);
+    await createEmailSession(email, password);
 
     return JSON.parse(JSON.stringify({ id: newUser.$id, name }));
   } catch (error) {
@@ -200,6 +212,7 @@ export const exchangePublicToken = async ({
       {
         itemId,
         accessToken,
+        email: user.email,
         user: user.id,
         accountId: accountData.account_id,
       }
