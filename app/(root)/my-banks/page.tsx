@@ -1,6 +1,5 @@
 import { BankCard } from "@/components/BankCard";
 import { HeaderBox } from "@/components/shared/HeaderBox";
-import { RightSidebar } from "@/components/shared/RightSidebar";
 import { getAccounts } from "@/lib/actions/bank.actions";
 
 const page = async () => {
@@ -30,7 +29,7 @@ const page = async () => {
         </div>
       </div>
 
-      <RightSidebar />
+      {/* <RightSidebar accounts={accounts.data} /> */}
     </section>
   );
 };

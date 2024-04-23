@@ -21,7 +21,7 @@ const TransactionHistory = async ({
       <div className="transactions-header">
         <HeaderBox
           title="Transaction History"
-          subtext="Your bank details and transactions."
+          subtext="See your bank details and transactions."
         />
         <BankDropdown
           accounts={accounts?.data}

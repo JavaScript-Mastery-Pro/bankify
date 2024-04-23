@@ -3,7 +3,7 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import Link from "next/link";
 
-import { Bank } from "./Bank";
+import { BankInfo } from "./BankInfo";
 import { BankTabItem } from "./shared/BankTabItem";
 import { Pagination } from "./shared/Pagination";
 import TransactionTable from "./TransactionTable";
@@ -60,7 +60,7 @@ export const RecentTransactions = ({
             key={account.id}
             className="space-y-4"
           >
-            <Bank
+            <BankInfo
               account={account}
               appwriteItemId={appwriteItemId}
               type="full"

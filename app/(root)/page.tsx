@@ -40,7 +40,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
         />
       </div>
 
-      <RightSidebar />
+      <RightSidebar accounts={accounts?.data} />
     </section>
   );
 };

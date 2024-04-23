@@ -10,7 +10,7 @@ import {
   getAccountTypeColors,
 } from "@/lib/utils";
 
-export const Bank = ({
+export const BankInfo = ({
   account,
   appwriteItemId,
   type,

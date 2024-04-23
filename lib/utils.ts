@@ -6,22 +6,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const calculateStripeFee = (amount: number) => {
-  const percentageFee = 0.029; // 2.9%
-  const fixedFee = 0.3; // 30 cents
-
-  // Calculate the fee without rounding first
-  let feeWithoutRounding = amount * percentageFee;
-
-  // Round up to the nearest higher decimal place
-  feeWithoutRounding = Math.ceil(feeWithoutRounding * 100) / 100;
-
-  // Add the fixed fee
-  const totalFee = feeWithoutRounding + fixedFee + 0.01;
-
-  return totalFee;
-};
-
 // FORMAT DATE TIME
 export const formatDateTime = (dateString: Date) => {
   const dateTimeOptions: Intl.DateTimeFormatOptions = {

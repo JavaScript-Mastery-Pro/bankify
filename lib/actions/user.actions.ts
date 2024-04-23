@@ -138,16 +138,6 @@ export async function getLoggedInUser() {
   }
 }
 
-// export async function getLoggedInUser() {
-//   try {
-//     const { account } = await createSessionClient();
-
-//     return await account.get();
-//   } catch (error) {
-//     return null;
-//   }
-// }
-
 // CREATE PLAID LINK TOKEN
 export const createLinkToken = async (userId: string) => {
   try {
