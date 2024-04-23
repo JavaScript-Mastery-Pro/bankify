@@ -16,9 +16,7 @@ export const BankCard = ({ account, userName }: CreditCardProps) => {
         className="relative flex h-[190px] w-full max-w-[316px] justify-between rounded-[20px] border border-white bg-bank-gradient shadow-creditCard backdrop-blur-[6px]"
       >
         <div className="relative z-10 flex size-full max-w-[228px] flex-col justify-between rounded-l-[20px] bg-gray-700 bg-bank-gradient px-5 pb-4 pt-5">
-          <h1 className="text-16 font-semibold text-white">
-            {account.institutionName}
-          </h1>
+          <h1 className="text-16 font-semibold text-white">{account.name}</h1>
           <article className="flex flex-col gap-2">
             <div className="flex justify-between">
               <h1 className="text-12 font-semibold text-white">{userName}</h1>

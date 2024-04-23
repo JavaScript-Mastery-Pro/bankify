@@ -28,8 +28,6 @@ const page = async () => {
           </div>
         </div>
       </div>
-
-      {/* <RightSidebar accounts={accounts.data} /> */}
     </section>
   );
 };

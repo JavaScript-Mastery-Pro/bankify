@@ -1,6 +1,11 @@
 "use server";
 
-import { CountryCode } from "plaid";
+import {
+  ACHClass,
+  CountryCode,
+  Products,
+  TransferIntentCreateMode,
+} from "plaid";
 
 import { ITEMS } from "@/constants";
 
@@ -31,7 +36,7 @@ export const getAccounts = async () => {
           availableBalance: accountData.balances.available!,
           currentBalance: accountData.balances.current!,
           institutionId: institution.institution_id,
-          institutionName: institution.name,
+          name: accountData.name,
           officialName: accountData.official_name,
           mask: accountData.mask!,
           type: accountData.type as string,
@@ -78,7 +83,7 @@ export const getAccount = async (appwriteItemId: string) => {
       availableBalance: accountData.balances.available!,
       currentBalance: accountData.balances.current!,
       institutionId: institution.institution_id,
-      institutionName: institution.name,
+      name: accountData.name,
       officialName: accountData.official_name,
       mask: accountData.mask!,
       type: accountData.type as string,
@@ -144,5 +149,108 @@ export const getTransactions = async (appwriteItemId: string) => {
     return parseStringify(transactions);
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
+  }
+};
+
+export const transferFund = async ({
+  appwriteItemId,
+  amount = "5.00",
+  description,
+  name,
+  userId,
+  senderAccountId,
+  receiverAccountId,
+}: {
+  appwriteItemId: string;
+  amount: string;
+  description: string;
+  senderAccountId: string;
+  receiverAccountId: string;
+  name: string;
+  userId: string;
+}) => {
+  try {
+    // const accessToken = ITEMS.filter((bank) => bank.id === appwriteItemId)[0]
+    //   .accessToken;
+
+    const transferIntentCreateRequest = {
+      mode: "PAYMENT" as TransferIntentCreateMode,
+      amount,
+      ach_class: "ppd" as ACHClass,
+      description,
+      funding_account_id: senderAccountId,
+      account_id: receiverAccountId,
+      user: {
+        legal_name: name,
+      },
+    };
+
+    const transferIntentCreateResponse = await plaidClient.transferIntentCreate(
+      transferIntentCreateRequest
+    );
+
+    // save to DB to get the status of transfer
+    const transferIntentId = transferIntentCreateResponse.data.transfer_intent;
+
+    console.log("==========transferIntentId", transferIntentId);
+
+    const linkTokenParams = {
+      user: {
+        client_user_id: userId,
+      },
+      client_name: name,
+      country_codes: ["US"] as CountryCode[],
+      language: "en",
+      products: ["transfer"] as Products[],
+      transfer: {
+        intent_id: transferIntentId as any,
+      },
+      link_customization_name: "bankify" as any,
+    };
+    const linkTokenResponse =
+      await plaidClient.linkTokenCreate(linkTokenParams);
+
+    // console.log("==========linkTokenResponse.data", linkTokenResponse.data);
+
+    // const transferAuthorizatioRequest: TransferAuthorizationCreateRequest = {
+    //   access_token: accessToken,
+    //   account_id: receiverAccountId,
+    //   type: "debit" as TransferType,
+    //   network: "ach" as TransferNetwork,
+    //   amount,
+    //   ach_class: "ppd" as ACHClass,
+    //   funding_account_id: senderAccountId,
+    //   user: {
+    //     legal_name: "Anne Charleston",
+    //   },
+    // };
+
+    // const transferAuthorizatioResponse =
+    //   await plaidClient.transferAuthorizationCreate(
+    //     transferAuthorizatioRequest
+    //   );
+    // console.log(
+    //   "================transferAuthorizatioResponse",
+    //   transferAuthorizatioResponse
+    // );
+    // const authorizationId = transferAuthorizatioResponse.data.authorization.id;
+
+    // const transferRequest: TransferCreateRequest = {
+    //   access_token: accessToken,
+    //   account_id: receiverAccountId,
+    //   description: "transfer",
+    //   authorization_id: authorizationId,
+    //   amount,
+    // };
+
+    // const transferResponse = await plaidClient.transferCreate(transferRequest);
+    // const transfer = transferResponse.data.transfer;
+
+    return parseStringify({ linkToken: linkTokenResponse.data });
+  } catch (error) {
+    console.error(
+      "========================An error occurred while initiating transfer:",
+      error
+    );
   }
 };

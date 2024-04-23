@@ -15,7 +15,7 @@ const options = {
 
 const DoughnutChart = ({ accounts }: { accounts: Account[] }) => {
   const balances = accounts.map((account) => account.currentBalance);
-  const accountNames = accounts.map((account) => account.institutionName);
+  const accountNames = accounts.map((account) => account.name);
 
   const data = {
     labels: accountNames,

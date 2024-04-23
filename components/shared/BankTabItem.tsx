@@ -39,7 +39,7 @@ export const BankTabItem = ({
           "shadow-sm text-blue-600": isActive,
         })}
       >
-        {account.institutionName}
+        {account.name}
       </p>
     </div>
   );

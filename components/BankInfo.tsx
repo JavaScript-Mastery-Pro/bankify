@@ -62,7 +62,7 @@ export const BankInfo = ({
           <h2
             className={`text-16 line-clamp-1 flex-1 font-bold text-blue-900 ${colors.title}`}
           >
-            {account.institutionName}
+            {account.name}
           </h2>
           {type === "full" && (
             <p

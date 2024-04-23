@@ -1,8 +1,15 @@
 import Image from "next/image";
 
-import { BankCard } from "../BankCard";
+import { Category } from "@/components/shared/Category";
+import { countTransactionCategories } from "@/lib/utils";
 
-export const RightSidebar = ({ accounts = [] }: { accounts: Account[] }) => {
+export const RightSidebar = ({
+  transactions,
+}: {
+  transactions: Transaction[];
+}) => {
+  const categories: CategoryCount[] = countTransactionCategories(transactions);
+
   return (
     <aside className="right-sidebar">
       <section className="flex flex-col pb-8">
@@ -25,15 +32,11 @@ export const RightSidebar = ({ accounts = [] }: { accounts: Account[] }) => {
 
       <section className="banks">
         <div className="flex flex-1 flex-col gap-6">
-          <h2 className="header-2 ">My Banks</h2>
+          <h2 className="header-2 ">Top Categories</h2>
 
           <div className="space-y-5">
-            {accounts.map((account) => (
-              <BankCard
-                key={account.id}
-                account={account}
-                userName={"Adrian Hajdin"}
-              />
+            {categories.map((category, index) => (
+              <Category key={category.name + index} category={category} />
             ))}
           </div>
         </div>

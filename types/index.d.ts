@@ -41,7 +41,7 @@ declare type Account = {
   officialName: string;
   mask: string;
   institutionId: string;
-  institutionName: string;
+  name: string;
   type: string;
   subtype: string;
   appwriteItemId: string;
@@ -73,3 +73,11 @@ declare type AccountTypes =
   | "loan "
   | "investment"
   | "other";
+
+declare type Category = "Food and Drink" | "Travel" | "Transfer";
+
+declare type CategoryCount = {
+  name: string;
+  count: number;
+  totalCount: number;
+};

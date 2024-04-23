@@ -50,7 +50,7 @@ export const TEST_ACCESS_TOKEN =
 
 export const ITEMS = [
   {
-    id: "6624c02e00367128945e",
+    id: "6624c02e00367128945e", // appwrite item Id
     accessToken: "access-sandbox-da44dac8-7d31-4f66-ab36-2238d63a3017",
     itemId: "MA4zpXMbzMIreAvLgRqEf1olAgNnnxt9GQj9b",
     userId: "6624bf1e0022238a30a6",

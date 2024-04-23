@@ -27,13 +27,6 @@ interface AuthFormProps {
 }
 
 const AuthForm = ({ type }: AuthFormProps) => {
-  // const router = useRouter();
-  // const { setIsAuthenticated, isAuthenticated } = useUserContext();
-  // if (isAuthenticated) {
-  //   router.push("/");
-  // }
-
-  // const [linkToken, setLinkToken] = useState<string | null>(null);
   const [user, setUser] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -70,7 +63,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
         // Create appwrite user account & link token
         const response = await signUp(user);
-        // setLinkToken(response.linkToken);
+
         setUser(response.user);
       }
 
@@ -114,7 +107,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
       //             console.log(transfer);
       //           }
       //         });
-
+      //     }
+      //   });
       setIsLoading(false);
     } catch (error) {
       console.log(error);
