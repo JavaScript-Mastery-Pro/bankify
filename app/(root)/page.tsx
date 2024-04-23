@@ -8,9 +8,14 @@ import {
   getAccounts,
   // transferFund,
 } from "@/lib/actions/bank.actions";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
 
 const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;
+
+  const loggedIn = await getLoggedInUser();
+  if (!loggedIn) return;
+
   const accounts = await getAccounts();
   if (!accounts) return;
 
@@ -39,7 +44,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
           <HeaderBox
             type="greeting"
             title="Welcome,"
-            user="Adrian"
+            user={loggedIn?.name || "Guest"}
             subtext="Access & manage your account and transactions efficiently."
           />
 
@@ -58,7 +63,11 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
         />
       </div>
 
-      <RightSidebar transactions={account?.transactions} />
+      <RightSidebar
+        name={loggedIn?.name}
+        email={loggedIn?.email}
+        transactions={account?.transactions}
+      />
     </section>
   );
 };

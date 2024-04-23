@@ -77,7 +77,7 @@ export const signUp = async ({ name, email, password }: SignUpParams) => {
     const newUserAccount = await user.create(
       ID.unique(),
       email,
-      undefined, // password
+      undefined, // optional phone number
       password,
       name
     );

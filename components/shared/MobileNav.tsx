@@ -11,13 +11,20 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { TEST_USER_ID, sidebarLinks } from "@/constants";
+import { sidebarLinks } from "@/constants";
 import { logoutAccount } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
 
-const MobileNav = () => {
+const MobileNav = ({
+  userId,
+  name,
+  email,
+}: {
+  userId: string;
+  name: string;
+  email: string;
+}) => {
   const pathname = usePathname();
-  const userId = TEST_USER_ID;
 
   return (
     <section className="w-full max-w-[264px]">
@@ -91,12 +98,8 @@ const MobileNav = () => {
             >
               <Image src="icons/jsm.svg" width={40} height={40} alt="jsm" />
               <div className="flex flex-col justify-center">
-                <h1 className="text-14 font-semibold text-gray-700">
-                  Adrain Hajdin
-                </h1>
-                <p className="text-14 font-normal text-gray-600">
-                  adrian@jsmastery.pro
-                </p>
+                <h1 className="text-14 font-semibold text-gray-700">{name}</h1>
+                <p className="text-14 font-normal text-gray-600">{email}</p>
               </div>
               <Image src="icons/logout.svg" width={20} height={20} alt="jsm" />
             </footer>

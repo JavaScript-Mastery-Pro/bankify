@@ -1,27 +1,29 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
-import { PlaidLink } from "@/components/shared/PlaidLink";
-import { TEST_USER_ID, sidebarLinks } from "@/constants";
-import { InitialUser, useUserContext } from "@/context/AuthContext";
-import { logoutAccount } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
+import { sidebarLinks } from "@/constants";
+import { logoutAccount } from "@/lib/actions/user.actions";
+import { PlaidLink } from "@/components/shared/PlaidLink";
 
 import { Input } from "../ui/input";
 
-const Sidebar = () => {
+const Sidebar = ({
+  userId,
+  name,
+  email,
+}: {
+  userId: string;
+  name: string;
+  email: string;
+}) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, setUser, setIsAuthenticated } = useUserContext();
-  const userId = TEST_USER_ID;
 
   const handleLogOut = async () => {
     const loggedOut = await logoutAccount();
-    setIsAuthenticated(false);
-    setUser(InitialUser);
-
     if (loggedOut) router.push("/sign-in");
   };
 
@@ -85,25 +87,25 @@ const Sidebar = () => {
             </Link>
           );
         })}
-        <PlaidLink user={{ id: userId, name: "John Doe" }} variant="ghost" />
+        <PlaidLink user={{ id: userId, name: name }} variant="ghost" />
       </nav>
       <footer
         className="flex cursor-pointer items-center justify-between gap-2 py-6"
         onClick={handleLogOut}
       >
-        <Image
-          src={user.image || "icons/jsm.svg"}
-          width={40}
-          height={40}
-          alt="jsm"
-          className="rounded-full max-xl:hidden"
-        />
-        <div className="flex max-w-[70%] flex-col justify-center max-xl:hidden">
-          <h1 className="text-14 font-semibold text-gray-700">{user.name}</h1>
-          <p className="text-14  truncate font-normal text-gray-600">
-            {user.email}
+        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 max-xl:hidden">
+          <p className="text-xl font-bold text-gray-700">{name[0]}</p>
+        </div>
+
+        <div className="flex-1 flex max-w-[70%] flex-col justify-center max-xl:hidden">
+          <h1 className="text-14 font-semibold text-gray-700 line-clamp-1">
+            {name}
+          </h1>
+          <p className="text-14 truncate font-normal text-gray-600 line-clamp-1">
+            {email}
           </p>
         </div>
+
         <Image src="icons/logout.svg" width={20} height={20} alt="jsm" />
       </footer>
     </section>

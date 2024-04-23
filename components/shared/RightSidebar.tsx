@@ -4,8 +4,12 @@ import { Category } from "@/components/shared/Category";
 import { countTransactionCategories } from "@/lib/utils";
 
 export const RightSidebar = ({
+  name,
+  email,
   transactions,
 }: {
+  name: string;
+  email: string;
   transactions: Transaction[];
 }) => {
   const categories: CategoryCount[] = countTransactionCategories(transactions);
@@ -15,17 +19,13 @@ export const RightSidebar = ({
       <section className="flex flex-col pb-8">
         <div className="profile-banner" />
         <div className="profile">
-          <Image
-            src="/icons/jsm.svg"
-            width={80}
-            height={80}
-            alt="jsm"
-            className="profile-img"
-          />
+          <div className="profile-img">
+            <span className="font-bold text-5xl">{name[0]}</span>
+          </div>
 
           <div className="profile-details">
-            <h1 className="profile-name">Adrain Hajdin</h1>
-            <p className="profile-email">adrian@jsmastery.pro</p>
+            <h1 className="profile-name">{name}</h1>
+            <p className="profile-email">{email}</p>
           </div>
         </div>
       </section>
