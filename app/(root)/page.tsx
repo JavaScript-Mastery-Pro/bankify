@@ -1,20 +1,17 @@
+import { redirect } from "next/navigation";
+
 import { RecentTransactions } from "@/components/RecentTransactions";
 import { HeaderBox } from "@/components/shared/HeaderBox";
 import { RightSidebar } from "@/components/shared/RightSidebar";
 import { TotalBalanceBox } from "@/components/shared/TotalBalanceBox";
-// import { TEST_USER_ID } from "@/constants";
-import {
-  getAccount,
-  getAccounts,
-  // transferFund,
-} from "@/lib/actions/bank.actions";
+import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 
 const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;
 
   const loggedIn = await getLoggedInUser();
-  if (!loggedIn) return;
+  if (!loggedIn) redirect("/sign-in");
 
   const accounts = await getAccounts();
   if (!accounts) return;

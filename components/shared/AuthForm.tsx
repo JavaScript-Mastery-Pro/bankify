@@ -21,12 +21,16 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import { useRouter } from "next/navigation";
+import router from "next/router";
 
 interface AuthFormProps {
   type: "sign-in" | "sign-up";
 }
 
 const AuthForm = ({ type }: AuthFormProps) => {
+  const router = useRouter();
+
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,8 +70,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
         // Create appwrite user account & link token
         const newUser = await signUp(user);
 
-        console.log("===============newUser", newUser);
-
         setUser(newUser);
       }
 
@@ -77,7 +79,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
           password: data.password,
         });
 
-        console.log("=============signin response", response);
+        setIsLoading(false);
+
+        if (response) router.push("/");
       }
 
       // ========================================

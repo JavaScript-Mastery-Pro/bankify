@@ -6,6 +6,7 @@ import { Client, Account, ID, Databases, Query, Users } from "node-appwrite";
 import { CountryCode, Products } from "plaid";
 
 import { plaidClient } from "@/lib/plaid/config";
+import { parseStringify } from "../utils";
 
 export async function createAdminClient() {
   const client = new Client()
@@ -53,17 +54,15 @@ export async function createEmailSession(email: string, password: string) {
       }
     );
 
-    // get cookies
+    // get cookie
     const responseCookie = response.headers.get("Set-Cookie");
-    console.log({ responseCookie });
 
     // set cookie
     cookies().set("appwrite-cookie", responseCookie!);
 
     const result = await response.json();
-    console.log({ session: result });
 
-    return JSON.parse(JSON.stringify(result));
+    return parseStringify(result);
   } catch (error) {
     console.error("Error", error);
   }
@@ -97,7 +96,7 @@ export const signUp = async ({ name, email, password }: SignUpParams) => {
     // get userId from session
     await createEmailSession(email, password);
 
-    return JSON.parse(JSON.stringify({ id: newUser.$id, name }));
+    return parseStringify({ id: newUser.$id, name });
   } catch (error) {
     console.error("Error", error);
     return null;
@@ -113,11 +112,12 @@ export const signIn = async ({
 }) => {
   try {
     const response = await createEmailSession(email, password);
+    const user = await getUserInfo(response.userId);
 
-    // get user info
-    const user = await getUserInfo(response.$id);
-
-    console.log({ user });
+    return parseStringify({
+      id: user.$id,
+      name: user.name,
+    });
   } catch (error) {
     console.error("Error", error);
     return null;
@@ -127,8 +127,6 @@ export const signIn = async ({
 export async function getLoggedInUser() {
   try {
     const appWriteCookie = cookies().get("appwrite-cookie");
-
-    console.log({ appWriteCookie });
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/account`,
@@ -147,7 +145,7 @@ export async function getLoggedInUser() {
     const result = await response.json();
     const user = await getUserInfo(result.$id);
 
-    return JSON.parse(JSON.stringify(user));
+    return parseStringify(user);
   } catch (error) {
     console.error("Error", error);
     return null;
@@ -169,7 +167,7 @@ export const createLinkToken = async (user: User) => {
 
     const response = await plaidClient.linkTokenCreate(tokeParams);
 
-    return JSON.parse(JSON.stringify({ linkToken: response.data.link_token }));
+    return parseStringify({ linkToken: response.data.link_token });
   } catch (error) {
     console.error(
       "An error occurred while creating a new bankify user:",
@@ -220,11 +218,9 @@ export const exchangePublicToken = async ({
 
     revalidatePath("/");
 
-    return JSON.parse(
-      JSON.stringify({
-        publicTokenExchange: "complete",
-      })
-    );
+    return parseStringify({
+      publicTokenExchange: "complete",
+    });
   } catch (error) {
     console.error(
       "An error occurred while creating a new bankify user:",
@@ -255,9 +251,9 @@ export async function getUserInfo(userId: string) {
       [Query.equal("userId", [userId])]
     );
 
-    if (!user.documents.length) return null;
+    if (user.total !== 1) return null;
 
-    return JSON.parse(JSON.stringify(user.documents[0]));
+    return parseStringify(user.documents[0]);
   } catch (error) {
     console.error("Error", error);
     return null;

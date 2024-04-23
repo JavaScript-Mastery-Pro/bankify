@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 import Sidebar from "@/components/shared/Sidebar";
 import MobileNav from "@/components/shared/MobileNav";
@@ -11,7 +12,7 @@ const RootLayout = async ({
   children: React.ReactNode;
 }>) => {
   const loggedIn = await getLoggedInUser();
-  if (!loggedIn) return;
+  if (!loggedIn) redirect("/sign-in");
 
   return (
     <main className="flex h-screen w-full font-inter">
