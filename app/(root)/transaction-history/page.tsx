@@ -1,14 +1,22 @@
-import { BankDropdown } from "@/components/shared/BankDropdown";
-import { HeaderBox } from "@/components/shared/HeaderBox";
+import { redirect } from "next/navigation";
+
 import TransactionHistoryTable from "@/components/TransactionHistoryTable";
-import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
+import { HeaderBox } from "@/components/shared/HeaderBox";
+import { BankDropdown } from "@/components/shared/BankDropdown";
+
 import { formatAmount } from "@/lib/utils";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 
 const TransactionHistory = async ({
   searchParams: { id, page },
 }: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;
-  const accounts = await getAccounts();
+
+  const loggedIn = await getLoggedInUser();
+  if (!loggedIn) redirect("/sign-in");
+
+  const accounts = await getAccounts(loggedIn?.$id);
   if (!accounts) return;
 
   const accountsData = accounts?.data;
