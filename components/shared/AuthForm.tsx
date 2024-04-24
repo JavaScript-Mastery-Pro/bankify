@@ -5,12 +5,13 @@ import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 // import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { PlaidLink } from "@/components/shared/PlaidLink";
-import { signUp } from "@/lib/actions/user.actions";
+import { signIn, signUp } from "@/lib/actions/user.actions";
 
 import { Button } from "../ui/button";
 import {
@@ -28,7 +29,7 @@ interface AuthFormProps {
 }
 
 const AuthForm = ({ type }: AuthFormProps) => {
-  // const router = useRouter();
+  const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,48 +72,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
       }
 
       if (type === "sign-in") {
-        // const response = await signIn({
-        //   email: data.email,
-        //   password: data.password,
-        // });
-        // if (response) router.push("/");
-        // ========================================
-        // ========================================
-        // SANDBOX DATA
-        // await fetch(
-        //   `${process.env.NEXT_PUBLIC_SITE_URL}/api/sandbox_link_tokens_create`,
-        //   {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //   }
-        // )
-        //   .then((response) => response.json())
-        //   .then(async (data) => {
-        //     const { accessToken, accountId } = data;
-        //     if (accessToken) {
-        //       // ========================================
-        //       // TRANSFER
-        //       await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/transfer`, {
-        //         method: "POST",
-        //         headers: {
-        //           "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify({
-        //           accountId,
-        //           accessToken,
-        //         }),
-        //       })
-        //         .then((response) => response.json())
-        //         .then((data) => {
-        //           const { transfer } = data;
-        //           if (transfer) {
-        //             console.log(transfer);
-        //           }
-        //         });
-        //     }
-        //   });
+        const response = await signIn({
+          email: data.email,
+          password: data.password,
+        });
+        if (response) router.push("/");
       }
 
       setIsLoading(false);

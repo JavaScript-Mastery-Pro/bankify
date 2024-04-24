@@ -216,6 +216,7 @@ export const exchangePublicToken = async ({
     const accountsResponse = await plaidClient.accountsGet({
       access_token: accessToken,
     });
+
     const accountData = accountsResponse.data.accounts[0];
 
     // create processor token for dwolla
@@ -235,23 +236,16 @@ export const exchangePublicToken = async ({
       processorToken,
       bankName: accountData.name,
     });
-    console.log("======================fundingSourceUrl", fundingSourceUrl);
 
-    // create new user to the user collection
-    const { database } = await createAdminClient();
-    await database.createDocument(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_ITEM_COLLECTION_ID!,
-      ID.unique(),
-      {
-        itemId,
-        accessToken,
-        email: user.email,
-        user: user.id,
-        accountId: accountData.account_id,
-        fundingSourceUrl,
-      }
-    );
+    if (!fundingSourceUrl) throw Error;
+
+    const saveBank = await createBankAccount({
+      accessToken,
+      userId: user.id,
+      accountId: accountData.account_id,
+      bankId: itemId,
+      fundingSourceUrl,
+    });
 
     revalidatePath("/");
 
@@ -288,6 +282,80 @@ export async function getUserInfo(userId: string) {
     if (user.total !== 1) return null;
 
     return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.error("Error", error);
+    return null;
+  }
+}
+
+export async function createBankAccount({
+  accessToken,
+  userId,
+  accountId,
+  bankId,
+  fundingSourceUrl,
+}: {
+  accessToken: string;
+  userId: string;
+  accountId: string;
+  bankId: string;
+  fundingSourceUrl: string;
+}) {
+  try {
+    const { database } = await createAdminClient();
+
+    const bankAccount = await database.createDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      ID.unique(),
+      {
+        accessToken,
+        user: userId,
+        accountId,
+        bankId,
+        fundingSourceUrl,
+      }
+    );
+
+    return parseStringify(bankAccount);
+  } catch (error) {
+    console.error("Error", error);
+    return null;
+  }
+}
+
+// get user bank accounts
+export async function getBanks(userId: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    const banks = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      [Query.equal("user", [userId])]
+    );
+
+    return parseStringify(banks.documents);
+  } catch (error) {
+    console.error("Error", error);
+    return null;
+  }
+}
+
+// get specific bank from bank collection by document id
+export async function getBank(documentId: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    const bank = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      [Query.equal("$id", [documentId])]
+    );
+
+    if (bank.total !== 1) return null;
+
+    return parseStringify(bank.documents[0]);
   } catch (error) {
     console.error("Error", error);
     return null;

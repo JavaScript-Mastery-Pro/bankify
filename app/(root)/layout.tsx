@@ -11,12 +11,12 @@ const RootLayout = async ({
   children: React.ReactNode;
 }>) => {
   const loggedIn = await getLoggedInUser();
-  // if (!loggedIn) redirect("/sign-in");
+  if (!loggedIn) redirect("/sign-in");
 
   return (
     <main className="flex h-screen w-full font-inter">
       <Sidebar
-        userId={loggedIn.userId}
+        userId={loggedIn.$id}
         name={loggedIn.name}
         email={loggedIn.email}
       />
@@ -24,11 +24,11 @@ const RootLayout = async ({
         <div className="flex h-16 items-center justify-between p-5 shadow-creditCard sm:p-8 md:hidden">
           <Image src="/icons/logo.svg" width={30} height={30} alt="menu icon" />
           <div>
-            {/* <MobileNav
-              userId={loggedIn.userId}
+            <MobileNav
+              userId={loggedIn.$id}
               name={loggedIn.name}
               email={loggedIn.email}
-            /> */}
+            />
           </div>
         </div>
         {children}

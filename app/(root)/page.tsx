@@ -11,26 +11,13 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const loggedIn = await getLoggedInUser();
   // if (!loggedIn) redirect("/sign-in");
 
-  const accounts = await getAccounts();
+  const accounts = await getAccounts(loggedIn?.$id);
   if (!accounts) return;
 
   const accountsData = accounts?.data;
   const appwriteItemId = (id as string) || accountsData[0].appwriteItemId;
 
   const account = await getAccount(appwriteItemId);
-
-  // const data = {
-  //   appwriteItemId,
-  //   senderAccountId: "X7LMJkE5vnskJBxwPeXaUWDBxAyZXwi9DNEWJ",
-  //   receiverAccountId: "x1GQb1lDrDHWX4BwkqQbI4qpQP1lL6tJ3VVo9",
-  //   amount: "5.00",
-  //   description: "Transfer note",
-  //   name: "John Doe",
-  //   userId: TEST_USER_ID,
-  // };
-  // const transferData = await transferFund(data);
-
-  // console.log(transferData);
 
   return (
     <section className="home">

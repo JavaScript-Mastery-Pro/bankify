@@ -1,12 +1,10 @@
 import { BankCard } from "@/components/BankCard";
 import { HeaderBox } from "@/components/shared/HeaderBox";
-import { RightSidebar } from "@/components/shared/RightSidebar";
 import { getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
-import { account } from "@/lib/appwrite/serverConfig";
 import { redirect } from "next/navigation";
 
-const page = async () => {
+export const page = async () => {
   const loggedIn = await getLoggedInUser();
   if (!loggedIn) redirect("/sign-in");
 
@@ -29,19 +27,13 @@ const page = async () => {
                 <BankCard
                   key={account.id}
                   account={account}
-                  userName={loggedIn?.name}
+                  userName={"Adrian Hajdin"}
                 />
               ))}
           </div>
         </div>
       </div>
-      {/* <RightSidebar
-        name={loggedIn?.name}
-        email={loggedIn?.email}
-        transactions={[]}
-      /> */}
+      {/* <RightSidebar transactions={account?.transactions} /> */}
     </section>
   );
 };
-
-export default page;

@@ -87,7 +87,7 @@ const MobileNav = ({
                   );
                 })}
                 <PlaidLink
-                  user={{ id: userId, name: "John Doe" }}
+                  user={{ id: userId, name }}
                   variant="ghost"
                   dwollaCustomerId="a829a40a-3241-42c9-a3e5-f30321693026"
                 />
