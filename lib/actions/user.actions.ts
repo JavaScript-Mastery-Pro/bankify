@@ -10,10 +10,8 @@ import {
   Products,
 } from "plaid";
 
-import { parseStringify } from "@/lib/utils";
 import { plaidClient } from "@/lib/plaid/config";
-
-import { extractCustomerIdFromUrl, parseStringify } from "../utils";
+import { parseStringify, extractCustomerIdFromUrl } from "@/lib/utils";
 import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 
 export async function createAdminClient() {
