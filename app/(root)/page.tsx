@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-
 import { RecentTransactions } from "@/components/RecentTransactions";
 import { HeaderBox } from "@/components/shared/HeaderBox";
 import { RightSidebar } from "@/components/shared/RightSidebar";
@@ -11,7 +9,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;
 
   const loggedIn = await getLoggedInUser();
-  if (!loggedIn) redirect("/sign-in");
+  // if (!loggedIn) redirect("/sign-in");
 
   const accounts = await getAccounts();
   if (!accounts) return;

@@ -10,17 +10,15 @@ import {
 import { plaidClient } from "@/lib/plaid/config";
 
 export const POST = async (request: Request) => {
-  const { accountId, accessToken, senderAccountId, receiverAccountId } =
-    await request.json();
+  const { accountId, accessToken } = await request.json();
   try {
     const transferAuthorizatioRequest: TransferAuthorizationCreateRequest = {
       access_token: accessToken,
-      account_id: receiverAccountId,
+      account_id: accountId,
       type: "debit" as TransferType,
       network: "ach" as TransferNetwork,
-      amount: "12.34",
+      amount: "5.00",
       ach_class: "ppd" as ACHClass,
-      funding_account_id: senderAccountId,
       user: {
         legal_name: "Anne Charleston",
       },
@@ -31,6 +29,11 @@ export const POST = async (request: Request) => {
         transferAuthorizatioRequest
       );
     const authorizationId = transferAuthorizatioResponse.data.authorization.id;
+
+    console.log(
+      "======================transferAuthorizatioResponse",
+      transferAuthorizatioResponse.data
+    );
 
     const transferRequest: TransferCreateRequest = {
       access_token: accessToken,

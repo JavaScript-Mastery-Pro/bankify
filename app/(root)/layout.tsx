@@ -1,9 +1,8 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-import Sidebar from "@/components/shared/Sidebar";
 import MobileNav from "@/components/shared/MobileNav";
-
+import Sidebar from "@/components/shared/Sidebar";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 
 const RootLayout = async ({
@@ -12,7 +11,7 @@ const RootLayout = async ({
   children: React.ReactNode;
 }>) => {
   const loggedIn = await getLoggedInUser();
-  if (!loggedIn) redirect("/sign-in");
+  // if (!loggedIn) redirect("/sign-in");
 
   return (
     <main className="flex h-screen w-full font-inter">
@@ -25,11 +24,11 @@ const RootLayout = async ({
         <div className="flex h-16 items-center justify-between p-5 shadow-creditCard sm:p-8 md:hidden">
           <Image src="/icons/logo.svg" width={30} height={30} alt="menu icon" />
           <div>
-            <MobileNav
+            {/* <MobileNav
               userId={loggedIn.userId}
               name={loggedIn.name}
               email={loggedIn.email}
-            />
+            /> */}
           </div>
         </div>
         {children}

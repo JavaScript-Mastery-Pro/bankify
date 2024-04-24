@@ -6,11 +6,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { PlaidLink } from "@/components/shared/PlaidLink";
+import { createTransfer } from "@/lib/actions/dwolla.actions";
+
 import { Button } from "./ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
+
   // FormDescription,
   FormField,
   FormItem,
@@ -18,28 +21,28 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
+
 // import { Textarea } from "./ui/textarea";
 
 const formSchema = z.object({
-  amount: z.string().min(4, "Name is too short"),
-  emailAddress: z.string().email("Invalid email address"),
-  transferNote: z.string().optional(),
-  accountNumber: z
-    .string()
-    .min(15, "account number must be exact 15 character")
-    .max(15),
+  // amount: z.string().min(4, "Name is too short"),
+  // emailAddress: z.string().email("Invalid email address"),
+  // transferNote: z.string().optional(),
+  // accountNumber: z
+  //   .string()
+  //   .min(15, "account number must be exact 15 character")
+  //   .max(15),
   name: z.string().min(4, "name must be 4 character"),
 });
 
-const PaymentTransferForm = () => {
+const PaymentTransferForm = ({ user }: { user: User }) => {
   const [isLoading, setIsLoading] = useState(false);
-  // const { isAuthenticated } = useUserContext();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      amount: "",
+      name: "",
+      // amount: "",
       // emailAddress: "",
       // transferNote: "",
       // accountNumber: "",
@@ -50,6 +53,20 @@ const PaymentTransferForm = () => {
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     console.log("submit handler");
+    const transferParams = {
+      sourceFundingSourceUrl:
+        "https://api-sandbox.dwolla.com/funding-sources/37f99064-fa0a-4465-8c83-ea9352722a3d",
+      destinationFundingSourceUrl:
+        "https://api-sandbox.dwolla.com/funding-sources/765898fb-a41d-4e19-ab1e-e371975a2acd",
+      amount: "15.00",
+    };
+
+    try {
+      const transfer = await createTransfer(transferParams);
+      console.log({ transfer });
+    } catch (error) {
+      console.error("Submitting create transfer request failed: ", error);
+    }
 
     setIsLoading(false);
   };
@@ -83,7 +100,7 @@ const PaymentTransferForm = () => {
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="emailAddress"
           render={({ field }) => (
@@ -105,8 +122,8 @@ const PaymentTransferForm = () => {
               </div>
             </FormItem>
           )}
-        />
-        <FormField
+        /> */}
+        {/* <FormField
           control={form.control}
           name="transferNote"
           render={({ field }) => (
@@ -135,7 +152,7 @@ const PaymentTransferForm = () => {
               </div>
             </FormItem>
           )}
-        />
+        /> */}
         <div className="flex flex-col gap-1 border-t border-gray-200 pb-5 pt-6">
           <h2 className="text-18 font-semibold text-gray-900">
             Bank account details
@@ -144,7 +161,7 @@ const PaymentTransferForm = () => {
             Enter the bank account details of the recipient
           </p>
         </div>
-        <FormField
+        {/* <FormField
           control={form.control}
           name="accountNumber"
           render={({ field }) => (
@@ -166,8 +183,8 @@ const PaymentTransferForm = () => {
               </div>
             </FormItem>
           )}
-        />
-        <FormField
+        /> */}
+        {/* <FormField
           control={form.control}
           name="amount"
           render={({ field }) => (
@@ -185,15 +202,19 @@ const PaymentTransferForm = () => {
               </div>
             </FormItem>
           )}
-        />
+        /> */}
         <div className="mt-5 flex w-full max-w-[850px] gap-3 border-t border-gray-200 py-5">
-          <Button
+          <PlaidLink
+            user={user}
+            dwollaCustomerId="a829a40a-3241-42c9-a3e5-f30321693026"
+          />
+          {/* <Button
             variant="outline"
             className="text-14 w-full border-gray-300 font-semibold text-gray-700 shadow-form"
             onClick={() => form.reset()}
           >
             Cancel
-          </Button>
+          </Button> */}
           <Button
             type="submit"
             className="text-14 w-full bg-bank-gradient font-semibold text-white shadow-form"

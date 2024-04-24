@@ -89,6 +89,7 @@ const MobileNav = ({
                 <PlaidLink
                   user={{ id: userId, name: "John Doe" }}
                   variant="ghost"
+                  dwollaCustomerId="a829a40a-3241-42c9-a3e5-f30321693026"
                 />
               </nav>
             </SheetClose>

@@ -1,12 +1,12 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-import { cn } from "@/lib/utils";
+import { PlaidLink } from "@/components/shared/PlaidLink";
 import { sidebarLinks } from "@/constants";
 import { logoutAccount } from "@/lib/actions/user.actions";
-import { PlaidLink } from "@/components/shared/PlaidLink";
+import { cn } from "@/lib/utils";
 
 import { Input } from "../ui/input";
 
@@ -87,21 +87,25 @@ const Sidebar = ({
             </Link>
           );
         })}
-        <PlaidLink user={{ id: userId, name: name }} variant="ghost" />
+        <PlaidLink
+          user={{ id: userId, name }}
+          variant="ghost"
+          dwollaCustomerId="a829a40a-3241-42c9-a3e5-f30321693026"
+        />
       </nav>
       <footer
         className="flex cursor-pointer items-center justify-between gap-2 py-6"
         onClick={handleLogOut}
       >
-        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 max-xl:hidden">
+        <div className="flex size-10 items-center justify-center rounded-full bg-gray-200 max-xl:hidden">
           <p className="text-xl font-bold text-gray-700">{name[0]}</p>
         </div>
 
-        <div className="flex-1 flex max-w-[70%] flex-col justify-center max-xl:hidden">
-          <h1 className="text-14 font-semibold text-gray-700 line-clamp-1">
+        <div className="flex max-w-[70%] flex-1 flex-col justify-center max-xl:hidden">
+          <h1 className="text-14 line-clamp-1 font-semibold text-gray-700">
             {name}
           </h1>
-          <p className="text-14 truncate font-normal text-gray-600 line-clamp-1">
+          <p className="text-14 line-clamp-1 truncate font-normal text-gray-600">
             {email}
           </p>
         </div>

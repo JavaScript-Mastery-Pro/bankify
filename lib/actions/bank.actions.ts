@@ -3,8 +3,10 @@
 import {
   ACHClass,
   CountryCode,
-  Products,
-  TransferIntentCreateMode,
+  TransferAuthorizationCreateRequest,
+  TransferCreateRequest,
+  TransferNetwork,
+  TransferType,
 } from "plaid";
 
 import { ITEMS } from "@/constants";
@@ -163,6 +165,7 @@ export const transferFund = async ({
   userId,
   senderAccountId,
   receiverAccountId,
+  appwriteItemId,
 }: {
   appwriteItemId: string;
   amount: string;
@@ -173,83 +176,83 @@ export const transferFund = async ({
   userId: string;
 }) => {
   try {
-    const transferIntentCreateRequest = {
-      mode: "PAYMENT" as TransferIntentCreateMode,
-      amount,
-      ach_class: "ppd" as ACHClass,
-      description,
-      funding_account_id: senderAccountId,
-      account_id: receiverAccountId,
-      user: {
-        legal_name: name,
-      },
-    };
-
-    const transferIntentCreateResponse = await plaidClient.transferIntentCreate(
-      transferIntentCreateRequest
-    );
-
-    // save to DB to get the status of transfer
-    const transferIntentId = transferIntentCreateResponse.data.transfer_intent;
-
-    console.log("==========transferIntentId", transferIntentId);
-
-    const linkTokenParams = {
-      user: {
-        client_user_id: userId,
-      },
-      client_name: name,
-      country_codes: ["US"] as CountryCode[],
-      language: "en",
-      products: ["transfer"] as Products[],
-      transfer: {
-        intent_id: transferIntentId as any,
-      },
-      link_customization_name: "horizon" as any,
-    };
-    const linkTokenResponse =
-      await plaidClient.linkTokenCreate(linkTokenParams);
-
-    // console.log("==========linkTokenResponse.data", linkTokenResponse.data);
-
-    // const accessToken = ITEMS.filter((bank) => bank.id === appwriteItemId)[0]
-    //   .accessToken;
-
-    // const transferAuthorizatioRequest: TransferAuthorizationCreateRequest = {
-    //   access_token: accessToken,
-    //   account_id: receiverAccountId,
-    //   type: "debit" as TransferType,
-    //   network: "ach" as TransferNetwork,
+    // const transferIntentCreateRequest = {
+    //   mode: "PAYMENT" as TransferIntentCreateMode,
     //   amount,
     //   ach_class: "ppd" as ACHClass,
+    //   description,
     //   funding_account_id: senderAccountId,
+    //   account_id: receiverAccountId,
     //   user: {
-    //     legal_name: "Anne Charleston",
+    //     legal_name: name,
     //   },
     // };
 
-    // const transferAuthorizatioResponse =
-    //   await plaidClient.transferAuthorizationCreate(
-    //     transferAuthorizatioRequest
-    //   );
-    // console.log(
-    //   "================transferAuthorizatioResponse",
-    //   transferAuthorizatioResponse
+    // const transferIntentCreateResponse = await plaidClient.transferIntentCreate(
+    //   transferIntentCreateRequest
     // );
-    // const authorizationId = transferAuthorizatioResponse.data.authorization.id;
 
-    // const transferRequest: TransferCreateRequest = {
-    //   access_token: accessToken,
-    //   account_id: receiverAccountId,
-    //   description: "transfer",
-    //   authorization_id: authorizationId,
-    //   amount,
+    // // save to DB to get the status of transfer
+    // const transferIntentId = transferIntentCreateResponse.data.transfer_intent;
+
+    // console.log("==========transferIntentId", transferIntentId);
+
+    // const linkTokenParams = {
+    //   user: {
+    //     client_user_id: userId,
+    //   },
+    //   client_name: name,
+    //   country_codes: ["US"] as CountryCode[],
+    //   language: "en",
+    //   products: ["transfer"] as Products[],
+    //   transfer: {
+    //     intent_id: transferIntentId as any,
+    //   },
+    //   link_customization_name: "horizon" as any,
     // };
+    // const linkTokenResponse =
+    //   await plaidClient.linkTokenCreate(linkTokenParams);
 
-    // const transferResponse = await plaidClient.transferCreate(transferRequest);
-    // const transfer = transferResponse.data.transfer;
+    // console.log("==========linkTokenResponse.data", linkTokenResponse.data);
 
-    return parseStringify({ linkToken: linkTokenResponse.data });
+    const accessToken = "";
+
+    const transferAuthorizatioRequest: TransferAuthorizationCreateRequest = {
+      access_token: accessToken,
+      account_id: receiverAccountId,
+      type: "debit" as TransferType,
+      network: "ach" as TransferNetwork,
+      amount,
+      ach_class: "ppd" as ACHClass,
+      funding_account_id: senderAccountId,
+      user: {
+        legal_name: "Anne Charleston",
+      },
+    };
+
+    const transferAuthorizatioResponse =
+      await plaidClient.transferAuthorizationCreate(
+        transferAuthorizatioRequest
+      );
+    console.log(
+      "================transferAuthorizatioResponse",
+      transferAuthorizatioResponse
+    );
+    const authorizationId = transferAuthorizatioResponse.data.authorization.id;
+
+    const transferRequest: TransferCreateRequest = {
+      access_token: accessToken,
+      account_id: receiverAccountId,
+      description: "transfer",
+      origination_account_id: "",
+      authorization_id: authorizationId,
+      amount,
+    };
+
+    const transferResponse = await plaidClient.transferCreate(transferRequest);
+    const transfer = transferResponse.data.transfer;
+
+    return parseStringify({ transfer });
   } catch (error) {
     console.error(
       "========================An error occurred while initiating transfer:",

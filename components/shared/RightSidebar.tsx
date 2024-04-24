@@ -20,7 +20,7 @@ export const RightSidebar = ({
         <div className="profile-banner" />
         <div className="profile">
           <div className="profile-img">
-            <span className="font-bold text-5xl">{name[0]}</span>
+            <span className="text-5xl font-bold">{name[0]}</span>
           </div>
 
           <div className="profile-details">

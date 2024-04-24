@@ -81,3 +81,20 @@ declare type CategoryCount = {
   count: number;
   totalCount: number;
 };
+
+declare type Receiver = {
+  firstName: string;
+  lastName: string;
+};
+
+declare type TransferParams = {
+  sourceFundingSourceUrl: string;
+  destinationFundingSourceUrl: string;
+  amount: string;
+};
+
+declare type addFundingSourceParams = {
+  dwollaCustomerId: string;
+  processorToken: string;
+  bankName: string;
+};
