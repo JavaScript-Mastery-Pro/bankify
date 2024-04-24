@@ -88,7 +88,6 @@ export const signUp = async ({ name, email, password }: SignUpParams) => {
       {
         name,
         email,
-        password,
         userId: newUserAccount.$id,
       }
     );
@@ -205,7 +204,7 @@ export const exchangePublicToken = async ({
     // create new user to the user collection
     await database.createDocument(
       process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_ITEM_COLLECTION_ID!,
+      process.env.APPWRITE_BANK_COLLECTION_ID!,
       ID.unique(),
       {
         itemId,
