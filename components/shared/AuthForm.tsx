@@ -35,18 +35,46 @@ const AuthForm = ({ type }: AuthFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
-    name:
+    firstName:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(3, "name cannot be empty"),
+        : z.string().min(3, "firstName cannot be empty"),
+    lastName:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "lastName cannot be empty"),
     email: z.string().email(),
+    address1:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "address1 cannot be empty"),
+    city:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "city cannot be empty"),
+    state:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "state cannot be empty"),
+    postalCode:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "postalCode cannot be empty"),
+    dateOfBirth:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "dateOfBirth cannot be empty"),
+    ssn:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(4, "ssn cannot be empty").max(4),
     password: z.string().min(8, "password must be 8 character"),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
       email: "",
       password: "",
     },
@@ -59,14 +87,21 @@ const AuthForm = ({ type }: AuthFormProps) => {
       // ========================================
       // SIGN-UP WITH APPWRITE & CREATE PLAID LINK TOKEN
       if (type === "sign-up") {
-        const user = {
-          name: data.name!,
+        const userData = {
+          firstName: data.firstName!,
+          lastName: data.lastName!,
+          address1: data.address1!,
+          city: data.city!,
+          state: data.state!,
+          postalCode: data.postalCode!,
+          dateOfBirth: data.dateOfBirth!,
+          ssn: data.ssn!,
           email: data.email,
           password: data.password,
         };
 
         // Create appwrite user account & link token
-        const newUser = await signUp(user);
+        const newUser = await signUp(userData);
 
         setUser(newUser);
       }
@@ -117,33 +152,194 @@ const AuthForm = ({ type }: AuthFormProps) => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
-              className="flex flex-col gap-5 md:gap-8"
+              className="flex flex-col gap-5"
             >
               {type === "sign-up" && (
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex flex-col gap-1.5">
-                        <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                          Name
-                        </FormLabel>
-                        <div className="flex w-full flex-col">
-                          <FormControl>
-                            <Input
-                              placeholder="Enter account holder name"
-                              className="input-class"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage className="text-12 text-red-500" />
+                <>
+                  <div className="flex gap-4">
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="flex flex-col gap-1.5">
+                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                              First Name
+                            </FormLabel>
+                            <div className="flex w-full flex-col">
+                              <FormControl>
+                                <Input className="input-class" {...field} />
+                              </FormControl>
+                              <FormMessage className="text-12 text-red-500" />
+                            </div>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="flex flex-col gap-1.5">
+                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                              Last Name
+                            </FormLabel>
+                            <div className="flex w-full flex-col">
+                              <FormControl>
+                                <Input className="input-class" {...field} />
+                              </FormControl>
+                              <FormMessage className="text-12 text-red-500" />
+                            </div>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="address1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex flex-col gap-1.5">
+                          <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                            Address
+                          </FormLabel>
+                          <div className="flex w-full flex-col">
+                            <FormControl>
+                              <Input
+                                placeholder="Specific address"
+                                className="input-class"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-12 text-red-500" />
+                          </div>
                         </div>
-                      </div>
-                    </FormItem>
-                  )}
-                />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex flex-col gap-1.5">
+                          <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                            City
+                          </FormLabel>
+                          <div className="flex w-full flex-col">
+                            <FormControl>
+                              <Input className="input-class" {...field} />
+                            </FormControl>
+                            <FormMessage className="text-12 text-red-500" />
+                          </div>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="flex gap-4">
+                    <FormField
+                      control={form.control}
+                      name="state"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="flex flex-col gap-1.5">
+                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                              State
+                            </FormLabel>
+                            <div className="flex w-full flex-col">
+                              <FormControl>
+                                <Input
+                                  placeholder="ex: NY"
+                                  className="input-class"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-12 text-red-500" />
+                            </div>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="postalCode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="flex flex-col gap-1.5">
+                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                              Postal Code
+                            </FormLabel>
+                            <div className="flex w-full flex-col">
+                              <FormControl>
+                                <Input
+                                  placeholder="ex: 11101"
+                                  className="input-class"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-12 text-red-500" />
+                            </div>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="flex gap-4">
+                    <FormField
+                      control={form.control}
+                      name="dateOfBirth"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="flex flex-col gap-1.5">
+                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                              Date of Birth
+                            </FormLabel>
+                            <div className="flex w-full flex-col">
+                              <FormControl>
+                                <Input
+                                  placeholder="yyyy-mm-dd"
+                                  className="input-class"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-12 text-red-500" />
+                            </div>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="ssn"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="flex flex-col gap-1.5">
+                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                              SSN
+                            </FormLabel>
+                            <div className="flex w-full flex-col">
+                              <FormControl>
+                                <Input
+                                  placeholder="ex: 1234"
+                                  className="input-class"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-12 text-red-500" />
+                            </div>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </>
               )}
+
               <FormField
                 control={form.control}
                 name="email"

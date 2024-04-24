@@ -76,39 +76,20 @@ export async function createEmailSession(email: string, password: string) {
 }
 
 // SIGN UP
-export const signUp = async ({
-  firstName,
-  lastName,
-  email,
-  address1,
-  city,
-  state,
-  postalCode,
-  dateOfBirth,
-  ssn,
-  password,
-}: SignUpParams) => {
+export const signUp = async (userData: SignUpParams) => {
   try {
     // create appwrite user
     const { user, database } = await createAdminClient();
     const newUserAccount = await user.create(
       ID.unique(),
-      email,
+      userData.email,
       undefined, // optional phone number
-      password
+      userData.password
     );
 
     // create dwolla customer
     const dwollaCustomerUrl = await createDwollaCustomer({
-      firstName,
-      lastName,
-      email,
-      address1,
-      city,
-      state,
-      postalCode,
-      dateOfBirth,
-      ssn,
+      ...userData,
       type: "personal",
     });
     console.log("======================dwollaCustomer", dwollaCustomerUrl);
@@ -120,15 +101,7 @@ export const signUp = async ({
       process.env.APPWRITE_USER_COLLECTION_ID!,
       ID.unique(),
       {
-        firstName,
-        lastName,
-        email,
-        address1,
-        city,
-        state,
-        postalCode,
-        dateOfBirth,
-        ssn,
+        ...userData,
         userId: newUserAccount.$id,
         dwollaCustomerUrl,
         dwollaCustomerId,
@@ -136,9 +109,9 @@ export const signUp = async ({
     );
 
     // get userId from session
-    await createEmailSession(email, password);
+    await createEmailSession(userData.email, userData.password);
 
-    return parseStringify({ id: newUser.$id, name });
+    return parseStringify(newUser);
   } catch (error) {
     console.error("Error", error);
     return null;
@@ -264,7 +237,7 @@ export const exchangePublicToken = async ({
 
     if (!fundingSourceUrl) throw Error;
 
-    const saveBank = await createBankAccount({
+    await createBankAccount({
       userId: user.id,
       bankId: itemId,
       accountId: accountData.account_id,
