@@ -7,18 +7,18 @@ import {
   TransferIntentCreateMode,
 } from "plaid";
 
-import { ITEMS } from "@/constants";
-
 import { plaidClient } from "../plaid/config";
 import { parseStringify } from "../utils";
+import { getBanks, getBank } from "./user.actions";
 
 // Get multiple bank accounts
-export const getAccounts = async () => {
+export const getAccounts = async (userId: string) => {
   try {
     // get banks from db
-    const banks = ITEMS;
+    const banks = await getBanks(userId);
 
     const accounts = await Promise.all(
+      // @ts-ignore
       banks.map(async (bank) => {
         // get each account info from plaid
         const accountsResponse = await plaidClient.accountsGet({
@@ -41,7 +41,7 @@ export const getAccounts = async () => {
           mask: accountData.mask!,
           type: accountData.type as string,
           subtype: accountData.subtype! as string,
-          appwriteItemId: bank.id,
+          appwriteItemId: bank.$id,
         };
 
         return account;
@@ -63,7 +63,7 @@ export const getAccounts = async () => {
 export const getAccount = async (appwriteItemId: string) => {
   try {
     // get bank from db
-    const bank = ITEMS.find((account) => account.id === appwriteItemId)!;
+    const bank = await getBank(appwriteItemId);
 
     // get account info from plaid
     const accountsResponse = await plaidClient.accountsGet({
@@ -71,16 +71,12 @@ export const getAccount = async (appwriteItemId: string) => {
     });
     const accountData = accountsResponse.data.accounts[0];
 
-    // console.log("=================== accountData", accountData);
-
     // get institution info from plaid
     const institution = await getInstitution(
       accountsResponse.data.item.institution_id!
     );
 
-    // console.log("=================== institution", institution);
-
-    const transactions = await getTransactions(appwriteItemId);
+    const transactions = await getTransactions(bank?.accessToken);
 
     const account = {
       id: accountData.account_id,
@@ -92,7 +88,7 @@ export const getAccount = async (appwriteItemId: string) => {
       mask: accountData.mask!,
       type: accountData.type as string,
       subtype: accountData.subtype! as string,
-      appwriteItemId: bank.id,
+      appwriteItemId: bank.$id,
     };
 
     return parseStringify({ data: account, transactions });
@@ -118,14 +114,11 @@ export const getInstitution = async (institutionId: string) => {
 };
 
 // Get transactions
-export const getTransactions = async (appwriteItemId: string) => {
+export const getTransactions = async (accessToken: string) => {
   let hasMore = true;
   let transactions: any = [];
 
   try {
-    // 1. Get user's accessToken from DB
-    const accessToken = ITEMS.filter((bank) => bank.id === appwriteItemId)[0]
-      .accessToken;
     // Iterate through each page of new transaction updates for item
     while (hasMore) {
       const response = await plaidClient.transactionsSync({
@@ -191,8 +184,6 @@ export const transferFund = async ({
 
     // save to DB to get the status of transfer
     const transferIntentId = transferIntentCreateResponse.data.transfer_intent;
-
-    console.log("==========transferIntentId", transferIntentId);
 
     const linkTokenParams = {
       user: {

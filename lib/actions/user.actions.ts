@@ -1,12 +1,12 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { Client, Account, ID, Databases, Query, Users } from "node-appwrite";
+import { revalidatePath } from "next/cache";
 import { CountryCode, Products } from "plaid";
+import { Client, Account, ID, Databases, Query, Users } from "node-appwrite";
 
-import { plaidClient } from "@/lib/plaid/config";
 import { parseStringify } from "../utils";
+import { plaidClient } from "@/lib/plaid/config";
 
 export async function createAdminClient() {
   const client = new Client()
@@ -193,27 +193,19 @@ export const exchangePublicToken = async ({
     const accessToken = response.data.access_token;
     const itemId = response.data.item_id;
 
-    const { database } = await createAdminClient();
-
     // get account info from plaid
     const accountsResponse = await plaidClient.accountsGet({
       access_token: accessToken,
     });
+
     const accountData = accountsResponse.data.accounts[0];
 
-    // create new user to the user collection
-    await database.createDocument(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_BANK_COLLECTION_ID!,
-      ID.unique(),
-      {
-        itemId,
-        accessToken,
-        email: user.email,
-        user: user.id,
-        accountId: accountData.account_id,
-      }
-    );
+    const saveBank = await createBankAccount({
+      accessToken,
+      userId: user.id,
+      accountId: accountData.account_id,
+      bankId: itemId,
+    });
 
     revalidatePath("/");
 
@@ -253,6 +245,77 @@ export async function getUserInfo(userId: string) {
     if (user.total !== 1) return null;
 
     return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.error("Error", error);
+    return null;
+  }
+}
+
+export async function createBankAccount({
+  accessToken,
+  userId,
+  accountId,
+  bankId,
+}: {
+  accessToken: string;
+  userId: string;
+  accountId: string;
+  bankId: string;
+}) {
+  try {
+    const { database } = await createAdminClient();
+
+    const bankAccount = await database.createDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      ID.unique(),
+      {
+        accessToken,
+        user: userId,
+        accountId,
+        bankId,
+      }
+    );
+
+    return parseStringify(bankAccount);
+  } catch (error) {
+    console.error("Error", error);
+    return null;
+  }
+}
+
+// get user bank accounts
+export async function getBanks(userId: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    const banks = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      [Query.equal("user", [userId])]
+    );
+
+    return parseStringify(banks.documents);
+  } catch (error) {
+    console.error("Error", error);
+    return null;
+  }
+}
+
+// get specific bank from bank collection by document id
+export async function getBank(documentId: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    const bank = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      [Query.equal("$id", [documentId])]
+    );
+
+    if (bank.total !== 1) return null;
+
+    return parseStringify(bank.documents[0]);
   } catch (error) {
     console.error("Error", error);
     return null;

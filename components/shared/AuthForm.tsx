@@ -22,7 +22,6 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { useRouter } from "next/navigation";
-import router from "next/router";
 
 interface AuthFormProps {
   type: "sign-in" | "sign-up";
@@ -33,8 +32,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log({ user });
 
   const formSchema = z.object({
     name:
@@ -84,48 +81,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
         if (response) router.push("/");
       }
 
-      // ========================================
-      // SANDBOX DATA
-      // await fetch(
-      //   `${process.env.NEXT_PUBLIC_SITE_URL}/api/plaid/sandbox_link_tokens_create`,
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // )
-      //   .then((response) => response.json())
-      //   .then(async (data) => {
-      //     const { accessToken, accountId } = data;
-      //     console.log({ accessToken });
-      //     console.log({ accountId });
-
-      //     if (accessToken) {
-      //       // ========================================
-      //       // TRANSFER
-      //       await fetch(
-      //         `${process.env.NEXT_PUBLIC_SITE_URL}/api/plaid/transfer/create`,
-      //         {
-      //           method: "POST",
-      //           headers: {
-      //             "Content-Type": "application/json",
-      //           },
-      //           body: JSON.stringify({
-      //             accountId,
-      //             accessToken,
-      //           }),
-      //         }
-      //       )
-      //         .then((response) => response.json())
-      //         .then((data) => {
-      //           const { transfer } = data;
-      //           if (transfer) {
-      //             console.log(transfer);
-      //           }
-      //         });
-      //     }
-      //   });
       setIsLoading(false);
     } catch (error) {
       console.log(error);

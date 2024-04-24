@@ -34,7 +34,6 @@ const formSchema = z.object({
 
 const PaymentTransferForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  // const { isAuthenticated } = useUserContext();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

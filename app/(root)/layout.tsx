@@ -17,7 +17,7 @@ const RootLayout = async ({
   return (
     <main className="flex h-screen w-full font-inter">
       <Sidebar
-        userId={loggedIn.userId}
+        userId={loggedIn.$id}
         name={loggedIn.name}
         email={loggedIn.email}
       />
@@ -26,7 +26,7 @@ const RootLayout = async ({
           <Image src="/icons/logo.svg" width={30} height={30} alt="menu icon" />
           <div>
             <MobileNav
-              userId={loggedIn.userId}
+              userId={loggedIn.$id}
               name={loggedIn.name}
               email={loggedIn.email}
             />
