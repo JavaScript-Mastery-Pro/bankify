@@ -4,26 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { PlaidLink } from "@/components/shared/PlaidLink";
 import {
   Sheet,
   SheetClose,
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { sidebarLinks } from "@/constants";
-import { logoutAccount } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
+import { sidebarLinks } from "@/constants";
+import { PlaidLink } from "@/components/shared/PlaidLink";
+import { logoutAccount } from "@/lib/actions/user.actions";
 
-const MobileNav = ({
-  userId,
-  name,
-  email,
-}: {
-  userId: string;
-  name: string;
-  email: string;
-}) => {
+const MobileNav = ({ userId, name, email }: MobileNavProps) => {
   const pathname = usePathname();
 
   return (
@@ -48,7 +40,7 @@ const MobileNav = ({
               BANKIFY
             </h1>
           </Link>
-          <div className="flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto">
+          <div className="mobilenav-sheet">
             <SheetClose asChild>
               <nav className=" flex h-full flex-col gap-6 pt-16 text-white">
                 {sidebarLinks.map((item) => {
@@ -59,12 +51,9 @@ const MobileNav = ({
                       <Link
                         href={item.route}
                         key={item.label}
-                        className={cn(
-                          "flex gap-3 items-center p-4 rounded-lg w-full max-w-60",
-                          {
-                            "bg-bank-gradient": isActive,
-                          }
-                        )}
+                        className={cn("mobilenav-sheet_close", {
+                          "bg-bank-gradient": isActive,
+                        })}
                       >
                         <Image
                           src={item.imgURL}

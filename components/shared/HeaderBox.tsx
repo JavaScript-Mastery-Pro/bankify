@@ -1,12 +1,3 @@
-"use client";
-
-type HeaderBoxProps = {
-  type?: "title" | "greeting";
-  title: string;
-  subtext: string;
-  user?: string;
-};
-
 export const HeaderBox = ({
   type = "title",
   title,

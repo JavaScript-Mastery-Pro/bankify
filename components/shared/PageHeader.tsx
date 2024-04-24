@@ -1,13 +1,5 @@
 import { cn } from "@/lib/utils";
 
-interface PageHeaderProps {
-  topTitle: string;
-  bottomTitle: string;
-  topDescription: string;
-  bottomDescription: string;
-  connectBank?: boolean;
-}
-
 const PageHeader = ({
   topTitle,
   bottomDescription,

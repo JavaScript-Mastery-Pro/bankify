@@ -16,12 +16,6 @@ import {
 
 import { Button } from "../ui/button";
 
-type PlaidLinkProps = {
-  user: User;
-  variant?: "primary" | "ghost";
-  dwollaCustomerId: string;
-};
-
 export const PlaidLink = ({
   user,
   variant = "primary",
@@ -63,7 +57,7 @@ export const PlaidLink = ({
         <Button
           onClick={() => open()}
           disabled={!ready}
-          className="text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form"
+          className="plaidlink-primary"
         >
           Connect bank
         </Button>
@@ -71,7 +65,7 @@ export const PlaidLink = ({
         <Button
           onClick={() => open()}
           variant="ghost"
-          className="flex cursor-pointer items-center justify-center gap-4 rounded-lg px-3 py-7 hover:bg-white lg:justify-start"
+          className="plaidlink-default"
         >
           <Image
             src="/icons/connect-bank.svg"

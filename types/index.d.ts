@@ -129,3 +129,35 @@ declare interface BankInfo {
   appwriteItemId?: string;
   type: "full" | "card";
 }
+
+declare interface HeaderBoxProps {
+  type?: "title" | "greeting";
+  title: string;
+  subtext: string;
+  user?: string;
+}
+
+declare interface MobileNavProps {
+  userId: string;
+  name: string;
+  email: string;
+}
+
+declare interface PageHeaderProps {
+  topTitle: string;
+  bottomTitle: string;
+  topDescription: string;
+  bottomDescription: string;
+  connectBank?: boolean;
+}
+
+declare interface PaginationProps {
+  page: number;
+  totalPages: number;
+}
+
+declare interface PlaidLinkProps {
+  user: User;
+  variant?: "primary" | "ghost";
+  dwollaCustomerId: string;
+}
