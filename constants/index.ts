@@ -14,6 +14,11 @@ export const sidebarLinks = [
     route: "/transaction-history",
     label: "Transaction History",
   },
+  {
+    imgURL: "/icons/transaction.svg",
+    route: "/payment-transfer",
+    label: "Transfer Funds",
+  },
 ];
 
 export const Banks: Bank[] = [

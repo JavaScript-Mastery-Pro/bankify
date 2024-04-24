@@ -60,23 +60,12 @@ export const createOnDemandAuthorization = async () => {
   }
 };
 
-export const createDwollaCustomer = async () => {
-  const requestBody = {
-    firstName: "Test8",
-    lastName: "User",
-    email: "test8@nomail.net",
-    type: "personal",
-    address1: "99-99 33rd St",
-    city: "Some City",
-    state: "NY",
-    postalCode: "11101",
-    dateOfBirth: "1970-01-01",
-    ssn: "1234",
-  };
-
+export const createDwollaCustomer = async (
+  newCustomer: NewDwollaCustomerParams
+) => {
   try {
     return await dwollaClient
-      .post("customers", requestBody)
+      .post("customers", newCustomer)
       .then((res) => res.headers.get("location")); // => 'https://api-sandbox.dwolla.com/customers/FC451A7A-AE30-4404-AB95-E3553FCD733F
   } catch (err) {
     console.error("Creating a Dwolla Customer Failed: ", err);
@@ -115,7 +104,7 @@ export const addFundingSource = async ({
   dwollaCustomerId,
   processorToken,
   bankName,
-}: addFundingSourceParams) => {
+}: AddFundingSourceParams) => {
   try {
     // create dwolla auth link
     const dwollaAuthLinks = await createOnDemandAuthorization();

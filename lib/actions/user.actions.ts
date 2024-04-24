@@ -12,6 +12,7 @@ import {
 
 import { plaidClient } from "@/lib/plaid/config";
 import { parseStringify, extractCustomerIdFromUrl } from "@/lib/utils";
+
 import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 
 export async function createAdminClient() {
@@ -75,7 +76,18 @@ export async function createEmailSession(email: string, password: string) {
 }
 
 // SIGN UP
-export const signUp = async ({ name, email, password }: SignUpParams) => {
+export const signUp = async ({
+  firstName,
+  lastName,
+  email,
+  address1,
+  city,
+  state,
+  postalCode,
+  dateOfBirth,
+  ssn,
+  password,
+}: SignUpParams) => {
   try {
     // create appwrite user
     const { user, database } = await createAdminClient();
@@ -83,12 +95,22 @@ export const signUp = async ({ name, email, password }: SignUpParams) => {
       ID.unique(),
       email,
       undefined, // optional phone number
-      password,
-      name
+      password
     );
 
     // create dwolla customer
-    const dwollaCustomerUrl = await createDwollaCustomer();
+    const dwollaCustomerUrl = await createDwollaCustomer({
+      firstName,
+      lastName,
+      email,
+      address1,
+      city,
+      state,
+      postalCode,
+      dateOfBirth,
+      ssn,
+      type: "personal",
+    });
     console.log("======================dwollaCustomer", dwollaCustomerUrl);
     if (!dwollaCustomerUrl) throw Error;
     const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
@@ -98,8 +120,15 @@ export const signUp = async ({ name, email, password }: SignUpParams) => {
       process.env.APPWRITE_USER_COLLECTION_ID!,
       ID.unique(),
       {
-        name,
+        firstName,
+        lastName,
         email,
+        address1,
+        city,
+        state,
+        postalCode,
+        dateOfBirth,
+        ssn,
         userId: newUserAccount.$id,
         dwollaCustomerUrl,
         dwollaCustomerId,
@@ -236,10 +265,10 @@ export const exchangePublicToken = async ({
     if (!fundingSourceUrl) throw Error;
 
     const saveBank = await createBankAccount({
-      accessToken,
       userId: user.id,
-      accountId: accountData.account_id,
       bankId: itemId,
+      accountId: accountData.account_id,
+      accessToken,
       fundingSourceUrl,
     });
 

@@ -10,7 +10,7 @@ import TransactionTable from "./TransactionTable";
 
 export const RecentTransactions = ({
   accounts,
-  transactions,
+  transactions = [],
   appwriteItemId,
   page = 1,
 }: {

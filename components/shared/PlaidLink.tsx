@@ -71,7 +71,7 @@ export const PlaidLink = ({
         <Button
           onClick={() => open()}
           variant="ghost"
-          className="flex cursor-pointer items-center justify-center gap-3 rounded-lg px-3 py-7 hover:bg-white lg:justify-start"
+          className="flex cursor-pointer items-center justify-center gap-4 rounded-lg px-3 py-7 hover:bg-white lg:justify-start"
         >
           <Image
             src="/icons/connect-bank.svg"

@@ -8,8 +8,15 @@ declare type SearchParamProps = {
 // ========================================
 
 declare type SignUpParams = {
+  firstName: string;
+  lastName: string;
   email: string;
-  name: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  dateOfBirth: string;
+  ssn: string;
   password: string;
 };
 
@@ -24,7 +31,6 @@ declare type User = {
   stripeId?: string;
   name: string;
   email?: string;
-  image?: string;
 };
 
 declare type NewUserParams = {
@@ -93,8 +99,21 @@ declare type TransferParams = {
   amount: string;
 };
 
-declare type addFundingSourceParams = {
+declare type AddFundingSourceParams = {
   dwollaCustomerId: string;
   processorToken: string;
   bankName: string;
+};
+
+declare type NewDwollaCustomerParams = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  type: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  dateOfBirth: string;
+  ssn: string;
 };
