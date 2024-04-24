@@ -15,33 +15,42 @@ import {
 } from "./ui/table";
 
 const CategoryBadge = ({ category }: { category: string }) => {
+  const categoryStyles = {
+    "Food and Drink": {
+      borderColor: "border-pink-600",
+      backgroundColor: "bg-pink-500",
+      textColor: "text-pink-700",
+    },
+    Payment: {
+      borderColor: "border-success-600",
+      backgroundColor: "bg-green-600",
+      textColor: "text-success-700",
+    },
+    "Bank Fees": {
+      borderColor: "border-success-600",
+      backgroundColor: "bg-green-600",
+      textColor: "text-success-700",
+    },
+    Transfer: {
+      borderColor: "border-red-700",
+      backgroundColor: "bg-red-700",
+      textColor: "text-red-700",
+    },
+    default: {
+      borderColor: "",
+      backgroundColor: "bg-blue-500",
+      textColor: "text-blue-700",
+    },
+  };
+
+  const { borderColor, backgroundColor, textColor } =
+    categoryStyles[category as keyof typeof categoryStyles] ||
+    categoryStyles.default;
+
   return (
-    <div
-      className={cn(
-        "flex-center truncate w-fit gap-1 rounded-2xl border-[1.5px] border-blue-600 py-[2px] pl-1.5 pr-2",
-        {
-          "border-pink-600": category === "Food and Drink",
-          "border-success-600": ["Payment", "Bank Fees"].includes(category),
-          "border-red-700": category === "Transfer",
-        }
-      )}
-    >
-      <div
-        className={cn("size-2 rounded-full bg-blue-500", {
-          "bg-pink-500": category === "Food and Drink",
-          "bg-green-600": ["Payment", "Bank Fees"].includes(category),
-          "bg-red-700": category === "Transfer",
-        })}
-      />
-      <p
-        className={cn("text-[12px] font-medium text-blue-700", {
-          "text-pink-700": category === "Food and Drink",
-          "text-success-700": ["Payment", "Bank Fees"].includes(category),
-          "text-red-700": category === "Transfer",
-        })}
-      >
-        {category}
-      </p>
+    <div className={cn("category-badge", borderColor)}>
+      <div className={cn("size-2 rounded-full", backgroundColor)} />
+      <p className={cn("text-[12px] font-medium", textColor)}>{category}</p>
     </div>
   );
 };
@@ -72,7 +81,7 @@ const TransactionTable = ({
                 </h1>
               </div>
             </TableCell>
-            <TableCell className="px-0  pr-10">
+            <TableCell className="px-0 pr-10">
               {formatAmount(transaction.amount)}
             </TableCell>
             <TableCell className="min-w-32 px-0 pr-10">
