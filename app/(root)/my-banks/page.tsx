@@ -1,10 +1,10 @@
+import { redirect } from "next/navigation";
+
 import { BankCard } from "@/components/BankCard";
 import { HeaderBox } from "@/components/shared/HeaderBox";
-import { RightSidebar } from "@/components/shared/RightSidebar";
+
 import { getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
-import { account } from "@/lib/appwrite/serverConfig";
-import { redirect } from "next/navigation";
 
 const page = async () => {
   const loggedIn = await getLoggedInUser();
@@ -18,7 +18,7 @@ const page = async () => {
         <HeaderBox
           type="greeting"
           title="Welcome,"
-          user="Adrian"
+          user={loggedIn?.name}
           subtext="Access & manage your account and transactions efficiently."
         />
         <div className="space-y-4">
@@ -35,11 +35,6 @@ const page = async () => {
           </div>
         </div>
       </div>
-      {/* <RightSidebar
-        name={loggedIn?.name}
-        email={loggedIn?.email}
-        transactions={[]}
-      /> */}
     </section>
   );
 };

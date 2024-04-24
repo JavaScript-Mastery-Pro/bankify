@@ -49,6 +49,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
         name={loggedIn?.name}
         email={loggedIn?.email}
         transactions={account?.transactions}
+        banks={accountsData?.slice(0, 2)}
       />
     </section>
   );

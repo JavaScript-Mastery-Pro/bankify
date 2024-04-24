@@ -10,10 +10,10 @@ import {
   Products,
 } from "plaid";
 
+import { parseStringify } from "@/lib/utils";
 import { plaidClient } from "@/lib/plaid/config";
 
 import { extractCustomerIdFromUrl, parseStringify } from "../utils";
-
 import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 
 export async function createAdminClient() {
@@ -207,8 +207,6 @@ export const exchangePublicToken = async ({
       public_token: publicToken,
     });
 
-    // These values should be saved to a persistent database and
-    // associated with the currently signed-in user
     const accessToken = response.data.access_token;
     const itemId = response.data.item_id;
 

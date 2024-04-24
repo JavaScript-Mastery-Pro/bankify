@@ -1,16 +1,20 @@
 import Image from "next/image";
+import Link from "next/Link";
 
 import { Category } from "@/components/shared/Category";
 import { countTransactionCategories } from "@/lib/utils";
+import { BankCard } from "../BankCard";
 
 export const RightSidebar = ({
   name,
   email,
   transactions,
+  banks,
 }: {
   name: string;
   email: string;
   transactions: Transaction[];
+  banks: any;
 }) => {
   const categories: CategoryCount[] = countTransactionCategories(transactions);
 
@@ -31,7 +35,41 @@ export const RightSidebar = ({
       </section>
 
       <section className="banks">
-        <div className="flex flex-1 flex-col gap-6">
+        <div className="flex w-full justify-between">
+          <h2 className="header-2">My Banks</h2>
+          <Link href="/" className="flex gap-2">
+            <Image
+              src="/icons/plus.svg"
+              width={20}
+              height={20}
+              alt="plus icon"
+            />
+            <h2 className="text-14 font-semibold text-gray-600">Add Bank</h2>
+          </Link>
+        </div>
+
+        {banks?.length > 0 && (
+          <div className="flex flex-1 flex-col justify-center items-center gap-5 relative">
+            <div className="relative z-10 right-5 w-[90%]">
+              <BankCard
+                key={banks[0].id}
+                account={banks[0]}
+                userName={name}
+                showBalance={false}
+              />
+            </div>
+            <div className="absolute top-8 right-0 w-[90%] z-0">
+              <BankCard
+                key={banks[1].id}
+                account={banks[1]}
+                userName={name}
+                showBalance={false}
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="flex flex-1 flex-col gap-6 mt-10">
           <h2 className="header-2 ">Top Categories</h2>
 
           <div className="space-y-5">

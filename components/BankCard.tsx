@@ -1,14 +1,19 @@
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 
 import { formatAmount } from "@/lib/utils";
 
 interface CreditCardProps {
   account: Account;
   userName: string;
+  showBalance?: string;
 }
 
-export const BankCard = ({ account, userName }: CreditCardProps) => {
+export const BankCard = ({
+  account,
+  userName,
+  showBalance = true,
+}: CreditCardProps) => {
   return (
     <div>
       <Link
@@ -27,6 +32,7 @@ export const BankCard = ({ account, userName }: CreditCardProps) => {
             </p>
           </article>
         </div>
+
         <div className="flex size-full flex-1 flex-col items-end justify-between rounded-r-[20px] bg-bank-gradient bg-cover bg-center bg-no-repeat py-5 pr-5">
           <Image
             src="/icons/Paypass.svg"
@@ -36,6 +42,7 @@ export const BankCard = ({ account, userName }: CreditCardProps) => {
           />
           <Image src="icons/mastercard.svg" width={45} height={32} alt="visa" />
         </div>
+
         <Image
           src="/icons/lines.png"
           width={316}
@@ -44,18 +51,21 @@ export const BankCard = ({ account, userName }: CreditCardProps) => {
           className="absolute left-0 top-0"
         />
       </Link>
-      <div className="text-16 flex justify-between px-1 py-3">
-        <div className="flex gap-1">
-          <Image
-            src="/icons/dollar-circle.svg"
-            alt="dollar"
-            width={20}
-            height={20}
-          />
-          <p className="text-gray-600">Current balance</p>
+
+      {showBalance && (
+        <div className="text-16 flex justify-between px-1 py-3">
+          <div className="flex gap-1">
+            <Image
+              src="/icons/dollar-circle.svg"
+              alt="dollar"
+              width={20}
+              height={20}
+            />
+            <p className="text-gray-600">Current balance</p>
+          </div>
+          <p className="font-medium">{formatAmount(account.currentBalance)}</p>
         </div>
-        <p className="font-medium">{formatAmount(account.currentBalance)}</p>
-      </div>
+      )}
     </div>
   );
 };
