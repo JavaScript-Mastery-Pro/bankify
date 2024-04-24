@@ -1,14 +1,13 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-// import { useRouter } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 import * as z from "zod";
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { PlaidLink } from "@/components/shared/PlaidLink";
 import { signIn, signUp } from "@/lib/actions/user.actions";
@@ -84,7 +83,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
     setIsLoading(true);
 
     try {
-      // ========================================
       // SIGN-UP WITH APPWRITE & CREATE PLAID LINK TOKEN
       if (type === "sign-up") {
         const userData = {

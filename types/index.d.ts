@@ -117,3 +117,15 @@ declare type NewDwollaCustomerParams = {
   dateOfBirth: string;
   ssn: string;
 };
+
+declare interface CreditCardProps {
+  account: Account;
+  userName: string;
+  showBalance?: boolean;
+}
+
+declare interface BankInfo {
+  account: Account;
+  appwriteItemId?: string;
+  type: "full" | "card";
+}

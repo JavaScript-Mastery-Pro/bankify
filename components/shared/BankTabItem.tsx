@@ -27,12 +27,9 @@ export const BankTabItem = ({
   return (
     <div
       onClick={handleBankChange}
-      className={cn(
-        `gap-[18px] flex px-2 sm:px-4 py-2 transition-all border-b-2  border-transparent`,
-        {
-          "shadow-sm border-blue-600": isActive,
-        }
-      )}
+      className={cn(`banktab-item`, {
+        "shadow-sm border-blue-600": isActive,
+      })}
     >
       <p
         className={cn(`text-16 line-clamp-1 flex-1 font-medium text-gray-500`, {

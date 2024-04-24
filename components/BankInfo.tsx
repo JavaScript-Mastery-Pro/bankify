@@ -10,17 +10,10 @@ import {
   getAccountTypeColors,
 } from "@/lib/utils";
 
-export const BankInfo = ({
-  account,
-  appwriteItemId,
-  type,
-}: {
-  account: Account;
-  appwriteItemId?: string;
-  type: "full" | "card";
-}) => {
-  const searchParams = useSearchParams();
+export const BankInfo = ({ account, appwriteItemId, type }: BankInfo) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const isActive = appwriteItemId === account?.appwriteItemId;
 
   const handleBankChange = () => {
@@ -37,14 +30,11 @@ export const BankInfo = ({
   return (
     <div
       onClick={handleBankChange}
-      className={cn(
-        `gap-[18px] flex p-4 transition-all border bg-blue-25 border-transparent ${colors.bg}`,
-        {
-          "shadow-sm border-blue-700": type === "card" && isActive,
-          "rounded-xl": type === "card",
-          "hover:shadow-sm cursor-pointer": type === "card",
-        }
-      )}
+      className={cn(`bank-info ${colors.bg}`, {
+        "shadow-sm border-blue-700": type === "card" && isActive,
+        "rounded-xl": type === "card",
+        "hover:shadow-sm cursor-pointer": type === "card",
+      })}
     >
       <figure
         className={`flex-center h-fit rounded-full bg-blue-100 ${colors.lightBg}`}
@@ -66,15 +56,13 @@ export const BankInfo = ({
           </h2>
           {type === "full" && (
             <p
-              className={`rounded-full px-3 py-1 text-[12px] font-medium text-blue-700 ${colors.subText} ${colors.lightBg}`}
+              className={`rounded-full px-3 py-1 text-12 font-medium text-blue-700 ${colors.subText} ${colors.lightBg}`}
             >
               {account.subtype}
             </p>
           )}
         </div>
-        <p
-          className={`text-[16px] font-medium text-blue-700 ${colors.subText}`}
-        >
+        <p className={`text-16 font-medium text-blue-700 ${colors.subText}`}>
           {formatAmount(account.currentBalance)}
         </p>
       </div>
