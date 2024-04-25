@@ -23,7 +23,7 @@ export const BankDropdown = ({
 }: {
   accounts: Account[];
   appwriteItemId: string;
-  setValue: UseFormSetValue<any>;
+  setValue?: UseFormSetValue<any>;
   otherStyles?: string;
 }) => {
   const [itemId, setItemId] = useState(appwriteItemId);
