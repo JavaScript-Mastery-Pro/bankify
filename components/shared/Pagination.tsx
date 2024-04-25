@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { formUrlQuery } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { formUrlQuery } from "@/lib/utils";
 
 export const Pagination = ({ page, totalPages }: PaginationProps) => {
   const router = useRouter();
