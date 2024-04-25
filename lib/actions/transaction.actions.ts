@@ -8,6 +8,11 @@ import { parseStringify } from "../utils";
 interface CreateTransactionProps {
   amount: string;
   senderId: string;
+  date: string;
+  channel: string;
+  category: string;
+  receiverId: string;
+  receiverBankId: string;
   senderBankId: string;
   sharableId: string;
 }
@@ -18,21 +23,13 @@ export const createTransaction = async ({
 }: CreateTransactionProps) => {
   try {
     const { database } = await createAdminClient();
-    const bank = {
-      userId: "662a47fa074fb89e70f7",
-      $id: "662a4aa86eae084844d7",
-    };
+
     const newTransaction = await database.createDocument(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
       ID.unique(),
       {
-        name: " Transfer",
-        channel: "online",
-        category: "Transfer",
-        receiverId: bank.userId,
-        receiverBankId: bank.$id,
-        ...transaction,
+        transaction,
       }
     );
 
@@ -42,33 +39,17 @@ export const createTransaction = async ({
   }
 };
 
-export const getTransactions = async (bankId: string) => {
+export const getTransactionsByBankId = async (bankId: string) => {
   try {
     const { database } = await createAdminClient();
 
     const transactions = await database.listDocuments(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
-      [Query.equal("senderBankId", bankId)]
-    );
-
-    return parseStringify(transactions);
-  } catch (error) {
-    console.error("An error occurred while getting the transactions:", error);
-  }
-};
-
-export const getTransactionsByBankId = async (
-  userId: string,
-  bankId: string
-) => {
-  try {
-    const { database } = await createAdminClient();
-
-    const transactions = await database.listDocuments(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
-      [Query.equal("senderBankId", bankId), Query.equal("senderId", userId)]
+      [
+        Query.equal("senderBankId", bankId),
+        Query.equal("receiverBankId", bankId),
+      ]
     );
 
     return parseStringify(transactions);

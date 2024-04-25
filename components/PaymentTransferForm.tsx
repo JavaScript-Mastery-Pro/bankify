@@ -14,22 +14,21 @@ import { Button } from "./ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 const formSchema = z.object({
-  name: z.string().min(3, "name must be at least 3 characters"),
-  // amount: z.string().min(5, "must be above zero"),
-  // emailAddress: z.string().email("Invalid email address"),
-  // transferNote: z.string().optional(),
-  // accountNumber: z
-  //   .string()
-  //   .min(15, "account number must be exact 15 character")
-  //   .max(15),
+  email: z.string().email("Invalid email address"),
+  amount: z.string().min(4, "Name is too short"),
+  transferNote: z.string().min(4, "Name is too short"),
+  receiverBank: z.string().min(4, "Bank account number is too short"),
+  senderBank: z.string().min(4, "Bank account number is too short"),
 });
 
 const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
@@ -40,18 +39,16 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      // amount: "",
-      // emailAddress: "",
-      // transferNote: "",
-      // accountNumber: "",
-      // branchcode: "",
+      email: "",
+      amount: "",
+      transferNote: "",
+      receiverBank: "",
+      senderBank: "",
     },
   });
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    console.log("submit handler");
     const transferParams = {
       sourceFundingSourceUrl:
         "https://api-sandbox.dwolla.com/funding-sources/93965140-af6c-4072-9aff-abb78e2b92a6",
@@ -92,30 +89,7 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
       >
         <FormField
           control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem className="border-t border-gray-200">
-              <div className="flex w-full max-w-[850px] flex-col gap-3 pb-5 pt-6 md:flex-row lg:gap-8">
-                <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                  Recipient&apos;s Full Name
-                </FormLabel>
-                <div className="flex w-full flex-col">
-                  <FormControl>
-                    <Input
-                      placeholder="Nikky Eva"
-                      className="input-class"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-12 text-red-500" />
-                </div>
-              </div>
-            </FormItem>
-          )}
-        />
-        {/* <FormField
-          control={form.control}
-          name="emailAddress"
+          name="email"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
               <div className="flex w-full max-w-[850px] flex-col gap-3 py-5 md:flex-row lg:gap-8">
@@ -135,8 +109,9 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
               </div>
             </FormItem>
           )}
-        /> */}
-        {/* <FormField
+        />
+
+        <FormField
           control={form.control}
           name="transferNote"
           render={({ field }) => (
@@ -165,7 +140,8 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
               </div>
             </FormItem>
           )}
-        /> */}
+        />
+
         <div className="flex flex-col gap-1 border-t border-gray-200 pb-5 pt-6">
           <h2 className="text-18 font-semibold text-gray-900">
             Bank account details
@@ -174,9 +150,9 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
             Enter the bank account details of the recipient
           </p>
         </div>
-        {/* <FormField
+        <FormField
           control={form.control}
-          name="accountNumber"
+          name="receiverBank"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
               <div className="flex w-full max-w-[850px] flex-col gap-3 pb-5 pt-6 md:flex-row lg:gap-8">
@@ -196,8 +172,8 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
               </div>
             </FormItem>
           )}
-        /> */}
-        {/* <FormField
+        />
+        <FormField
           control={form.control}
           name="amount"
           render={({ field }) => (
@@ -215,16 +191,9 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
               </div>
             </FormItem>
           )}
-        /> */}
+        />
         <div className="mt-5 flex w-full max-w-[850px] gap-3 border-t border-gray-200 py-5">
           <PlaidLink user={user} />
-          {/* <Button
-            variant="outline"
-            className="text-14 w-full border-gray-300 font-semibold text-gray-700 shadow-form"
-            onClick={() => form.reset()}
-          >
-            Cancel
-          </Button> */}
           <Button
             type="submit"
             className="text-14 w-full bg-bank-gradient font-semibold text-white shadow-form"
