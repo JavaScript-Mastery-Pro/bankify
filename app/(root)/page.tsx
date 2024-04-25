@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 
-import { RecentTransactions } from "@/components/RecentTransactions";
-import { HeaderBox } from "@/components/shared/HeaderBox";
-import { RightSidebar } from "@/components/shared/RightSidebar";
-import { TotalBalanceBox } from "@/components/shared/TotalBalanceBox";
-import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
+import { RightSidebar } from "@/components/nav/RightSidebar";
+import { HeaderBox, TotalBalanceBox } from "@/components/common";
+import { RecentTransactions } from "@/components/transaction/RecentTransactions";
+
 import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 
 const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;

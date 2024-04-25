@@ -12,7 +12,7 @@ import { createTransaction } from "@/lib/actions/transaction.actions";
 import { getBank, getBankByAccountId } from "@/lib/actions/user.actions";
 import { decryptId } from "@/lib/utils";
 
-import { BankDropdown } from "./shared/BankDropdown";
+import { BankDropdown } from "./bank/BankDropdown";
 import { Button } from "./ui/button";
 import {
   Form,
@@ -34,13 +34,7 @@ const formSchema = z.object({
   sharableId: z.string().min(8, "Please select a valid sharable Id"),
 });
 
-const PaymentTransferForm = ({
-  user,
-  accounts,
-}: {
-  user: User;
-  accounts: Account[];
-}) => {
+const PaymentTransferForm = ({ accounts }: { accounts: Account[] }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -118,7 +112,6 @@ const PaymentTransferForm = ({
                   <FormControl>
                     <BankDropdown
                       accounts={accounts}
-                      appwriteItemId={user.$id}
                       setValue={form.setValue}
                       otherStyles="!w-full"
                     />

@@ -10,7 +10,7 @@ import {
   Products,
 } from "plaid";
 
-import { plaidClient } from "@/lib/plaid/config";
+import { plaidClient } from "@/lib/plaid.config";
 import {
   parseStringify,
   extractCustomerIdFromUrl,
@@ -67,8 +67,6 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
       ...userData,
       type: "personal",
     });
-
-    console.log("======================dwollaCustomer", dwollaCustomerUrl);
 
     if (!dwollaCustomerUrl) throw Error;
     const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
@@ -174,7 +172,6 @@ export const exchangePublicToken = async ({
   publicToken: string;
   user: User;
 }) => {
-  console.log("==============exchangeUser", user);
   try {
     const response = await plaidClient.itemPublicTokenExchange({
       public_token: publicToken,
@@ -207,8 +204,6 @@ export const exchangePublicToken = async ({
       processorToken,
       bankName: accountData.name,
     });
-
-    console.log("==============fundingSourceUrl", fundingSourceUrl);
 
     if (!fundingSourceUrl) throw Error;
 

@@ -1,21 +1,45 @@
 import { z } from "zod";
 
-// Schema for sign-in form
-export const signInSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
-
-// Schema for sign-up form
-export const signUpSchema = z.object({
-  firstName: z.string().min(3, "First name cannot be empty"),
-  lastName: z.string().min(3, "Last name cannot be empty"),
-  email: z.string().email(),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  address1: z.string().min(3, "Address cannot be empty"),
-  city: z.string().min(3, "City cannot be empty"),
-  state: z.string().min(2, "State cannot be empty").max(2),
-  postalCode: z.string().min(3, "Postal code cannot be empty"),
-  dateOfBirth: z.string().min(3, "Date of birth cannot be empty"),
-  ssn: z.string().min(4, "SSN cannot be empty").max(4),
-});
+export const authValidation = (type: string) => {
+  return {
+    firstName:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "first name cannot be empty"),
+    lastName:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "last name cannot be empty"),
+    email: z.string().email(),
+    address1:
+      type === "sign-in"
+        ? z.string().optional()
+        : z
+            .string()
+            .max(
+              50,
+              "Address cannot be empty and must be 50 or fewer characters"
+            ),
+    city:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "city cannot be empty"),
+    state:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().max(2, "state must be a 2-letter abbreviation"),
+    postalCode:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "postal code cannot be empty"),
+    dateOfBirth:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "date of birth cannot be empty"),
+    ssn:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(4, "ssn cannot be empty").max(4),
+    password: z.string().min(8, "password must be 8 character"),
+  };
+};

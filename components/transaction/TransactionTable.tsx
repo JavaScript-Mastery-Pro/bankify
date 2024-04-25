@@ -12,40 +12,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "../ui/table";
+import { transactionCategoryStyles } from "@/constants";
 
 const CategoryBadge = ({ category }: { category: string }) => {
-  const categoryStyles = {
-    "Food and Drink": {
-      borderColor: "border-pink-600",
-      backgroundColor: "bg-pink-500",
-      textColor: "text-pink-700",
-    },
-    Payment: {
-      borderColor: "border-success-600",
-      backgroundColor: "bg-green-600",
-      textColor: "text-success-700",
-    },
-    "Bank Fees": {
-      borderColor: "border-success-600",
-      backgroundColor: "bg-green-600",
-      textColor: "text-success-700",
-    },
-    Transfer: {
-      borderColor: "border-red-700",
-      backgroundColor: "bg-red-700",
-      textColor: "text-red-700",
-    },
-    default: {
-      borderColor: "",
-      backgroundColor: "bg-blue-500",
-      textColor: "text-blue-700",
-    },
-  };
-
   const { borderColor, backgroundColor, textColor } =
-    categoryStyles[category as keyof typeof categoryStyles] ||
-    categoryStyles.default;
+    transactionCategoryStyles[
+      category as keyof typeof transactionCategoryStyles
+    ] || transactionCategoryStyles.default;
 
   return (
     <div className={cn("category-badge", borderColor)}>

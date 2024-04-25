@@ -1,6 +1,6 @@
 "use client";
 
-import { Pagination } from "./shared/Pagination";
+import { Pagination } from "../Pagination";
 import TransactionTable from "./TransactionTable";
 
 const TransactionHistoryTable = ({

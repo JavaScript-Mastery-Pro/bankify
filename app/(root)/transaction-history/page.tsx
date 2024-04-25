@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
 
-import { BankDropdown } from "@/components/shared/BankDropdown";
-import { HeaderBox } from "@/components/shared/HeaderBox";
-import TransactionHistoryTable from "@/components/TransactionHistoryTable";
-import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
-import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { HeaderBox } from "@/components/common";
+import { BankDropdown } from "@/components/bank/BankDropdown";
+import TransactionHistoryTable from "@/components/transaction/TransactionHistoryTable";
+
 import { formatAmount } from "@/lib/utils";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 
 const TransactionHistory = async ({
   searchParams: { id, page },
@@ -30,10 +31,7 @@ const TransactionHistory = async ({
           title="Transaction History"
           subtext="See your bank details and transactions."
         />
-        <BankDropdown
-          accounts={accounts?.data}
-          appwriteItemId={appwriteItemId}
-        />
+        <BankDropdown accounts={accounts?.data} />
       </div>
 
       <div className="space-y-6">

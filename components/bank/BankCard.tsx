@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 
 import { formatAmount } from "@/lib/utils";
 
-export const BankCard = ({
+const BankCard = ({
   account,
   userName,
   showBalance = true,
@@ -63,3 +63,5 @@ export const BankCard = ({
     </div>
   );
 };
+
+export default BankCard;

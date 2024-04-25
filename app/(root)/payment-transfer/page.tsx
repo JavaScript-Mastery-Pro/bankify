@@ -1,7 +1,8 @@
-import PaymentTransferForm from "@/components/PaymentTransferForm";
-import PageHeader from "@/components/shared/PageHeader";
 import { getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
+
+import { PageHeader } from "@/components/common";
+import PaymentTransferForm from "@/components/PaymentTransferForm";
 
 const page = async () => {
   const loggedIn = await getLoggedInUser();
@@ -20,7 +21,7 @@ const page = async () => {
         bottomDescription="Enter your transfer details"
       />
       <section className="size-full pt-5">
-        <PaymentTransferForm user={loggedIn} accounts={accountsData} />
+        <PaymentTransferForm accounts={accountsData} />
       </section>
     </section>
   );

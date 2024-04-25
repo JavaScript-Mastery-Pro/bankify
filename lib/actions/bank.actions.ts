@@ -9,7 +9,7 @@ import {
   TransferType,
 } from "plaid";
 
-import { plaidClient } from "../plaid/config";
+import { plaidClient } from "../plaid.config";
 import { parseStringify } from "../utils";
 
 import { getTransactionsByBankId } from "./transaction.actions";
@@ -189,7 +189,6 @@ export const createTransfer = async () => {
     const transferAuthResponse =
       await plaidClient.transferAuthorizationCreate(transferAuthRequest);
     const authorizationId = transferAuthResponse.data.authorization.id;
-    console.log("===============", authorizationId);
 
     const transferCreateRequest: TransferCreateRequest = {
       access_token: "access-sandbox-cddd20c1-5ba8-4193-89f9-3a0b91034c25",
@@ -201,8 +200,8 @@ export const createTransfer = async () => {
     const responseCreateResponse = await plaidClient.transferCreate(
       transferCreateRequest
     );
+
     const transfer = responseCreateResponse.data.transfer;
-    console.log("===============", transfer);
     return parseStringify(transfer);
   } catch (error) {
     console.error(

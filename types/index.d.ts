@@ -171,5 +171,35 @@ declare interface PaginationProps {
 declare interface PlaidLinkProps {
   user: User;
   variant?: "primary" | "ghost";
-  dwollaCustomerId: string;
+  dwollaCustomerId?: string;
+}
+
+declare type User = sdk.Models.Document & {
+  accountId: string;
+  email: string;
+  name: string;
+  items: string[];
+  accessToken: string;
+  image: string;
+};
+
+declare interface AuthFormProps {
+  type: "sign-in" | "sign-up";
+}
+
+declare interface BankDropdownProps {
+  accounts: Account[];
+  setValue?: UseFormSetValue<any>;
+  otherStyles?: string;
+}
+
+declare interface BankTabItemProps {
+  account: Account;
+  appwriteItemId?: string;
+}
+
+declare interface TotlaBalanceBoxProps {
+  accounts: Account[];
+  totalBanks: number;
+  totalCurrentBalance: number;
 }

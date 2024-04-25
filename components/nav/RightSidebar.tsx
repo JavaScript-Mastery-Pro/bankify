@@ -1,10 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Category } from "@/components/shared/Category";
+import { Category } from "@/components/Category";
 import { countTransactionCategories } from "@/lib/utils";
-
-import { BankCard } from "../BankCard";
+import BankCard from "../bank/BankCard";
 
 export const RightSidebar = ({
   user,

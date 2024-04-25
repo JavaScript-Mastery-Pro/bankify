@@ -106,7 +106,6 @@ export const addFundingSource = async ({
   try {
     // create dwolla auth link
     const dwollaAuthLinks = await createOnDemandAuthorization();
-    console.log("======================dwollaAuthLink", dwollaAuthLinks);
 
     // add funding source to the dwolla customer & get the funding source url
     const fundingSourceOptions = {

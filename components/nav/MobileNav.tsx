@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { PlaidLink } from "@/components/shared/PlaidLink";
+import { PlaidLink } from "@/components/PlaidLink";
 import {
   Sheet,
   SheetClose,
@@ -12,8 +12,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
-import { logoutAccount } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
+import Footer from "./Footer";
 
 const MobileNav = ({ user }: { user: User }) => {
   const pathname = usePathname();
@@ -79,29 +79,7 @@ const MobileNav = ({ user }: { user: User }) => {
               </nav>
             </SheetClose>
 
-            <footer
-              className="flex cursor-pointer items-center justify-between gap-2 py-6"
-              // onClick={handleLogOut}
-            >
-              <div className="flex size-10 items-center justify-center rounded-full bg-gray-200">
-                <p className="text-xl font-bold text-gray-700">
-                  {user.firstName[0]}
-                </p>
-              </div>
-
-              <div className="flex  flex-1 flex-col justify-center">
-                <h1 className="text-14 line-clamp-1 font-semibold text-gray-700">
-                  {user.firstName} {user.lastName}
-                </h1>
-                <p className="text-14 line-clamp-1 truncate font-normal text-gray-600">
-                  {user.email}
-                </p>
-              </div>
-
-              <div className="relative size-5">
-                <Image src="icons/logout.svg" fill alt="jsm" />
-              </div>
-            </footer>
+            <Footer user={user} />
           </div>
         </SheetContent>
       </Sheet>

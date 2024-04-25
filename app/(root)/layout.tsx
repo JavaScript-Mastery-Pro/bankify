@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-import MobileNav from "@/components/shared/MobileNav";
-import Sidebar from "@/components/shared/Sidebar";
+import MobileNav from "@/components/nav/MobileNav";
+import Sidebar from "@/components/nav/Sidebar";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 
 const RootLayout = async ({

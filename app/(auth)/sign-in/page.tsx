@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import AuthForm from "@/components/shared/AuthForm";
+import AuthForm from "@/components/AuthForm";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 
 const page = async () => {

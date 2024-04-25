@@ -10,7 +10,7 @@ import {
   getAccountTypeColors,
 } from "@/lib/utils";
 
-export const BankInfo = ({ account, appwriteItemId, type }: BankInfo) => {
+const BankInfo = ({ account, appwriteItemId, type }: BankInfo) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -69,3 +69,5 @@ export const BankInfo = ({ account, appwriteItemId, type }: BankInfo) => {
     </div>
   );
 };
+
+export default BankInfo;

@@ -3,21 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-import { PlaidLink } from "@/components/shared/PlaidLink";
+import { PlaidLink } from "@/components/PlaidLink";
 import { sidebarLinks } from "@/constants";
-import { logoutAccount } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
 
 import { Input } from "../ui/input";
+import Footer from "./Footer";
 
 const Sidebar = ({ user }: { user: User }) => {
   const pathname = usePathname();
   const router = useRouter();
-
-  const handleLogOut = async () => {
-    const loggedOut = await logoutAccount();
-    if (loggedOut) router.push("/sign-in");
-  };
 
   return (
     <section className="sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between  border-r border-gray-200 bg-white pt-8 text-white max-md:hidden sm:p-4  xl:p-6 2xl:w-[355px]">
@@ -78,27 +73,7 @@ const Sidebar = ({ user }: { user: User }) => {
         <PlaidLink user={user} variant="ghost" />
       </nav>
 
-      <footer
-        className="flex cursor-pointer items-center justify-between gap-2 py-6"
-        onClick={handleLogOut}
-      >
-        <div className="flex size-10 items-center justify-center rounded-full bg-gray-200 max-xl:hidden">
-          <p className="text-xl font-bold text-gray-700">{user.firstName[0]}</p>
-        </div>
-
-        <div className="flex  flex-1 flex-col justify-center max-xl:hidden">
-          <h1 className="text-14 line-clamp-1 font-semibold text-gray-700">
-            {user.firstName} {user.lastName}
-          </h1>
-          <p className="text-14 line-clamp-1 truncate font-normal text-gray-600">
-            {user.email}
-          </p>
-        </div>
-
-        <div className="relative size-5 max-xl:w-full max-xl:flex max-xl:justify-center max-xl:items-center">
-          <Image src="icons/logout.svg" fill alt="jsm" />
-        </div>
-      </footer>
+      <Footer user={user} />
     </section>
   );
 };

@@ -9,10 +9,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { PlaidLink } from "@/components/shared/PlaidLink";
+import { PlaidLink } from "@/components/PlaidLink";
 import { signIn, signUp } from "@/lib/actions/user.actions";
 
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 import {
   Form,
   FormField,
@@ -20,12 +20,9 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-
-interface AuthFormProps {
-  type: "sign-in" | "sign-up";
-}
+} from "./ui/form";
+import { Input } from "./ui/input";
+import { authValidation } from "@/lib/validation";
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const router = useRouter();
@@ -33,47 +30,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const formSchema = z.object({
-    firstName:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "first name cannot be empty"),
-    lastName:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "last name cannot be empty"),
-    email: z.string().email(),
-    address1:
-      type === "sign-in"
-        ? z.string().optional()
-        : z
-            .string()
-            .max(
-              50,
-              "Address cannot be empty and must be 50 or fewer characters"
-            ),
-    city:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "city cannot be empty"),
-    state:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().max(2, "state must be a 2-letter abbreviation"),
-    postalCode:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "postal code cannot be empty"),
-    dateOfBirth:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "date of birth cannot be empty"),
-    ssn:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(4, "ssn cannot be empty").max(4),
-    password: z.string().min(8, "password must be 8 character"),
-  });
+  const formSchema = z.object(authValidation(type));
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -123,7 +80,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
   };
 
   return (
-    <section className="flex min-h-screen w-full max-w-[420px] flex-col justify-center gap-5 py-10 md:gap-8">
+    <section className="auth-form">
       <header className="flex flex-col gap-5 md:gap-8">
         <Link href="/" className="flex cursor-pointer items-center gap-1">
           <Image src="/icons/logo.svg" alt="logo" width={34} height={34} />{" "}
@@ -163,15 +120,15 @@ const AuthForm = ({ type }: AuthFormProps) => {
                       name="firstName"
                       render={({ field }) => (
                         <FormItem>
-                          <div className="flex flex-col gap-1.5">
-                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                          <div className="form-item">
+                            <FormLabel className="form-label">
                               First Name
                             </FormLabel>
                             <div className="flex w-full flex-col">
                               <FormControl>
                                 <Input className="input-class" {...field} />
                               </FormControl>
-                              <FormMessage className="text-12 text-red-500" />
+                              <FormMessage className="form-message" />
                             </div>
                           </div>
                         </FormItem>
@@ -183,15 +140,15 @@ const AuthForm = ({ type }: AuthFormProps) => {
                       name="lastName"
                       render={({ field }) => (
                         <FormItem>
-                          <div className="flex flex-col gap-1.5">
-                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                          <div className="form-item">
+                            <FormLabel className="form-label">
                               Last Name
                             </FormLabel>
                             <div className="flex w-full flex-col">
                               <FormControl>
                                 <Input className="input-class" {...field} />
                               </FormControl>
-                              <FormMessage className="text-12 text-red-500" />
+                              <FormMessage className="form-message" />
                             </div>
                           </div>
                         </FormItem>
@@ -204,10 +161,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     name="address1"
                     render={({ field }) => (
                       <FormItem>
-                        <div className="flex flex-col gap-1.5">
-                          <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                            Address
-                          </FormLabel>
+                        <div className="form-item">
+                          <FormLabel className="form-label">Address</FormLabel>
                           <div className="flex w-full flex-col">
                             <FormControl>
                               <Input
@@ -216,7 +171,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                                 {...field}
                               />
                             </FormControl>
-                            <FormMessage className="text-12 text-red-500" />
+                            <FormMessage className="form-message" />
                           </div>
                         </div>
                       </FormItem>
@@ -228,15 +183,13 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     name="city"
                     render={({ field }) => (
                       <FormItem>
-                        <div className="flex flex-col gap-1.5">
-                          <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                            City
-                          </FormLabel>
+                        <div className="form-item">
+                          <FormLabel className="form-label">City</FormLabel>
                           <div className="flex w-full flex-col">
                             <FormControl>
                               <Input className="input-class" {...field} />
                             </FormControl>
-                            <FormMessage className="text-12 text-red-500" />
+                            <FormMessage className="form-message" />
                           </div>
                         </div>
                       </FormItem>
@@ -249,10 +202,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                       name="state"
                       render={({ field }) => (
                         <FormItem>
-                          <div className="flex flex-col gap-1.5">
-                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                              State
-                            </FormLabel>
+                          <div className="form-item">
+                            <FormLabel className="form-label">State</FormLabel>
                             <div className="flex w-full flex-col">
                               <FormControl>
                                 <Input
@@ -261,7 +212,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                                   {...field}
                                 />
                               </FormControl>
-                              <FormMessage className="text-12 text-red-500" />
+                              <FormMessage className="form-message" />
                             </div>
                           </div>
                         </FormItem>
@@ -273,8 +224,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                       name="postalCode"
                       render={({ field }) => (
                         <FormItem>
-                          <div className="flex flex-col gap-1.5">
-                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                          <div className="form-item">
+                            <FormLabel className="form-label">
                               Postal Code
                             </FormLabel>
                             <div className="flex w-full flex-col">
@@ -285,7 +236,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                                   {...field}
                                 />
                               </FormControl>
-                              <FormMessage className="text-12 text-red-500" />
+                              <FormMessage className="form-message" />
                             </div>
                           </div>
                         </FormItem>
@@ -299,8 +250,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                       name="dateOfBirth"
                       render={({ field }) => (
                         <FormItem>
-                          <div className="flex flex-col gap-1.5">
-                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
+                          <div className="form-item">
+                            <FormLabel className="form-label">
                               Date of Birth
                             </FormLabel>
                             <div className="flex w-full flex-col">
@@ -311,7 +262,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                                   {...field}
                                 />
                               </FormControl>
-                              <FormMessage className="text-12 text-red-500" />
+                              <FormMessage className="form-message" />
                             </div>
                           </div>
                         </FormItem>
@@ -323,10 +274,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                       name="ssn"
                       render={({ field }) => (
                         <FormItem>
-                          <div className="flex flex-col gap-1.5">
-                            <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                              SSN
-                            </FormLabel>
+                          <div className="form-item">
+                            <FormLabel className="form-label">SSN</FormLabel>
                             <div className="flex w-full flex-col">
                               <FormControl>
                                 <Input
@@ -335,7 +284,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                                   {...field}
                                 />
                               </FormControl>
-                              <FormMessage className="text-12 text-red-500" />
+                              <FormMessage className="form-message" />
                             </div>
                           </div>
                         </FormItem>
@@ -350,10 +299,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex flex-col gap-1.5">
-                      <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                        Email
-                      </FormLabel>
+                    <div className="form-item">
+                      <FormLabel className="form-label">Email</FormLabel>
                       <div className="flex w-full flex-col">
                         <FormControl>
                           <Input
@@ -362,7 +309,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage className="text-12 text-red-500" />
+                        <FormMessage className="form-message" />
                       </div>
                     </div>
                   </FormItem>
@@ -374,10 +321,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex flex-col gap-1.5">
-                      <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                        Password
-                      </FormLabel>
+                    <div className="form-item">
+                      <FormLabel className="form-label">Password</FormLabel>
                       <div className="flex w-full flex-col">
                         <FormControl>
                           <Input
@@ -386,7 +331,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage className="text-12 text-red-500" />
+                        <FormMessage className="form-message" />
                       </div>
                     </div>
                   </FormItem>
@@ -394,10 +339,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
               />
 
               <div className="flex flex-col gap-4">
-                <Button
-                  type="submit"
-                  className="text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form"
-                >
+                <Button type="submit" className="form-btn">
                   {isLoading ? (
                     <>
                       <Loader2 size={20} className="animate-spin" /> &nbsp;
@@ -421,7 +363,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
             </p>
             <Link
               href={type === "sign-in" ? "/sign-up" : "/sign-in"}
-              className="text-14 cursor-pointer font-medium text-bankGradient"
+              className="form-link"
             >
               {type === "sign-in" ? "Sign up" : "Sign in"}
             </Link>

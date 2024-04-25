@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { UseFormSetValue } from "react-hook-form";
+import { useSearchParams, useRouter } from "next/navigation";
 
 import {
   Select,
@@ -17,15 +16,9 @@ import { formUrlQuery, formatAmount } from "@/lib/utils";
 
 export const BankDropdown = ({
   accounts = [],
-  appwriteItemId,
   setValue,
   otherStyles,
-}: {
-  accounts: Account[];
-  appwriteItemId: string;
-  setValue?: UseFormSetValue<any>;
-  otherStyles?: string;
-}) => {
+}: BankDropdownProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [selected, setSeclected] = useState(accounts[0]);

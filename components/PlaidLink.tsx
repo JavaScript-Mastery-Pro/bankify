@@ -14,12 +14,7 @@ import {
   exchangePublicToken,
 } from "@/lib/actions/user.actions";
 
-import { Button } from "../ui/button";
-
-type PlaidLinkProps = {
-  user: User;
-  variant?: "primary" | "ghost";
-};
+import { Button } from "./ui/button";
 
 export const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
   const router = useRouter();
