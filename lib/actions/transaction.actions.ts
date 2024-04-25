@@ -1,7 +1,8 @@
 "use server";
 
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 
+import { parseStringify } from "../utils";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
 
 interface Transaction {
@@ -41,10 +42,8 @@ export const getTransactionsByBankId = async (bankId: string) => {
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
       [
-        Query.or(
-          Query.equal("senderBankId", bankId),
-          Query.equal("receiverBankId", bankId)
-        ),
+        Query.equal("senderBankId", bankId),
+        Query.equal("receiverBankId", bankId),
       ]
     );
 

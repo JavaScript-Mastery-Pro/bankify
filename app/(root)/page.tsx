@@ -1,15 +1,17 @@
-import { RecentTransactions } from "@/components/RecentTransactions";
+import { redirect } from "next/navigation";
+
 import { HeaderBox } from "@/components/shared/HeaderBox";
-import { RightSidebar } from "@/components/shared/RightSidebar";
-import { TotalBalanceBox } from "@/components/shared/TotalBalanceBox";
-import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { RightSidebar } from "@/components/shared/RightSidebar";
+import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
+import { TotalBalanceBox } from "@/components/shared/TotalBalanceBox";
+import { RecentTransactions } from "@/components/RecentTransactions";
 
 const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;
 
   const loggedIn = await getLoggedInUser();
-  // if (!loggedIn) redirect("/sign-in");
+  if (!loggedIn) redirect("/sign-in");
 
   const accounts = await getAccounts(loggedIn?.$id);
   if (!accounts) return;

@@ -11,7 +11,11 @@ import {
 } from "plaid";
 
 import { plaidClient } from "@/lib/plaid/config";
-import { parseStringify, extractCustomerIdFromUrl } from "@/lib/utils";
+import {
+  parseStringify,
+  extractCustomerIdFromUrl,
+  encryptId,
+} from "@/lib/utils";
 
 import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
@@ -214,6 +218,7 @@ export const exchangePublicToken = async ({
       accountId: accountData.account_id,
       accessToken,
       fundingSourceUrl,
+      sharableId: encryptId(accountData.account_id),
     });
 
     revalidatePath("/");
@@ -263,12 +268,14 @@ export async function createBankAccount({
   accountId,
   bankId,
   fundingSourceUrl,
+  sharableId,
 }: {
   accessToken: string;
   userId: string;
   accountId: string;
   bankId: string;
   fundingSourceUrl: string;
+  sharableId: string;
 }) {
   try {
     const { database } = await createAdminClient();
@@ -283,6 +290,7 @@ export async function createBankAccount({
         accountId,
         bankId,
         fundingSourceUrl,
+        sharableId,
       }
     );
 

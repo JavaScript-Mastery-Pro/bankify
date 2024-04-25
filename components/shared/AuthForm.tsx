@@ -46,7 +46,12 @@ const AuthForm = ({ type }: AuthFormProps) => {
     address1:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(3, "address cannot be empty"),
+        : z
+            .string()
+            .max(
+              50,
+              "Address cannot be empty and must be 50 or fewer characters"
+            ),
     city:
       type === "sign-in"
         ? z.string().optional()
@@ -54,7 +59,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
     state:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(2, "state cannot be empty").max(2),
+        : z.string().max(2, "state must be a 2-letter abbreviation"),
     postalCode:
       type === "sign-in"
         ? z.string().optional()
