@@ -21,27 +21,6 @@ export const sidebarLinks = [
   },
 ];
 
-export const Banks: Bank[] = [
-  {
-    id: "6624c02e00367128945e",
-    name: "Plaid Bank",
-    type: "checking",
-    currentBalance: 110.0,
-  },
-  {
-    id: "6624bf700008ee34603c",
-    name: "Chase Bank",
-    type: "savings",
-    currentBalance: 2588.12,
-  },
-  {
-    id: "6624bf700008ee34603c",
-    name: "First Platypus Bank",
-    type: "savings",
-    currentBalance: 2588.12,
-  },
-];
-
 // good_user / good_password - Bank of America
 export const TEST_USER_ID = "6627ed3d00267aa6fa3e";
 
