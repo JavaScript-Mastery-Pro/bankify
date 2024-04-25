@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { Client, Account, ID, Databases, Query, Users } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import {
   CountryCode,
   ProcessorTokenCreateRequest,
@@ -14,37 +14,7 @@ import { plaidClient } from "@/lib/plaid/config";
 import { parseStringify, extractCustomerIdFromUrl } from "@/lib/utils";
 
 import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
-
-export async function createAdminClient() {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
-    .setKey(process.env.APPWRITE_SECRET!);
-
-  return {
-    get account() {
-      return new Account(client);
-    },
-    get database() {
-      return new Databases(client);
-    },
-    get user() {
-      return new Users(client);
-    },
-  };
-}
-
-export async function createSessionClient() {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
-
-  return {
-    get account() {
-      return new Account(client);
-    },
-  };
-}
+import { createAdminClient, createSessionClient } from "../appwrite.config";
 
 export async function createEmailSession(email: string, password: string) {
   try {
