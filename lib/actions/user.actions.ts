@@ -338,3 +338,22 @@ export async function getBank(documentId: string) {
     return null;
   }
 }
+// get specific bank from bank collection by account id
+export async function getBankByAccountId(accountId: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    const bank = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      [Query.equal("accountId", [accountId])]
+    );
+
+    if (bank.total !== 1) return null;
+
+    return parseStringify(bank.documents[0]);
+  } catch (error) {
+    console.error("Error", error);
+    return null;
+  }
+}

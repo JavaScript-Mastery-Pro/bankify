@@ -9,6 +9,8 @@ import * as z from "zod";
 import { PlaidLink } from "@/components/shared/PlaidLink";
 import { createTransfer } from "@/lib/actions/dwolla.actions";
 import { createTransaction } from "@/lib/actions/transaction.actions";
+import { getBankByAccountId } from "@/lib/actions/user.actions";
+import { decryptId } from "@/lib/utils";
 
 import { Button } from "./ui/button";
 import {
@@ -27,14 +29,12 @@ const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   amount: z.string().min(4, "Name is too short"),
   transferNote: z.string().min(4, "Name is too short"),
-  receiverBank: z.string().min(4, "Bank account number is too short"),
+  sharableId: z.string().min(4, "Provide a valid plaid sharable Id"),
   senderBank: z.string().min(4, "Bank account number is too short"),
 });
 
 const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log({ banks });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,8 +42,8 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
       email: "",
       amount: "",
       transferNote: "",
-      receiverBank: "",
       senderBank: "",
+      sharableId: "",
     },
   });
 
@@ -58,6 +58,8 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
     };
 
     try {
+      const accountId = decryptId(data.sharableId);
+      const userBank: Bank = await getBankByAccountId(accountId);
       // create transfer
       const transfer = await createTransfer(transferParams);
       console.log("===============", transfer);
@@ -65,10 +67,12 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
       // create transfer transaction
       if (transfer) {
         const transaction = {
-          amount: "6.00",
-          senderId: user.$id,
-          senderBankId: "12345678",
-          sharableId: "123456",
+          amount: data.amount,
+          senderId: "todo",
+          senderBankId: "todo",
+          receiverId: userBank.userId,
+          receiverBankId: userBank.$id,
+          sharableId: data.sharableId,
         };
 
         const newTransaction = await createTransaction(transaction);
@@ -99,7 +103,7 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
                 <div className="flex w-full flex-col">
                   <FormControl>
                     <Input
-                      placeholder="nikkyeva@gmail.com"
+                      placeholder="ex: johndoe@gmail.com"
                       className="input-class"
                       {...field}
                     />
@@ -129,8 +133,7 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
                 <div className="flex w-full flex-col">
                   <FormControl>
                     <Textarea
-                      placeholder="Dear Nikky,
-                      I hope this message finds you well. I am transferring $100 to your account for fun. Please confirm once you receive it."
+                      placeholder="Write your note here"
                       className="input-class"
                       {...field}
                     />
@@ -152,17 +155,17 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
         </div>
         <FormField
           control={form.control}
-          name="receiverBank"
+          name="sharableId"
           render={({ field }) => (
             <FormItem className="border-t border-gray-200">
               <div className="flex w-full max-w-[850px] flex-col gap-3 pb-5 pt-6 md:flex-row lg:gap-8">
                 <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                  Recipient&apos;s Bank Account Number
+                  Recipient&apos;s Public Account Number
                 </FormLabel>
                 <div className="flex w-full flex-col">
                   <FormControl>
                     <Input
-                      placeholder="Enter the account number"
+                      placeholder="Enter the public account number"
                       className="input-class"
                       {...field}
                     />
@@ -184,7 +187,11 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
                 </FormLabel>
                 <div className="flex w-full flex-col">
                   <FormControl>
-                    <Input placeholder="5" className="input-class" {...field} />
+                    <Input
+                      placeholder="ex: 5.00"
+                      className="input-class"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage className="text-12 text-red-500" />
                 </div>
@@ -193,7 +200,6 @@ const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
           )}
         />
         <div className="mt-5 flex w-full max-w-[850px] gap-3 border-t border-gray-200 py-5">
-          <PlaidLink user={user} />
           <Button
             type="submit"
             className="text-14 w-full bg-bank-gradient font-semibold text-white shadow-form"

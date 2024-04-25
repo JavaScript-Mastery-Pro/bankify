@@ -75,10 +75,13 @@ declare type Transaction = {
 };
 
 declare type Bank = {
-  id: string;
-  name: string;
-  type: "checking" | "savings";
-  currentBalance: number;
+  $id: string;
+  accountId: string;
+  bankId: string;
+  accessToken: string;
+  fundingSourceUrl: string;
+  userId: string;
+  sharableId: string;
 };
 
 declare type AccountTypes =
