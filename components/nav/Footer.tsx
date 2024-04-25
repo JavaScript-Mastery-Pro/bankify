@@ -12,15 +12,12 @@ const Footer = ({ user }: { user: User }) => {
   };
 
   return (
-    <footer
-      className="flex cursor-pointer items-center justify-between gap-2 py-6"
-      onClick={handleLogOut}
-    >
-      <div className="flex size-10 items-center justify-center rounded-full bg-gray-200 max-xl:hidden">
+    <footer className="footer" onClick={handleLogOut}>
+      <div className="footer_name">
         <p className="text-xl font-bold text-gray-700">{user.firstName[0]}</p>
       </div>
 
-      <div className="flex  flex-1 flex-col justify-center max-xl:hidden">
+      <div className="ooter_email">
         <h1 className="text-14 line-clamp-1 font-semibold text-gray-700">
           {user.firstName} {user.lastName}
         </h1>
@@ -29,7 +26,7 @@ const Footer = ({ user }: { user: User }) => {
         </p>
       </div>
 
-      <div className="relative size-5 max-xl:w-full max-xl:flex max-xl:justify-center max-xl:items-center">
+      <div className="footer_image">
         <Image src="icons/logout.svg" fill alt="jsm" />
       </div>
     </footer>

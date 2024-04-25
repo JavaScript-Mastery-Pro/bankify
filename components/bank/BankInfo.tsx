@@ -48,7 +48,7 @@ const BankInfo = ({ account, appwriteItemId, type }: BankInfo) => {
         />
       </figure>
       <div className="flex w-full flex-1 flex-col justify-center gap-1">
-        <div className="flex flex-1 items-center justify-between gap-2 overflow-hidden">
+        <div className="bank-info_content">
           <h2
             className={`text-16 line-clamp-1 flex-1 font-bold text-blue-900 ${colors.title}`}
           >
@@ -62,6 +62,7 @@ const BankInfo = ({ account, appwriteItemId, type }: BankInfo) => {
             </p>
           )}
         </div>
+
         <p className={`text-16 font-medium text-blue-700 ${colors.subText}`}>
           {formatAmount(account.currentBalance)}
         </p>

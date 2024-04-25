@@ -13,7 +13,7 @@ const page = async () => {
   const accountsData = accounts?.data;
 
   return (
-    <section className="no-scrollbar flex flex-col overflow-y-scroll bg-gray-25 p-8 md:max-h-screen xl:py-12">
+    <section className="payment-transfer">
       <PageHeader
         topTitle="Payment Transfer"
         bottomTitle="Transfer details"
