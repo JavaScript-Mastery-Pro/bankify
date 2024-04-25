@@ -10,8 +10,8 @@ interface Transaction {
   date: string;
   channel: string;
   category: string;
-  sender: string;
-  receiver: string;
+  senderId: string;
+  receiverId: string;
   receiverBankId: string;
   senderBankId: string;
 }
@@ -33,33 +33,19 @@ export const createTransaction = async (transaction: Transaction) => {
   }
 };
 
-export const getTransactions = async (bankId: string) => {
+export const getTransactionsByBankId = async (bankId: string) => {
   try {
     const { database } = await createAdminClient();
 
     const transactions = await database.listDocuments(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
-      [Query.equal("senderBankId", bankId)]
-    );
-
-    return parseStringify(transactions);
-  } catch (error) {
-    console.error("An error occurred while getting the transactions:", error);
-  }
-};
-
-export const getTransactionsByUserId = async (
-  userId: string,
-  bankId: string
-) => {
-  try {
-    const { database } = await createAdminClient();
-
-    const transactions = await database.listDocuments(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
-      [Query.equal("senderBankId", bankId), Query.equal("sender", userId)]
+      [
+        Query.or(
+          Query.equal("senderBankId", bankId),
+          Query.equal("receiverBankId", bankId)
+        ),
+      ]
     );
 
     return parseStringify(transactions);
