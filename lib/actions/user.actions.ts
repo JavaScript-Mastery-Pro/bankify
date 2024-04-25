@@ -13,8 +13,9 @@ import {
 import { plaidClient } from "@/lib/plaid/config";
 import { parseStringify, extractCustomerIdFromUrl } from "@/lib/utils";
 
-import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
+
+import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 
 export async function createEmailSession(email: string, password: string) {
   try {

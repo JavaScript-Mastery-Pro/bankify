@@ -1,17 +1,17 @@
 "use server";
 
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 
-import { createAdminClient, createSessionClient } from "../appwrite.config";
+import { createAdminClient } from "../appwrite.config";
+import { parseStringify } from "../utils";
 
 interface Transaction {
   name: string;
   amount: string;
-  date: string;
   channel: string;
   category: string;
-  sender: string;
-  receiver: string;
+  senderId: string;
+  receiverId: string;
   receiverBankId: string;
   senderBankId: string;
 }
@@ -20,14 +20,14 @@ export const createTransaction = async (transaction: Transaction) => {
   try {
     const { database } = await createAdminClient();
 
-    const result = await database.createDocument(
+    const newTransaction = await database.createDocument(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
       ID.unique(),
       transaction
     );
 
-    return parseStringify(result);
+    return parseStringify(newTransaction);
   } catch (error) {
     console.error("An error occurred while creating the transaction:", error);
   }
@@ -49,7 +49,7 @@ export const getTransactions = async (bankId: string) => {
   }
 };
 
-export const getTransactionsByUserId = async (
+export const getTransactionsByBankId = async (
   userId: string,
   bankId: string
 ) => {
@@ -59,7 +59,7 @@ export const getTransactionsByUserId = async (
     const transactions = await database.listDocuments(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
-      [Query.equal("senderBankId", bankId), Query.equal("sender", userId)]
+      [Query.equal("senderBankId", bankId), Query.equal("senderId", userId)]
     );
 
     return parseStringify(transactions);

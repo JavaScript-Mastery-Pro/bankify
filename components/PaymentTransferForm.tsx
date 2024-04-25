@@ -8,6 +8,7 @@ import * as z from "zod";
 
 import { PlaidLink } from "@/components/shared/PlaidLink";
 import { createTransfer } from "@/lib/actions/dwolla.actions";
+import { createTransaction } from "@/lib/actions/transaction.actions";
 
 import { Button } from "./ui/button";
 import {
@@ -22,7 +23,7 @@ import { Input } from "./ui/input";
 
 const formSchema = z.object({
   name: z.string().min(3, "name must be at least 3 characters"),
-  amount: z.string().min(4, "Name is too short"),
+  amount: z.string().min(5, "must be above zero"),
   // emailAddress: z.string().email("Invalid email address"),
   // transferNote: z.string().optional(),
   // accountNumber: z
@@ -58,8 +59,26 @@ const PaymentTransferForm = ({ user }: { user: User }) => {
     };
 
     try {
+      // create transfer
       const transfer = await createTransfer(transferParams);
       console.log({ transfer });
+
+      // create transfer transaction
+      if (transfer) {
+        const transaction = {
+          name: " Transfer",
+          amount: data.amount,
+          channel: "online",
+          category: "Transfer",
+          senderId: "",
+          receiverId: "",
+          receiverBankId: "",
+          senderBankId: "",
+        };
+
+        const newTransaction = await createTransaction(transaction);
+        console.log({ newTransaction });
+      }
     } catch (error) {
       console.error("Submitting create transfer request failed: ", error);
     }
