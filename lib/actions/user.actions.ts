@@ -76,7 +76,7 @@ export async function createEmailSession(email: string, password: string) {
 }
 
 // SIGN UP
-export const signUp = async (userData: SignUpParams) => {
+export const signUp = async ({ password, ...userData }: SignUpParams) => {
   try {
     // create appwrite user
     const { user, database } = await createAdminClient();
@@ -84,7 +84,7 @@ export const signUp = async (userData: SignUpParams) => {
       ID.unique(),
       userData.email,
       undefined, // optional phone number
-      userData.password
+      password
     );
 
     // create dwolla customer
@@ -92,7 +92,9 @@ export const signUp = async (userData: SignUpParams) => {
       ...userData,
       type: "personal",
     });
+
     console.log("======================dwollaCustomer", dwollaCustomerUrl);
+
     if (!dwollaCustomerUrl) throw Error;
     const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
 
@@ -109,7 +111,7 @@ export const signUp = async (userData: SignUpParams) => {
     );
 
     // get userId from session
-    await createEmailSession(userData.email, userData.password);
+    await createEmailSession(userData.email, password);
 
     return parseStringify(newUser);
   } catch (error) {
@@ -170,12 +172,13 @@ export async function getLoggedInUser() {
 
 // CREATE PLAID LINK TOKEN
 export const createLinkToken = async (user: User) => {
+  console.log("===================link token user", user);
   try {
     const tokeParams = {
       user: {
-        client_user_id: user.id,
+        client_user_id: user.$id,
       },
-      client_name: user.name,
+      client_name: user.firstName + user.lastName,
       products: ["auth"] as Products[],
       language: "en",
       country_codes: ["US"] as CountryCode[],
@@ -196,12 +199,11 @@ export const createLinkToken = async (user: User) => {
 export const exchangePublicToken = async ({
   publicToken,
   user,
-  dwollaCustomerId,
 }: {
   publicToken: string;
   user: User;
-  dwollaCustomerId: string;
 }) => {
+  console.log("==============exchangeUser", user);
   try {
     const response = await plaidClient.itemPublicTokenExchange({
       public_token: publicToken,
@@ -230,7 +232,7 @@ export const exchangePublicToken = async ({
 
     // create fundingSourceUrl for the account
     const fundingSourceUrl = await addFundingSource({
-      dwollaCustomerId,
+      dwollaCustomerId: user.dwollaCustomerId,
       processorToken,
       bankName: accountData.name,
     });
@@ -238,7 +240,7 @@ export const exchangePublicToken = async ({
     if (!fundingSourceUrl) throw Error;
 
     await createBankAccount({
-      userId: user.id,
+      userId: user.$id,
       bankId: itemId,
       accountId: accountData.account_id,
       accessToken,
@@ -308,7 +310,7 @@ export async function createBankAccount({
       ID.unique(),
       {
         accessToken,
-        user: userId,
+        userId,
         accountId,
         bankId,
         fundingSourceUrl,

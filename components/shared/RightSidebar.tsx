@@ -1,8 +1,9 @@
 import Image from "next/image";
-import Link from "next/Link";
+import Link from "next/link";
 
 import { Category } from "@/components/shared/Category";
 import { countTransactionCategories } from "@/lib/utils";
+
 import { BankCard } from "../BankCard";
 
 export const RightSidebar = ({
@@ -49,8 +50,8 @@ export const RightSidebar = ({
         </div>
 
         {banks?.length > 0 && (
-          <div className="flex flex-1 flex-col justify-center items-center gap-5 relative">
-            <div className="relative z-10 right-5 w-[90%]">
+          <div className="relative flex flex-1 flex-col items-center justify-center gap-5">
+            <div className="relative right-5 z-10 w-[90%]">
               <BankCard
                 key={banks[0].id}
                 account={banks[0]}
@@ -58,7 +59,7 @@ export const RightSidebar = ({
                 showBalance={false}
               />
             </div>
-            <div className="absolute top-8 right-0 w-[90%] z-0">
+            <div className="absolute right-0 top-8 z-0 w-[90%]">
               <BankCard
                 key={banks[1].id}
                 account={banks[1]}
@@ -69,7 +70,7 @@ export const RightSidebar = ({
           </div>
         )}
 
-        <div className="flex flex-1 flex-col gap-6 mt-10">
+        <div className="mt-10 flex flex-1 flex-col gap-6">
           <h2 className="header-2 ">Top Categories</h2>
 
           <div className="space-y-5">

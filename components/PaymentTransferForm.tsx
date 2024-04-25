@@ -200,10 +200,7 @@ const PaymentTransferForm = ({ user }: { user: User }) => {
           )}
         /> */}
         <div className="mt-5 flex w-full max-w-[850px] gap-3 border-t border-gray-200 py-5">
-          <PlaidLink
-            user={user}
-            dwollaCustomerId="a829a40a-3241-42c9-a3e5-f30321693026"
-          />
+          <PlaidLink user={user} />
           {/* <Button
             variant="outline"
             className="text-14 w-full border-gray-300 font-semibold text-gray-700 shadow-form"

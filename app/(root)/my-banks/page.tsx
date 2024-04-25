@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 
 import { BankCard } from "@/components/BankCard";
 import { HeaderBox } from "@/components/shared/HeaderBox";
-
 import { getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 

@@ -10,15 +10,7 @@ import { cn } from "@/lib/utils";
 
 import { Input } from "../ui/input";
 
-const Sidebar = ({
-  userId,
-  name,
-  email,
-}: {
-  userId: string;
-  name: string;
-  email: string;
-}) => {
+const Sidebar = ({ user }: { user: User }) => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -87,26 +79,22 @@ const Sidebar = ({
             </Link>
           );
         })}
-        <PlaidLink
-          user={{ id: userId, name }}
-          variant="ghost"
-          dwollaCustomerId="a829a40a-3241-42c9-a3e5-f30321693026"
-        />
+        <PlaidLink user={user} variant="ghost" />
       </nav>
       <footer
         className="flex cursor-pointer items-center justify-between gap-2 py-6"
         onClick={handleLogOut}
       >
         <div className="flex size-10 items-center justify-center rounded-full bg-gray-200 max-xl:hidden">
-          <p className="text-xl font-bold text-gray-700">{name[0]}</p>
+          <p className="text-xl font-bold text-gray-700">{user.firstName}</p>
         </div>
 
         <div className="flex max-w-[70%] flex-1 flex-col justify-center max-xl:hidden">
           <h1 className="text-14 line-clamp-1 font-semibold text-gray-700">
-            {name}
+            {user.firstName} {user.lastName}
           </h1>
           <p className="text-14 line-clamp-1 truncate font-normal text-gray-600">
-            {email}
+            {user.email}
           </p>
         </div>
 

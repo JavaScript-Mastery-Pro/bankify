@@ -1,13 +1,13 @@
 "use client";
 
-import * as z from "zod";
-import Link from "next/link";
-import Image from "next/image";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 import { PlaidLink } from "@/components/shared/PlaidLink";
 import { signIn, signUp } from "@/lib/actions/user.actions";
@@ -54,7 +54,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
     state:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(3, "state cannot be empty"),
+        : z.string().min(2, "state cannot be empty").max(2),
     postalCode:
       type === "sign-in"
         ? z.string().optional()
@@ -100,7 +100,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
         // Create appwrite user account & link token
         const newUser = await signUp(userData);
-
         setUser(newUser);
       }
 
@@ -140,10 +139,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
       </header>
       {user ? (
         <div className="flex flex-col gap-4">
-          <PlaidLink
-            user={user!}
-            dwollaCustomerId="a829a40a-3241-42c9-a3e5-f30321693026"
-          />
+          <PlaidLink user={user} />
         </div>
       ) : (
         <>

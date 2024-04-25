@@ -19,14 +19,9 @@ import { Button } from "../ui/button";
 type PlaidLinkProps = {
   user: User;
   variant?: "primary" | "ghost";
-  dwollaCustomerId: string;
 };
 
-export const PlaidLink = ({
-  user,
-  variant = "primary",
-  dwollaCustomerId,
-}: PlaidLinkProps) => {
+export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
   const router = useRouter();
   const [token, setToken] = useState("");
 
@@ -43,7 +38,6 @@ export const PlaidLink = ({
       await exchangePublicToken({
         publicToken: public_token,
         user,
-        dwollaCustomerId,
       });
       router.push("/");
     },

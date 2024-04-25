@@ -15,15 +15,7 @@ import { sidebarLinks } from "@/constants";
 import { logoutAccount } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
 
-const MobileNav = ({
-  userId,
-  name,
-  email,
-}: {
-  userId: string;
-  name: string;
-  email: string;
-}) => {
+const MobileNav = ({ user }: { user: User }) => {
   const pathname = usePathname();
 
   return (
@@ -86,11 +78,7 @@ const MobileNav = ({
                     </SheetClose>
                   );
                 })}
-                <PlaidLink
-                  user={{ id: userId, name }}
-                  variant="ghost"
-                  dwollaCustomerId="a829a40a-3241-42c9-a3e5-f30321693026"
-                />
+                <PlaidLink user={user} variant="ghost" />
               </nav>
             </SheetClose>
             <footer
@@ -99,8 +87,14 @@ const MobileNav = ({
             >
               <Image src="icons/jsm.svg" width={40} height={40} alt="jsm" />
               <div className="flex flex-col justify-center">
-                <h1 className="text-14 font-semibold text-gray-700">{name}</h1>
-                <p className="text-14 font-normal text-gray-600">{email}</p>
+                <h1 className="text-14 font-semibold text-gray-700">
+                  {" "}
+                  {user.firstName} {user.lastName}
+                </h1>
+                <p className="text-14 font-normal text-gray-600">
+                  {" "}
+                  {user.email}
+                </p>
               </div>
               <Image src="icons/logout.svg" width={20} height={20} alt="jsm" />
             </footer>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { cn } from "@/lib/utils";
+
 import { Progress } from "../ui/progress";
 
 export const Category = ({ category }: { category: CategoryCount }) => {

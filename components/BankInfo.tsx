@@ -56,7 +56,7 @@ export const BankInfo = ({ account, appwriteItemId, type }: BankInfo) => {
           </h2>
           {type === "full" && (
             <p
-              className={`rounded-full px-3 py-1 text-12 font-medium text-blue-700 ${colors.subText} ${colors.lightBg}`}
+              className={`text-12 rounded-full px-3 py-1 font-medium text-blue-700 ${colors.subText} ${colors.lightBg}`}
             >
               {account.subtype}
             </p>
