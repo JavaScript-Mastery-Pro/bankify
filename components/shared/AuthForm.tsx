@@ -118,7 +118,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
   };
 
   return (
-    <section className="flex w-full max-w-[420px] flex-col gap-5 md:gap-8">
+    <section className="flex w-full max-w-[420px] min-h-screen justify-center py-10 flex-col gap-5 md:gap-8">
       <header className="flex flex-col gap-5 md:gap-8">
         <Link href="/" className="flex cursor-pointer items-center gap-1">
           <Image src="/icons/logo.svg" alt="logo" width={34} height={34} />{" "}
@@ -126,6 +126,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
             BANKIFY
           </h1>
         </Link>
+
         <div className="flex flex-col gap-1 md:gap-3">
           <h1 className="text-24 lg:text-36 font-semibold text-gray-900">
             {user ? "Link Account" : type === "sign-in" ? "Sign in" : "Sign up"}
@@ -137,6 +138,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
           </p>
         </div>
       </header>
+
       {user ? (
         <div className="flex flex-col gap-4">
           <PlaidLink user={user} />
@@ -170,6 +172,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                         </FormItem>
                       )}
                     />
+
                     <FormField
                       control={form.control}
                       name="lastName"
@@ -214,6 +217,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                       </FormItem>
                     )}
                   />
+
                   <FormField
                     control={form.control}
                     name="city"
@@ -258,6 +262,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                         </FormItem>
                       )}
                     />
+
                     <FormField
                       control={form.control}
                       name="postalCode"
@@ -307,6 +312,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                         </FormItem>
                       )}
                     />
+
                     <FormField
                       control={form.control}
                       name="ssn"
@@ -381,6 +387,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                   </FormItem>
                 )}
               />
+
               <div className="flex flex-col gap-4">
                 <Button
                   type="submit"
