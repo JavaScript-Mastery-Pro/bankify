@@ -82,7 +82,11 @@ const TransactionTable = ({
               </div>
             </TableCell>
             <TableCell className="px-0 pr-10">
-              {formatAmount(transaction.amount)}
+              {transaction.type === "debit"
+                ? `-${formatAmount(transaction.amount)}`
+                : transaction.type === "credit"
+                  ? formatAmount(transaction.amount)
+                  : formatAmount(transaction.amount)}
             </TableCell>
             <TableCell className="min-w-32 px-0 pr-10">
               {formatDateTime(new Date(transaction.date)).dateTime}

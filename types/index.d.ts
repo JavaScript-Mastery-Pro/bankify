@@ -72,6 +72,7 @@ declare type Transaction = {
   category: string;
   date: string;
   image: string;
+  type: string;
 };
 
 declare type Bank = {

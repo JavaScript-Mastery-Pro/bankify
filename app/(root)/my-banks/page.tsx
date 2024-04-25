@@ -17,7 +17,7 @@ const page = async () => {
         <HeaderBox
           type="greeting"
           title="Welcome,"
-          user={loggedIn?.name}
+          user={`${loggedIn?.firstName} ${loggedIn?.lastName}`}
           subtext="Access & manage your account and transactions efficiently."
         />
         <div className="space-y-4">

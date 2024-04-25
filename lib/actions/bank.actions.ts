@@ -77,6 +77,7 @@ export const getAccount = async (appwriteItemId: string) => {
 
     // get transfer transactions from appwrite
     const transferTransactionsData = await getTransactionsByBankId(bank.$id);
+
     const transferTransactions = transferTransactionsData.documents.map(
       (transferData: any) => ({
         id: transferData.$id,
@@ -85,6 +86,7 @@ export const getAccount = async (appwriteItemId: string) => {
         date: transferData.$createdAt,
         paymentChannel: transferData.channel,
         category: transferData.category,
+        type: transferData.senderBankId === bank.$id ? "debit" : "credit",
       })
     );
 
