@@ -40,7 +40,7 @@ const MobileNav = ({ user }: { user: User }) => {
               BANKIFY
             </h1>
           </Link>
-          <div className="flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto">
+          <div className="mobilenav-sheet">
             <SheetClose asChild>
               <nav className=" flex h-full flex-col gap-6 pt-16 text-white">
                 {sidebarLinks.map((item) => {
@@ -51,12 +51,9 @@ const MobileNav = ({ user }: { user: User }) => {
                       <Link
                         href={item.route}
                         key={item.label}
-                        className={cn(
-                          "flex gap-3 items-center p-4 rounded-lg w-full max-w-60",
-                          {
-                            "bg-bank-gradient": isActive,
-                          }
-                        )}
+                        className={cn("mobilenav-sheet_close", {
+                          "bg-bank-gradient": isActive,
+                        })}
                       >
                         <Image
                           src={item.imgURL}
