@@ -11,6 +11,7 @@ import * as z from "zod";
 
 import { PlaidLink } from "@/components/shared/PlaidLink";
 import { signIn, signUp } from "@/lib/actions/user.actions";
+import { signInSchema, signUpSchema } from "@/lib/validation";
 
 import { Button } from "../ui/button";
 import {
@@ -32,43 +33,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const formSchema = z.object({
-    firstName:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "first name cannot be empty"),
-    lastName:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "last name cannot be empty"),
-    email: z.string().email(),
-    address1:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "address cannot be empty"),
-    city:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "city cannot be empty"),
-    state:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(2, "state cannot be empty").max(2),
-    postalCode:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "postal code cannot be empty"),
-    dateOfBirth:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(3, "date of birth cannot be empty"),
-    ssn:
-      type === "sign-in"
-        ? z.string().optional()
-        : z.string().min(4, "ssn cannot be empty").max(4),
-    password: z.string().min(8, "password must be 8 character"),
-  });
+  const formSchema = type === "sign-in" ? signInSchema : signUpSchema;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -118,7 +83,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
   };
 
   return (
-    <section className="flex w-full max-w-[420px] min-h-screen justify-center py-10 flex-col gap-5 md:gap-8">
+    <section className="flex min-h-screen w-full max-w-[420px] flex-col justify-center gap-5 py-10 md:gap-8">
       <header className="flex flex-col gap-5 md:gap-8">
         <Link href="/" className="flex cursor-pointer items-center gap-1">
           <Image src="/icons/logo.svg" alt="logo" width={34} height={34} />{" "}

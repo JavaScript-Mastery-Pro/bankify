@@ -140,7 +140,6 @@ export async function getLoggedInUser() {
 
 // CREATE PLAID LINK TOKEN
 export const createLinkToken = async (user: User) => {
-  console.log("===================link token user", user);
   try {
     const tokeParams = {
       user: {
@@ -284,6 +283,7 @@ export async function createBankAccount({
         accountId,
         bankId,
         fundingSourceUrl,
+        sharableId: "1234567890",
       }
     );
 

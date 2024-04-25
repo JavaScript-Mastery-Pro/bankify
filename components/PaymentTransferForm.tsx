@@ -23,7 +23,7 @@ import { Input } from "./ui/input";
 
 const formSchema = z.object({
   name: z.string().min(3, "name must be at least 3 characters"),
-  amount: z.string().min(5, "must be above zero"),
+  // amount: z.string().min(5, "must be above zero"),
   // emailAddress: z.string().email("Invalid email address"),
   // transferNote: z.string().optional(),
   // accountNumber: z
@@ -32,14 +32,16 @@ const formSchema = z.object({
   //   .max(15),
 });
 
-const PaymentTransferForm = ({ user }: { user: User }) => {
+const PaymentTransferForm = ({ user, banks }: { user: User; banks: Bank }) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log({ banks });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      amount: "",
+      // amount: "",
       // emailAddress: "",
       // transferNote: "",
       // accountNumber: "",
@@ -52,28 +54,24 @@ const PaymentTransferForm = ({ user }: { user: User }) => {
     console.log("submit handler");
     const transferParams = {
       sourceFundingSourceUrl:
-        "https://api-sandbox.dwolla.com/funding-sources/442d857f-fe69-4de2-a550-0c19dc4af467",
+        "https://api-sandbox.dwolla.com/funding-sources/93965140-af6c-4072-9aff-abb78e2b92a6",
       destinationFundingSourceUrl:
-        "https://api-sandbox.dwolla.com/funding-sources/e7864467-9244-4bed-8239-b27fdbc439b2",
-      amount: "15.00",
+        "https://api-sandbox.dwolla.com/funding-sources/720d9b0d-47e7-43d2-b202-eef2ade77c12",
+      amount: "6.00",
     };
 
     try {
       // create transfer
       const transfer = await createTransfer(transferParams);
-      console.log({ transfer });
+      console.log("===============", transfer);
 
       // create transfer transaction
       if (transfer) {
         const transaction = {
-          name: " Transfer",
-          amount: data.amount,
-          channel: "online",
-          category: "Transfer",
-          senderId: "",
-          receiverId: "",
-          receiverBankId: "",
-          senderBankId: "",
+          amount: "6.00",
+          senderId: user.$id,
+          senderBankId: "12345678",
+          sharableId: "123456",
         };
 
         const newTransaction = await createTransaction(transaction);

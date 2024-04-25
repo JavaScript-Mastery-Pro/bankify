@@ -5,26 +5,35 @@ import { ID, Query } from "node-appwrite";
 import { createAdminClient } from "../appwrite.config";
 import { parseStringify } from "../utils";
 
-interface Transaction {
-  name: string;
+interface CreateTransactionProps {
   amount: string;
-  channel: string;
-  category: string;
   senderId: string;
-  receiverId: string;
-  receiverBankId: string;
   senderBankId: string;
+  sharableId: string;
 }
 
-export const createTransaction = async (transaction: Transaction) => {
+export const createTransaction = async ({
+  sharableId,
+  ...transaction
+}: CreateTransactionProps) => {
   try {
     const { database } = await createAdminClient();
-
+    const bank = {
+      userId: "662a47fa074fb89e70f7",
+      $id: "662a4aa86eae084844d7",
+    };
     const newTransaction = await database.createDocument(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
       ID.unique(),
-      transaction
+      {
+        name: " Transfer",
+        channel: "online",
+        category: "Transfer",
+        receiverId: bank.userId,
+        receiverBankId: bank.$id,
+        ...transaction,
+      }
     );
 
     return parseStringify(newTransaction);

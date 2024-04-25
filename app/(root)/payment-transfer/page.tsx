@@ -1,9 +1,10 @@
 import PaymentTransferForm from "@/components/PaymentTransferForm";
 import PageHeader from "@/components/shared/PageHeader";
-import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { getBanks, getLoggedInUser } from "@/lib/actions/user.actions";
 
 const page = async () => {
   const loggedIn = await getLoggedInUser();
+  const banks = await getBanks(loggedIn.$id);
 
   return (
     <section className="no-scrollbar flex flex-col overflow-y-scroll bg-gray-25 p-8 md:max-h-screen xl:py-12">
@@ -14,7 +15,7 @@ const page = async () => {
         bottomDescription="Enter the details of the recipient"
       />
       <section className="size-full pt-5">
-        <PaymentTransferForm user={loggedIn} />
+        <PaymentTransferForm user={loggedIn} banks={banks} />
       </section>
     </section>
   );
