@@ -16,7 +16,9 @@ const TransactionHistory = async ({
   const loggedIn = await getLoggedInUser();
   if (!loggedIn) redirect("/sign-in");
 
-  const accounts = await getAccounts(loggedIn?.$id);
+  const accounts = await getAccounts({
+    userId: loggedIn?.$id,
+  });
   if (!accounts) return;
 
   const accountsData = accounts?.data;

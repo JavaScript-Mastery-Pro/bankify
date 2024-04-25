@@ -13,12 +13,7 @@ export const RecentTransactions = ({
   transactions = [],
   appwriteItemId,
   page = 1,
-}: {
-  accounts: Account[];
-  transactions: Transaction[];
-  appwriteItemId: string;
-  page: number;
-}) => {
+}: RecentTransactionsProps) => {
   const limit = 10;
   const totalPages = Math.ceil(transactions.length / limit);
 

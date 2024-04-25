@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 declare type SearchParamProps = {
-  params: { id: string };
+  params: { [key: string]: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
@@ -136,7 +136,7 @@ declare interface CreditCardProps {
   showBalance?: boolean;
 }
 
-declare interface BankInfo {
+declare interface BankInfoProps {
   account: Account;
   appwriteItemId?: string;
   type: "full" | "card";
@@ -150,9 +150,7 @@ declare interface HeaderBoxProps {
 }
 
 declare interface MobileNavProps {
-  userId: string;
-  name: string;
-  email: string;
+  user: User;
 }
 
 declare interface PageHeaderProps {
@@ -202,4 +200,55 @@ declare interface TotlaBalanceBoxProps {
   accounts: Account[];
   totalBanks: number;
   totalCurrentBalance: number;
+}
+
+declare interface FooterProps {
+  user: User;
+}
+
+declare interface RightSidebarProps {
+  user: User;
+  transactions: Transaction[];
+  banks: Bank[] & Account[];
+}
+
+declare interface SiderbarProps {
+  user: User;
+}
+
+declare interface RecentTransactionsProps {
+  accounts: Account[];
+  transactions: Transaction[];
+  appwriteItemId: string;
+  page: number;
+}
+
+declare interface TransactionHistoryTableProps {
+  transactions: Transaction[];
+  page: number;
+}
+
+declare interface CategoryBadgeProps {
+  category: string;
+}
+
+declare interface TransactionTableProps {
+  transactions: Transaction[];
+}
+
+declare interface CategoryProps {
+  category: CategoryCount;
+}
+
+declare interface DoughnutChartProps {
+  accounts: Account[];
+}
+
+declare interface PaymentTransferFormProps {
+  accounts: Account[];
+}
+
+// Actions
+declare interface getAccountsProps {
+  userId: string;
 }

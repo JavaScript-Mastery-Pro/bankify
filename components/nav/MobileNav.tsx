@@ -15,7 +15,7 @@ import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
 import Footer from "./Footer";
 
-const MobileNav = ({ user }: { user: User }) => {
+const MobileNav = ({ user }: MobileNavProps) => {
   const pathname = usePathname();
 
   return (

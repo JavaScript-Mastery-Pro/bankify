@@ -7,7 +7,9 @@ import PaymentTransferForm from "@/components/PaymentTransferForm";
 const page = async () => {
   const loggedIn = await getLoggedInUser();
 
-  const accounts = await getAccounts(loggedIn?.$id);
+  const accounts = await getAccounts({
+    userId: loggedIn?.$id,
+  });
   if (!accounts) return;
 
   const accountsData = accounts?.data;

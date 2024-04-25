@@ -14,7 +14,7 @@ const options = {
   },
 };
 
-const DoughnutChart = ({ accounts }: { accounts: Account[] }) => {
+const DoughnutChart = ({ accounts }: DoughnutChartProps) => {
   const balances = accounts.map((account) => account.currentBalance);
   const accountNames = accounts.map((account) => account.name);
 

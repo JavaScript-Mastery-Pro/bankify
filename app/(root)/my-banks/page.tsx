@@ -10,7 +10,9 @@ const page = async () => {
   const loggedIn = await getLoggedInUser();
   if (!loggedIn) redirect("/sign-in");
 
-  const accounts = await getAccounts(loggedIn?.$id);
+  const accounts = await getAccounts({
+    userId: loggedIn?.$id,
+  });
 
   return (
     <section className="flex">

@@ -6,10 +6,7 @@ import TransactionTable from "./TransactionTable";
 const TransactionHistoryTable = ({
   transactions,
   page,
-}: {
-  transactions: Transaction[];
-  page: number;
-}) => {
+}: TransactionHistoryTableProps) => {
   const limit = 10;
   const totalPages = Math.ceil(transactions.length / limit);
 

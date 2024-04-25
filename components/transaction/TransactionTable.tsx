@@ -15,7 +15,7 @@ import {
 } from "../ui/table";
 import { transactionCategoryStyles } from "@/constants";
 
-const CategoryBadge = ({ category }: { category: string }) => {
+const CategoryBadge = ({ category }: CategoryBadgeProps) => {
   const { borderColor, backgroundColor, textColor } =
     transactionCategoryStyles[
       category as keyof typeof transactionCategoryStyles
@@ -29,11 +29,7 @@ const CategoryBadge = ({ category }: { category: string }) => {
   );
 };
 
-const TransactionTable = ({
-  transactions,
-}: {
-  transactions: Transaction[];
-}) => {
+const TransactionTable = ({ transactions }: TransactionTableProps) => {
   return (
     <Table>
       <TableHeader>

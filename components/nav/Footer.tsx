@@ -5,7 +5,7 @@ import router from "next/router";
 
 import { logoutAccount } from "@/lib/actions/user.actions";
 
-const Footer = ({ user }: { user: User }) => {
+const Footer = ({ user }: FooterProps) => {
   const handleLogOut = async () => {
     const loggedOut = await logoutAccount();
     if (loggedOut) router.push("/sign-in");

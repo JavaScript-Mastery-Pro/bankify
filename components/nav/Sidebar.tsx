@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { sidebarLinks } from "@/constants";
 import { PlaidLink } from "@/components/PlaidLink";
 
-const Sidebar = ({ user }: { user: User }) => {
+const Sidebar = ({ user }: SiderbarProps) => {
   const pathname = usePathname();
   const router = useRouter();
 

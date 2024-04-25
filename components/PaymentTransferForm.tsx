@@ -34,7 +34,7 @@ const formSchema = z.object({
   sharableId: z.string().min(8, "Please select a valid sharable Id"),
 });
 
-const PaymentTransferForm = ({ accounts }: { accounts: Account[] }) => {
+const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 

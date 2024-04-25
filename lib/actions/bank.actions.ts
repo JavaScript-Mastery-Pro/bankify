@@ -9,21 +9,20 @@ import {
   TransferType,
 } from "plaid";
 
-import { plaidClient } from "../plaid.config";
 import { parseStringify } from "../utils";
+import { plaidClient } from "../plaid.config";
 
-import { getTransactionsByBankId } from "./transaction.actions";
 import { getBanks, getBank } from "./user.actions";
+import { getTransactionsByBankId } from "./transaction.actions";
 
 // Get multiple bank accounts
-export const getAccounts = async (userId: string) => {
+export const getAccounts = async ({ userId }: getAccountsProps) => {
   try {
     // get banks from db
     const banks = await getBanks(userId);
 
     const accounts = await Promise.all(
-      // @ts-ignore
-      banks?.map(async (bank) => {
+      banks?.map(async (bank: Bank) => {
         // get each account info from plaid
         const accountsResponse = await plaidClient.accountsGet({
           access_token: bank.accessToken,

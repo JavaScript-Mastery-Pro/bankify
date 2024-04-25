@@ -10,7 +10,7 @@ import {
   getAccountTypeColors,
 } from "@/lib/utils";
 
-const BankInfo = ({ account, appwriteItemId, type }: BankInfo) => {
+const BankInfo = ({ account, appwriteItemId, type }: BankInfoProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 

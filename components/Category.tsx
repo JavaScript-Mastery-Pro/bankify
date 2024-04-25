@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Progress } from "./ui/progress";
 import { topCategoryStyles } from "@/constants";
 
-export const Category = ({ category }: { category: CategoryCount }) => {
+export const Category = ({ category }: CategoryProps) => {
   const {
     bg,
     circleBg,
