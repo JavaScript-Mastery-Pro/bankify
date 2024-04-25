@@ -13,13 +13,18 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { formUrlQuery, formatAmount } from "@/lib/utils";
+import { UseFormSetValue } from "react-hook-form";
 
 export const BankDropdown = ({
   accounts = [],
   appwriteItemId,
+  setValue,
+  otherStyles,
 }: {
   accounts: Account[];
   appwriteItemId: string;
+  setValue?: UseFormSetValue<any>;
+  otherStyles?: string;
 }) => {
   const [itemId, setItemId] = useState(appwriteItemId);
   const searchParams = useSearchParams();
@@ -33,6 +38,10 @@ export const BankDropdown = ({
       value: id,
     });
     router.push(newUrl, { scroll: false });
+
+    if (setValue) {
+      setValue("senderBank", id);
+    }
   };
 
   return (
@@ -40,7 +49,7 @@ export const BankDropdown = ({
       defaultValue={itemId}
       onValueChange={(value) => handleBankChange(value)}
     >
-      <SelectTrigger className="flex w-full md:w-[180px]">
+      <SelectTrigger className={`flex w-full md:w-[180px] ${otherStyles}`}>
         <Image
           src="icons/credit-card.svg"
           width={20}
@@ -49,7 +58,10 @@ export const BankDropdown = ({
         />
         <p>Select Account</p>
       </SelectTrigger>
-      <SelectContent className="w-full md:w-[300px]" align="end">
+      <SelectContent
+        className={`w-full md:w-[300px] ${otherStyles}`}
+        align="end"
+      >
         <SelectGroup>
           <SelectLabel className="py-2 font-normal text-gray-500">
             Select a bank to display
