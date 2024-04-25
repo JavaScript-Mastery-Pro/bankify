@@ -9,7 +9,7 @@ const RootLayoutAuth = async ({
   children: React.ReactNode;
 }>) => {
   const loggedIn = await getLoggedInUser();
-  // if (loggedIn) redirect("/");
+  if (loggedIn) redirect("/");
 
   return (
     <main className="flex h-screen w-full justify-between font-inter">
