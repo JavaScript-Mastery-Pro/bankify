@@ -146,7 +146,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
       {user ? (
         <div className="flex flex-col gap-4">
-          <PlaidLink user={user} />
+          <PlaidLink user={user} variant="primary" />
         </div>
       ) : (
         <>

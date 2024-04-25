@@ -21,7 +21,7 @@ type PlaidLinkProps = {
   variant?: "primary" | "ghost";
 };
 
-export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
+export const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
   const router = useRouter();
   const [token, setToken] = useState("");
 
@@ -61,11 +61,11 @@ export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
         >
           Connect bank
         </Button>
-      ) : (
+      ) : variant === "ghost" ? (
         <Button
           onClick={() => open()}
           variant="ghost"
-          className="plaidlink-default"
+          className="plaidlink-ghost"
         >
           <Image
             src="/icons/connect-bank.svg"
@@ -76,6 +76,16 @@ export const PlaidLink = ({ user, variant = "primary" }: PlaidLinkProps) => {
           <p className="hidden text-[16px] font-semibold text-black-2 xl:block">
             Connect Bank
           </p>
+        </Button>
+      ) : (
+        <Button onClick={() => open()} className="plaidlink-default">
+          <Image
+            src="/icons/connect-bank.svg"
+            alt="connect bank"
+            width={24}
+            height={24}
+          />
+          <p className="text-[16px] font-semibold text-black-2">Connect Bank</p>
         </Button>
       )}
     </>

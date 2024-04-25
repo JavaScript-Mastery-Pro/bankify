@@ -261,8 +261,12 @@
     @apply text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form;
   }
 
-  .plaidlink-default {
+  .plaidlink-ghost {
     @apply flex cursor-pointer items-center justify-center gap-3 rounded-lg px-3 py-7 hover:bg-white lg:justify-start;
+  }
+
+  .plaidlink-default {
+    @apply flex !justify-start cursor-pointer gap-3 rounded-lg !bg-transparent flex-row;
   }
 
   /* Auth */

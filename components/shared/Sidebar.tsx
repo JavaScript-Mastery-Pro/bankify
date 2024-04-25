@@ -34,16 +34,12 @@ const Sidebar = ({ user }: { user: User }) => {
             Horizon
           </h1>
         </Link>
+
         <div className="flex gap-1 rounded-lg border px-3 max-xl:hidden 2xl:px-4">
-          <Image
-            src="/icons/search.svg"
-            alt="search"
-            width={20}
-            height={20}
-            className=""
-          />
+          <Image src="/icons/search.svg" alt="search" width={20} height={20} />
           <Input type="text" className="border-none" placeholder="Search" />
         </div>
+
         {sidebarLinks.map((item) => {
           const isActive =
             pathname === item.route || pathname.startsWith(`${item.route}/`);
@@ -81,6 +77,7 @@ const Sidebar = ({ user }: { user: User }) => {
         })}
         <PlaidLink user={user} variant="ghost" />
       </nav>
+
       <footer
         className="flex cursor-pointer items-center justify-between gap-2 py-6"
         onClick={handleLogOut}
@@ -89,7 +86,7 @@ const Sidebar = ({ user }: { user: User }) => {
           <p className="text-xl font-bold text-gray-700">{user.firstName[0]}</p>
         </div>
 
-        <div className="flex max-w-[70%] flex-1 flex-col justify-center max-xl:hidden">
+        <div className="flex  flex-1 flex-col justify-center max-xl:hidden">
           <h1 className="text-14 line-clamp-1 font-semibold text-gray-700">
             {user.firstName} {user.lastName}
           </h1>
@@ -98,7 +95,9 @@ const Sidebar = ({ user }: { user: User }) => {
           </p>
         </div>
 
-        <Image src="icons/logout.svg" width={20} height={20} alt="jsm" />
+        <div className="relative size-5 max-xl:w-full max-xl:flex max-xl:justify-center max-xl:items-center">
+          <Image src="icons/logout.svg" fill alt="jsm" />
+        </div>
       </footer>
     </section>
   );

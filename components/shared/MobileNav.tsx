@@ -51,7 +51,7 @@ const MobileNav = ({ user }: { user: User }) => {
                       <Link
                         href={item.route}
                         key={item.label}
-                        className={cn("mobilenav-sheet_close", {
+                        className={cn("mobilenav-sheet_close w-full", {
                           "bg-bank-gradient": isActive,
                         })}
                       >
@@ -75,25 +75,32 @@ const MobileNav = ({ user }: { user: User }) => {
                     </SheetClose>
                   );
                 })}
-                <PlaidLink user={user} variant="ghost" />
+                <PlaidLink user={user} />
               </nav>
             </SheetClose>
+
             <footer
-              className="flex items-center gap-2 px-4 pb-8 pt-6"
-              onClick={logoutAccount}
+              className="flex cursor-pointer items-center justify-between gap-2 py-6"
+              // onClick={handleLogOut}
             >
-              <Image src="icons/jsm.svg" width={40} height={40} alt="jsm" />
-              <div className="flex flex-col justify-center">
-                <h1 className="text-14 font-semibold text-gray-700">
-                  {" "}
+              <div className="flex size-10 items-center justify-center rounded-full bg-gray-200">
+                <p className="text-xl font-bold text-gray-700">
+                  {user.firstName[0]}
+                </p>
+              </div>
+
+              <div className="flex  flex-1 flex-col justify-center">
+                <h1 className="text-14 line-clamp-1 font-semibold text-gray-700">
                   {user.firstName} {user.lastName}
                 </h1>
-                <p className="text-14 font-normal text-gray-600">
-                  {" "}
+                <p className="text-14 line-clamp-1 truncate font-normal text-gray-600">
                   {user.email}
                 </p>
               </div>
-              <Image src="icons/logout.svg" width={20} height={20} alt="jsm" />
+
+              <div className="relative size-5">
+                <Image src="icons/logout.svg" fill alt="jsm" />
+              </div>
             </footer>
           </div>
         </SheetContent>
