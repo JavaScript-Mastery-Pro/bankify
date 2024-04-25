@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { UseFormSetValue } from "react-hook-form";
 
 import {
   Select,
@@ -13,7 +14,6 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { formUrlQuery, formatAmount } from "@/lib/utils";
-import { UseFormSetValue } from "react-hook-form";
 
 export const BankDropdown = ({
   accounts = [],
@@ -26,12 +26,14 @@ export const BankDropdown = ({
   setValue?: UseFormSetValue<any>;
   otherStyles?: string;
 }) => {
-  const [itemId, setItemId] = useState(appwriteItemId);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [selected, setSeclected] = useState(accounts[0]);
 
   const handleBankChange = (id: string) => {
-    setItemId(id);
+    const account = accounts.find((account) => account.appwriteItemId === id)!;
+
+    setSeclected(account);
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       key: "id",
@@ -46,17 +48,17 @@ export const BankDropdown = ({
 
   return (
     <Select
-      defaultValue={itemId}
+      defaultValue={selected.id}
       onValueChange={(value) => handleBankChange(value)}
     >
-      <SelectTrigger className={`flex w-full md:w-[180px] ${otherStyles}`}>
+      <SelectTrigger className={`flex w-full md:w-[300px] ${otherStyles}`}>
         <Image
           src="icons/credit-card.svg"
           width={20}
           height={20}
           alt="account"
         />
-        <p>Select Account</p>
+        <p className="line-clamp-1">{selected.name}</p>
       </SelectTrigger>
       <SelectContent
         className={`w-full md:w-[300px] ${otherStyles}`}

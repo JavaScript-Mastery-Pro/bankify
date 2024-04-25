@@ -3,43 +3,31 @@
 import { ID, Query } from "node-appwrite";
 
 import { createAdminClient } from "../appwrite.config";
-import { decryptId, parseStringify } from "../utils";
+import { parseStringify } from "../utils";
 
 interface CreateTransactionProps {
+  name: string;
   amount: string;
   senderId: string;
   senderBankId: string;
-  sharableId: string;
+  receiverId: string;
+  receiverBankId: string;
+  email: string;
 }
 
-export const createTransaction = async ({
-  sharableId,
-  ...transaction
-}: CreateTransactionProps) => {
+export const createTransaction = async (
+  transaction: CreateTransactionProps
+) => {
   try {
     const { database } = await createAdminClient();
-
-    const accountId = decryptId(sharableId);
-
-    const bank = await database.listDocuments(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_BANK_COLLECTION_ID!,
-      [Query.equal("accountId", [accountId])]
-    );
-    if (bank.total !== 1) return null;
-
-    const receiverBank = bank.documents[0];
 
     const newTransaction = await database.createDocument(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
       ID.unique(),
       {
-        name: "Transfer Transaction",
         channel: "online",
         category: "Transfer",
-        receiverId: receiverBank.userId,
-        receiverBankId: receiverBank.$id,
         ...transaction,
       }
     );
@@ -62,6 +50,7 @@ export const getTransactionsByBankId = async (bankId: string) => {
         Query.equal("receiverBankId", bankId),
       ]
     );
+    console.log("===========", transactions);
 
     return parseStringify(transactions);
   } catch (error) {
