@@ -1,6 +1,11 @@
-import AuthForm from "@/components/shared/AuthForm";
+import { redirect } from "next/navigation";
 
-const page = () => {
+import AuthForm from "@/components/shared/AuthForm";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
+
+const page = async () => {
+  const loggedIn = await getLoggedInUser();
+  if (loggedIn) redirect("/");
   return (
     <section className="flex-center size-full max-sm:px-6">
       <AuthForm type="sign-in" />

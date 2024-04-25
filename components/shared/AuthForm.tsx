@@ -37,16 +37,16 @@ const AuthForm = ({ type }: AuthFormProps) => {
     firstName:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(3, "firstName cannot be empty"),
+        : z.string().min(3, "first name cannot be empty"),
     lastName:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(3, "lastName cannot be empty"),
+        : z.string().min(3, "last name cannot be empty"),
     email: z.string().email(),
     address1:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(3, "address1 cannot be empty"),
+        : z.string().min(3, "address cannot be empty"),
     city:
       type === "sign-in"
         ? z.string().optional()
@@ -58,11 +58,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
     postalCode:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(3, "postalCode cannot be empty"),
+        : z.string().min(3, "postal code cannot be empty"),
     dateOfBirth:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(3, "dateOfBirth cannot be empty"),
+        : z.string().min(3, "date of birth cannot be empty"),
     ssn:
       type === "sign-in"
         ? z.string().optional()
@@ -118,7 +118,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
   };
 
   return (
-    <section className="flex w-full max-w-[365px] flex-col gap-5 md:gap-8">
+    <section className="flex w-full max-w-[420px] flex-col gap-5 md:gap-8">
       <header className="flex flex-col gap-5 md:gap-8">
         <Link href="/" className="flex cursor-pointer items-center gap-1">
           <Image src="/icons/logo.svg" alt="logo" width={34} height={34} />{" "}

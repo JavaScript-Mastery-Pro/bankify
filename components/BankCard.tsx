@@ -9,7 +9,7 @@ export const BankCard = ({
   showBalance = true,
 }: CreditCardProps) => {
   return (
-    <div>
+    <>
       <Link
         href={`/transaction-history/?id=${account.appwriteItemId}`}
         className="bank-card"
@@ -60,6 +60,6 @@ export const BankCard = ({
           <p className="font-medium">{formatAmount(account.currentBalance)}</p>
         </div>
       )}
-    </div>
+    </>
   );
 };

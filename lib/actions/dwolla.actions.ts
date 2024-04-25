@@ -66,7 +66,7 @@ export const createDwollaCustomer = async (
   try {
     return await dwollaClient
       .post("customers", newCustomer)
-      .then((res) => res.headers.get("location")); // => 'https://api-sandbox.dwolla.com/customers/FC451A7A-AE30-4404-AB95-E3553FCD733F
+      .then((res) => res.headers.get("location"));
   } catch (err) {
     console.error("Creating a Dwolla Customer Failed: ", err);
   }
@@ -94,7 +94,7 @@ export const createTransfer = async ({
     };
     return await dwollaClient
       .post("transfers", requestBody)
-      .then((res) => res.headers.get("location")); // => 'https://api.dwolla.com/transfers/636de847-7d02-e711-80ee-0aa34a9b2388'
+      .then((res) => res.headers.get("location"));
   } catch (err) {
     console.error("Transfer fund failed: ", err);
   }

@@ -132,10 +132,7 @@ export const signIn = async ({
     const response = await createEmailSession(email, password);
     const user = await getUserInfo(response.userId);
 
-    return parseStringify({
-      id: user.$id,
-      name: user.name,
-    });
+    return parseStringify(user);
   } catch (error) {
     console.error("Error", error);
     return null;
@@ -237,6 +234,8 @@ export const exchangePublicToken = async ({
       bankName: accountData.name,
     });
 
+    console.log("==============fundingSourceUrl", fundingSourceUrl);
+
     if (!fundingSourceUrl) throw Error;
 
     await createBankAccount({
@@ -332,7 +331,7 @@ export async function getBanks(userId: string) {
     const banks = await database.listDocuments(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_BANK_COLLECTION_ID!,
-      [Query.equal("user", [userId])]
+      [Query.equal("userId", [userId])]
     );
 
     return parseStringify(banks.documents);

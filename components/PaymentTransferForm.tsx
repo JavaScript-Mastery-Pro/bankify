@@ -21,14 +21,14 @@ import {
 import { Input } from "./ui/input";
 
 const formSchema = z.object({
-  // amount: z.string().min(4, "Name is too short"),
+  name: z.string().min(3, "name must be at least 3 characters"),
+  amount: z.string().min(4, "Name is too short"),
   // emailAddress: z.string().email("Invalid email address"),
   // transferNote: z.string().optional(),
   // accountNumber: z
   //   .string()
   //   .min(15, "account number must be exact 15 character")
   //   .max(15),
-  name: z.string().min(4, "name must be 4 character"),
 });
 
 const PaymentTransferForm = ({ user }: { user: User }) => {
@@ -38,7 +38,7 @@ const PaymentTransferForm = ({ user }: { user: User }) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      // amount: "",
+      amount: "",
       // emailAddress: "",
       // transferNote: "",
       // accountNumber: "",
@@ -51,9 +51,9 @@ const PaymentTransferForm = ({ user }: { user: User }) => {
     console.log("submit handler");
     const transferParams = {
       sourceFundingSourceUrl:
-        "https://api-sandbox.dwolla.com/funding-sources/37f99064-fa0a-4465-8c83-ea9352722a3d",
+        "https://api-sandbox.dwolla.com/funding-sources/442d857f-fe69-4de2-a550-0c19dc4af467",
       destinationFundingSourceUrl:
-        "https://api-sandbox.dwolla.com/funding-sources/765898fb-a41d-4e19-ab1e-e371975a2acd",
+        "https://api-sandbox.dwolla.com/funding-sources/e7864467-9244-4bed-8239-b27fdbc439b2",
       amount: "15.00",
     };
 

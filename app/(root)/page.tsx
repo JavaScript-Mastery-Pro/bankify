@@ -26,7 +26,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
           <HeaderBox
             type="greeting"
             title="Welcome,"
-            user={loggedIn?.name || "Guest"}
+            user={loggedIn?.firstName || "Guest"}
             subtext="Access & manage your account and transactions efficiently."
           />
 
@@ -46,8 +46,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
       </div>
 
       <RightSidebar
-        name={loggedIn?.name}
-        email={loggedIn?.email}
+        user={loggedIn}
         transactions={account?.transactions}
         banks={accountsData?.slice(0, 2)}
       />

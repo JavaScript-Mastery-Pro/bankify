@@ -86,7 +86,7 @@ const Sidebar = ({ user }: { user: User }) => {
         onClick={handleLogOut}
       >
         <div className="flex size-10 items-center justify-center rounded-full bg-gray-200 max-xl:hidden">
-          <p className="text-xl font-bold text-gray-700">{user.firstName}</p>
+          <p className="text-xl font-bold text-gray-700">{user.firstName[0]}</p>
         </div>
 
         <div className="flex max-w-[70%] flex-1 flex-col justify-center max-xl:hidden">
