@@ -1,12 +1,11 @@
 import { redirect } from "next/navigation";
 
-import { HeaderBox } from "@/components/common";
 import { BankDropdown } from "@/components/bank/BankDropdown";
+import { HeaderBox } from "@/components/common";
 import TransactionHistoryTable from "@/components/transaction/TransactionHistoryTable";
-
-import { formatAmount } from "@/lib/utils";
-import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { formatAmount } from "@/lib/utils";
 
 const TransactionHistory = async ({
   searchParams: { id, page },

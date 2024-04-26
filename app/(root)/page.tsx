@@ -1,11 +1,10 @@
 import { redirect } from "next/navigation";
 
-import { RightSidebar } from "@/components/nav/RightSidebar";
 import { HeaderBox, TotalBalanceBox } from "@/components/common";
+import { RightSidebar } from "@/components/nav/RightSidebar";
 import { RecentTransactions } from "@/components/transaction/RecentTransactions";
-
-import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
 
 const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;

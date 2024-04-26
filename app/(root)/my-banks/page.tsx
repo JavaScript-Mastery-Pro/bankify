@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
 
-import { HeaderBox } from "@/components/common";
 import BankCard from "@/components/bank/BankCard";
-
+import { HeaderBox } from "@/components/common";
 import { getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 

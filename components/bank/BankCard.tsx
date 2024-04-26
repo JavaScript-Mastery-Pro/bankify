@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 import { formatAmount } from "@/lib/utils";
 
@@ -8,6 +8,8 @@ const BankCard = ({
   userName,
   showBalance = true,
 }: CreditCardProps) => {
+  console.log({ account });
+
   return (
     <div className="flex flex-col">
       <Link
@@ -60,6 +62,8 @@ const BankCard = ({
           <p className="font-medium">{formatAmount(account.currentBalance)}</p>
         </div>
       )}
+
+      <p className="w-full max-w-72 break-words">{account?.sharableId}</p>
     </div>
   );
 };
