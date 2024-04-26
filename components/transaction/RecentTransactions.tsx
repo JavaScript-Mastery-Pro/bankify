@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
+import Link from "next/link";
 
 import BankInfo from "../bank/BankInfo";
 import { BankTabItem } from "../bank/BankTabItem";
 import { Pagination } from "../Pagination";
+
 import TransactionTable from "./TransactionTable";
 
 export const RecentTransactions = ({

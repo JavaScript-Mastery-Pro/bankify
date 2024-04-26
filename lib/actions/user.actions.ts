@@ -21,20 +21,26 @@ import { createAdminClient, createSessionClient } from "../appwrite.config";
 
 import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 
+const {
+  NEXT_PUBLIC_APPWRITE_ENDPOINT: ENDPOINT,
+  NEXT_PUBLIC_APPWRITE_PROJECT: PROJECT,
+  APPWRITE_SECRET: SECRET,
+  APPWRITE_DATABASE_ID: DATABASE_ID,
+  APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
+  APPWRITE_BANK_COLLECTION_ID: BANK_COLLECTION_ID,
+} = process.env;
+
 export const createEmailSession = async ({ email, password }: signInProps) => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/account/sessions/email`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Appwrite-Response-Format": "1.4.0",
-          "X-Appwrite-Project": process.env.NEXT_PUBLIC_APPWRITE_PROJECT!,
-        },
-        body: JSON.stringify({ email, password }),
-      }
-    );
+    const response = await fetch(`${ENDPOINT}/account/sessions/email`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Appwrite-Response-Format": "1.4.0",
+        "X-Appwrite-Project": PROJECT!,
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
     // get cookie
     const responseCookie = response.headers.get("Set-Cookie");
@@ -71,8 +77,8 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
 
     const newUser = await database.createDocument(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_USER_COLLECTION_ID!,
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
       ID.unique(),
       {
         ...userData,
@@ -114,19 +120,16 @@ export const getLoggedInUser = async () => {
   try {
     const appWriteCookie = cookies().get("appwrite-cookie");
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/account`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Appwrite-Response-Format": "1.4.0",
-          "X-Appwrite-Project": process.env.NEXT_PUBLIC_APPWRITE_PROJECT!,
-          "X-Appwrite-Key": process.env.APPWRITE_SECRET!,
-          Cookie: appWriteCookie?.value!,
-        },
-      }
-    );
+    const response = await fetch(`${ENDPOINT}/account`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Appwrite-Response-Format": "1.4.0",
+        "X-Appwrite-Project": PROJECT!,
+        "X-Appwrite-Key": SECRET!,
+        Cookie: appWriteCookie?.value!,
+      },
+    });
 
     const result = await response.json();
     const user = await getUserInfo({ userId: result.$id });
@@ -237,8 +240,8 @@ export const getUserInfo = async ({ userId }: getUserInfoProps) => {
     const { database } = await createAdminClient();
 
     const user = await database.listDocuments(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_USER_COLLECTION_ID!,
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
       [Query.equal("userId", [userId])]
     );
 
@@ -263,8 +266,8 @@ export const createBankAccount = async ({
     const { database } = await createAdminClient();
 
     const bankAccount = await database.createDocument(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      DATABASE_ID!,
+      BANK_COLLECTION_ID!,
       ID.unique(),
       {
         accessToken,
@@ -289,8 +292,8 @@ export const getBanks = async ({ userId }: getBanksProps) => {
     const { database } = await createAdminClient();
 
     const banks = await database.listDocuments(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      DATABASE_ID!,
+      BANK_COLLECTION_ID!,
       [Query.equal("userId", [userId])]
     );
 
@@ -307,8 +310,8 @@ export const getBank = async ({ documentId }: getBankProps) => {
     const { database } = await createAdminClient();
 
     const bank = await database.listDocuments(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      DATABASE_ID!,
+      BANK_COLLECTION_ID!,
       [Query.equal("$id", [documentId])]
     );
 
@@ -329,8 +332,8 @@ export const getBankByAccountId = async ({
     const { database } = await createAdminClient();
 
     const bank = await database.listDocuments(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_BANK_COLLECTION_ID!,
+      DATABASE_ID!,
+      BANK_COLLECTION_ID!,
       [Query.equal("accountId", [accountId])]
     );
 

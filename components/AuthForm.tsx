@@ -22,7 +22,19 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { authValidation } from "@/lib/validation";
+
+const authValidation = (type: string) => ({
+  firstName: type === "sign-in" ? z.string().optional() : z.string().min(3),
+  lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
+  email: z.string().email(),
+  address1: type === "sign-in" ? z.string().optional() : z.string().max(50),
+  city: type === "sign-in" ? z.string().optional() : z.string().min(3),
+  state: type === "sign-in" ? z.string().optional() : z.string().max(2),
+  postalCode: type === "sign-in" ? z.string().optional() : z.string().min(3),
+  dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3),
+  ssn: type === "sign-in" ? z.string().optional() : z.string().min(4).max(4),
+  password: z.string().min(8),
+});
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const router = useRouter();

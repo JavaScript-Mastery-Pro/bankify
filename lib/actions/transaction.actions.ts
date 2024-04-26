@@ -5,6 +5,11 @@ import { ID, Query } from "node-appwrite";
 import { createAdminClient } from "../appwrite.config";
 import { parseStringify } from "../utils";
 
+const {
+  APPWRITE_DATABASE_ID: DATABASE_ID,
+  APPWRITE_TRANSACTION_COLLECTION_ID: TRANSACTION_COLLECTION_ID,
+} = process.env;
+
 export const createTransaction = async (
   transaction: CreateTransactionProps
 ) => {
@@ -12,8 +17,8 @@ export const createTransaction = async (
     const { database } = await createAdminClient();
 
     const newTransaction = await database.createDocument(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
+      DATABASE_ID!,
+      TRANSACTION_COLLECTION_ID!,
       ID.unique(),
       {
         channel: "online",
@@ -35,14 +40,14 @@ export const getTransactionsByBankId = async ({
     const { database } = await createAdminClient();
 
     const senderTransactions = await database.listDocuments(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
+      DATABASE_ID!,
+      TRANSACTION_COLLECTION_ID!,
       [Query.equal("senderBankId", bankId)]
     );
 
     const receiverTransactions = await database.listDocuments(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_TRANSACTION_COLLECTION_ID!,
+      DATABASE_ID!,
+      TRANSACTION_COLLECTION_ID!,
       [Query.equal("receiverBankId", bankId)]
     );
 

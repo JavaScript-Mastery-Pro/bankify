@@ -1,21 +1,21 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { PlaidLink } from "@/components/PlaidLink";
+import { sidebarLinks } from "@/constants";
+import { cn } from "@/lib/utils";
 
 import Footer from "./Footer";
-import { cn } from "@/lib/utils";
-import { sidebarLinks } from "@/constants";
-import { PlaidLink } from "@/components/PlaidLink";
 
 const Sidebar = ({ user }: SiderbarProps) => {
   const pathname = usePathname();
-  const router = useRouter();
 
   return (
     <section className="sidebar">
       <nav className="flex flex-col gap-4">
-        <Link href="/" className="flex cursor-pointer items-center gap-2 mb-12">
+        <Link href="/" className="mb-12 flex cursor-pointer items-center gap-2">
           <Image
             src="/icons/logo.svg"
             alt="logo"

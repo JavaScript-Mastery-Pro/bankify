@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
+
 import Footer from "./Footer";
 
 const MobileNav = ({ user }: MobileNavProps) => {

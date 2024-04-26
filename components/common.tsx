@@ -1,5 +1,6 @@
-import DoughnutChart from "./DoughnutChart";
 import { cn, formatAmount } from "@/lib/utils";
+
+import DoughnutChart from "./DoughnutChart";
 
 export const HeaderBox = ({
   type = "title",

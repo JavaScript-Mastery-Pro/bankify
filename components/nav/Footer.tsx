@@ -17,7 +17,7 @@ const Footer = ({ user }: FooterProps) => {
         <p className="text-xl font-bold text-gray-700">{user.firstName[0]}</p>
       </div>
 
-      <div className="ooter_email">
+      <div className="footer_email">
         <h1 className="text-14 line-clamp-1 font-semibold text-gray-700">
           {user.firstName} {user.lastName}
         </h1>

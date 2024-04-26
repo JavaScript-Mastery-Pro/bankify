@@ -1,3 +1,4 @@
+import { transactionCategoryStyles } from "@/constants";
 import {
   cn,
   formatAmount,
@@ -13,7 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { transactionCategoryStyles } from "@/constants";
 
 const CategoryBadge = ({ category }: CategoryBadgeProps) => {
   const { borderColor, backgroundColor, textColor } =
