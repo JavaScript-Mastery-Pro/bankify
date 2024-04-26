@@ -97,7 +97,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
         <Link href="/" className="flex cursor-pointer items-center gap-1">
           <Image src="/icons/logo.svg" alt="logo" width={34} height={34} />{" "}
           <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-            BANKIFY
+            HORIZON
           </h1>
         </Link>
 
