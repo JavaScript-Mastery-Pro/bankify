@@ -57,19 +57,19 @@ export const createEmailSession = async ({ email, password }: signInProps) => {
 };
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
-  const uniqueId = ID.unique();
+  let newUserAccount;
 
   try {
     // create appwrite user
     const { user, database } = await createAdminClient();
-    const newUserAccount = await user.create(
-      uniqueId,
+    newUserAccount = await user.create(
+      ID.unique(),
       userData.email,
       undefined, // optional phone number
       password
     );
 
-    if (!newUserAccount) throw Error;
+    if (!newUserAccount) throw new Error("Error creating user");
 
     // create dwolla customer
     const dwollaCustomerUrl = await createDwollaCustomer({
@@ -77,7 +77,7 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
       type: "personal",
     });
 
-    if (!dwollaCustomerUrl) throw Error;
+    if (!dwollaCustomerUrl) throw new Error("Error creating dwolla customer");
     const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
 
     const newUser = await database.createDocument(
@@ -103,9 +103,10 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     console.error("Error", error);
 
     // check if account has been created, if so, delete it
-    const { user } = await createAdminClient();
-    const hasUser = await user.get(uniqueId);
-    if (hasUser) await user.delete(uniqueId);
+    if (newUserAccount?.$id) {
+      const { user } = await createAdminClient();
+      await user.delete(newUserAccount?.$id);
+    }
 
     return null;
   }
