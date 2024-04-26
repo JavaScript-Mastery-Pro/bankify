@@ -99,7 +99,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
         <FormField
           control={form.control}
           name="senderBank"
-          render={({ field }) => (
+          render={() => (
             <FormItem className="border-t border-gray-200">
               <div className="payment-transfer_form-item pb-6 pt-5">
                 <div className="payment-transfer_form-content">

@@ -17,11 +17,10 @@ const page = async () => {
     <section className="flex">
       <div className="my-banks">
         <HeaderBox
-          type="greeting"
-          title="Welcome"
-          user={`${loggedIn?.firstName}`}
-          subtext="Access & manage your account and transactions efficiently."
+          title="My Bank Accounts"
+          subtext="Effortlessly Manage Your Banking Activities"
         />
+
         <div className="space-y-4">
           <h2 className="header-2">Your cards</h2>
           <div className="flex flex-wrap gap-6">
