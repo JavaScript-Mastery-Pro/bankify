@@ -1,8 +1,7 @@
-import { getAccounts } from "@/lib/actions/bank.actions";
-import { getLoggedInUser } from "@/lib/actions/user.actions";
-
 import { PageHeader } from "@/components/common";
 import PaymentTransferForm from "@/components/PaymentTransferForm";
+import { getAccounts } from "@/lib/actions/bank.actions";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
 
 const page = async () => {
   const loggedIn = await getLoggedInUser();

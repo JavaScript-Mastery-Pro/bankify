@@ -57,15 +57,19 @@ export const createEmailSession = async ({ email, password }: signInProps) => {
 };
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
+  const uniqueId = ID.unique();
+
   try {
     // create appwrite user
     const { user, database } = await createAdminClient();
     const newUserAccount = await user.create(
-      ID.unique(),
+      uniqueId,
       userData.email,
       undefined, // optional phone number
       password
     );
+
+    if (!newUserAccount) throw Error;
 
     // create dwolla customer
     const dwollaCustomerUrl = await createDwollaCustomer({
@@ -97,6 +101,12 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     return parseStringify(newUser);
   } catch (error) {
     console.error("Error", error);
+
+    // check if account has been created, if so, delete it
+    const { user } = await createAdminClient();
+    const hasUser = await user.get(uniqueId);
+    if (hasUser) await user.delete(uniqueId);
+
     return null;
   }
 };
@@ -159,7 +169,7 @@ export const createLinkToken = async (user: User) => {
     return parseStringify({ linkToken: response.data.link_token });
   } catch (error) {
     console.error(
-      "An error occurred while creating a new bankify user:",
+      "An error occurred while creating a new Horizon user:",
       error
     );
   }
