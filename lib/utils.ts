@@ -185,3 +185,11 @@ export function encryptId(id: string) {
 export function decryptId(id: string) {
   return atob(id);
 }
+
+export const getTransactionStatus = (date: Date) => {
+  const today = new Date();
+  const twoDaysAgo = new Date(today);
+  twoDaysAgo.setDate(today.getDate() - 2);
+
+  return date > twoDaysAgo ? "Processing" : "Success";
+};

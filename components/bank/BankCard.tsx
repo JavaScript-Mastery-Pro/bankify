@@ -3,13 +3,13 @@ import Link from "next/link";
 
 import { formatAmount } from "@/lib/utils";
 
+import Copy from "../Copy";
+
 const BankCard = ({
   account,
   userName,
   showBalance = true,
 }: CreditCardProps) => {
-  console.log({ account });
-
   return (
     <div className="flex flex-col">
       <Link
@@ -17,7 +17,13 @@ const BankCard = ({
         className="bank-card"
       >
         <div className="bank-card_content">
-          <h1 className="text-16 font-semibold text-white">{account.name}</h1>
+          <div>
+            <h1 className="text-16 font-semibold text-white">{account.name}</h1>
+            <p className="font-ibm-plex-serif font-black text-white">
+              {formatAmount(account.currentBalance)}
+            </p>
+          </div>
+
           <article className="flex flex-col gap-2">
             <div className="flex justify-between">
               <h1 className="text-12 font-semibold text-white">{userName}</h1>
@@ -48,22 +54,7 @@ const BankCard = ({
         />
       </Link>
 
-      {showBalance && (
-        <div className="text-16 flex justify-between px-1 py-3">
-          <div className="flex gap-1">
-            <Image
-              src="/icons/dollar-circle.svg"
-              alt="dollar"
-              width={20}
-              height={20}
-            />
-            <p className="text-gray-600">Current balance</p>
-          </div>
-          <p className="font-medium">{formatAmount(account.currentBalance)}</p>
-        </div>
-      )}
-
-      <p className="w-full max-w-72 break-words">{account?.sharableId}</p>
+      {showBalance && <Copy title={account?.sharableId} />}
     </div>
   );
 };
