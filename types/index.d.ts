@@ -62,7 +62,7 @@ declare type Account = {
 };
 
 declare type Transaction = {
-  id: string;
+  $id: string;
   name: string;
   paymentChannel: string;
   type: string;
@@ -73,6 +73,10 @@ declare type Transaction = {
   date: string;
   image: string;
   type: string;
+  $createdAt: string;
+  channel: string;
+  senderBankId: string;
+  receiverBankId: string;
 };
 
 declare type Bank = {
@@ -251,4 +255,72 @@ declare interface PaymentTransferFormProps {
 // Actions
 declare interface getAccountsProps {
   userId: string;
+}
+
+declare interface getAccountProps {
+  appwriteItemId: string;
+}
+
+declare interface getInstitutionProps {
+  institutionId: string;
+}
+
+declare interface getTransactionsProps {
+  accessToken: string;
+}
+
+declare interface CreateFundingSourceOptions {
+  customerId: string; // Dwolla Customer ID
+  fundingSourceName: string; // Dwolla Funding Source Name
+  plaidToken: string; // Plaid Account Processor Token
+  _links: object; // Dwolla On Demand Authorization Link
+}
+
+declare interface CreateTransactionProps {
+  name: string;
+  amount: string;
+  senderId: string;
+  senderBankId: string;
+  receiverId: string;
+  receiverBankId: string;
+  email: string;
+}
+
+declare interface getTransactionsByBankIdProps {
+  bankId: string;
+}
+
+declare interface signInProps {
+  email: string;
+  password: string;
+}
+
+declare interface getUserInfoProps {
+  userId: string;
+}
+
+declare interface exchangePublicTokenProps {
+  publicToken: string;
+  user: User;
+}
+
+declare interface createBankAccountProps {
+  accessToken: string;
+  userId: string;
+  accountId: string;
+  bankId: string;
+  fundingSourceUrl: string;
+  sharableId: string;
+}
+
+declare interface getBanksProps {
+  userId: string;
+}
+
+declare interface getBankProps {
+  documentId: string;
+}
+
+declare interface getBankByAccountIdProps {
+  accountId: string;
 }

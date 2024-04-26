@@ -5,16 +5,6 @@ import { ID, Query } from "node-appwrite";
 import { createAdminClient } from "../appwrite.config";
 import { parseStringify } from "../utils";
 
-interface CreateTransactionProps {
-  name: string;
-  amount: string;
-  senderId: string;
-  senderBankId: string;
-  receiverId: string;
-  receiverBankId: string;
-  email: string;
-}
-
 export const createTransaction = async (
   transaction: CreateTransactionProps
 ) => {
@@ -38,7 +28,9 @@ export const createTransaction = async (
   }
 };
 
-export const getTransactionsByBankId = async (bankId: string) => {
+export const getTransactionsByBankId = async ({
+  bankId,
+}: getTransactionsByBankIdProps) => {
   try {
     const { database } = await createAdminClient();
 

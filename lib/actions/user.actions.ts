@@ -21,7 +21,7 @@ import { createAdminClient, createSessionClient } from "../appwrite.config";
 
 import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 
-export async function createEmailSession(email: string, password: string) {
+export const createEmailSession = async ({ email, password }: signInProps) => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/account/sessions/email`,
@@ -48,9 +48,8 @@ export async function createEmailSession(email: string, password: string) {
   } catch (error) {
     console.error("Error", error);
   }
-}
+};
 
-// SIGN UP
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
   try {
     // create appwrite user
@@ -84,7 +83,10 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     );
 
     // get userId from session
-    await createEmailSession(userData.email, password);
+    await createEmailSession({
+      email: userData.email,
+      password,
+    });
 
     return parseStringify(newUser);
   } catch (error) {
@@ -93,17 +95,13 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
   }
 };
 
-// SIGN IN
-export const signIn = async ({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) => {
+export const signIn = async ({ email, password }: signInProps) => {
   try {
-    const response = await createEmailSession(email, password);
-    const user = await getUserInfo(response.userId);
+    const response = await createEmailSession({
+      email,
+      password,
+    });
+    const user = await getUserInfo({ userId: response.userId });
 
     return parseStringify(user);
   } catch (error) {
@@ -112,7 +110,7 @@ export const signIn = async ({
   }
 };
 
-export async function getLoggedInUser() {
+export const getLoggedInUser = async () => {
   try {
     const appWriteCookie = cookies().get("appwrite-cookie");
 
@@ -131,14 +129,14 @@ export async function getLoggedInUser() {
     );
 
     const result = await response.json();
-    const user = await getUserInfo(result.$id);
+    const user = await getUserInfo({ userId: result.$id });
 
     return parseStringify(user);
   } catch (error) {
     console.error("Error", error);
     return null;
   }
-}
+};
 
 // CREATE PLAID LINK TOKEN
 export const createLinkToken = async (user: User) => {
@@ -168,10 +166,7 @@ export const createLinkToken = async (user: User) => {
 export const exchangePublicToken = async ({
   publicToken,
   user,
-}: {
-  publicToken: string;
-  user: User;
-}) => {
+}: exchangePublicTokenProps) => {
   try {
     const response = await plaidClient.itemPublicTokenExchange({
       public_token: publicToken,
@@ -226,8 +221,7 @@ export const exchangePublicToken = async ({
   }
 };
 
-// LOGOUT USER
-export async function logoutAccount() {
+export const logoutAccount = async () => {
   try {
     const { account } = await createSessionClient();
 
@@ -236,9 +230,9 @@ export async function logoutAccount() {
   } catch (error) {
     return null;
   }
-}
+};
 
-export async function getUserInfo(userId: string) {
+export const getUserInfo = async ({ userId }: getUserInfoProps) => {
   try {
     const { database } = await createAdminClient();
 
@@ -255,23 +249,16 @@ export async function getUserInfo(userId: string) {
     console.error("Error", error);
     return null;
   }
-}
+};
 
-export async function createBankAccount({
+export const createBankAccount = async ({
   accessToken,
   userId,
   accountId,
   bankId,
   fundingSourceUrl,
   sharableId,
-}: {
-  accessToken: string;
-  userId: string;
-  accountId: string;
-  bankId: string;
-  fundingSourceUrl: string;
-  sharableId: string;
-}) {
+}: createBankAccountProps) => {
   try {
     const { database } = await createAdminClient();
 
@@ -294,10 +281,10 @@ export async function createBankAccount({
     console.error("Error", error);
     return null;
   }
-}
+};
 
 // get user bank accounts
-export async function getBanks(userId: string) {
+export const getBanks = async ({ userId }: getBanksProps) => {
   try {
     const { database } = await createAdminClient();
 
@@ -312,10 +299,10 @@ export async function getBanks(userId: string) {
     console.error("Error", error);
     return null;
   }
-}
+};
 
 // get specific bank from bank collection by document id
-export async function getBank(documentId: string) {
+export const getBank = async ({ documentId }: getBankProps) => {
   try {
     const { database } = await createAdminClient();
 
@@ -332,9 +319,12 @@ export async function getBank(documentId: string) {
     console.error("Error", error);
     return null;
   }
-}
+};
+
 // get specific bank from bank collection by account id
-export async function getBankByAccountId(accountId: string) {
+export const getBankByAccountId = async ({
+  accountId,
+}: getBankByAccountIdProps) => {
   try {
     const { database } = await createAdminClient();
 
@@ -351,4 +341,4 @@ export async function getBankByAccountId(accountId: string) {
     console.error("Error", error);
     return null;
   }
-}
+};

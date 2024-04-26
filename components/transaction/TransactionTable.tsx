@@ -43,7 +43,7 @@ const TransactionTable = ({ transactions }: TransactionTableProps) => {
       </TableHeader>
       <TableBody>
         {transactions.map((transaction: Transaction) => (
-          <TableRow key={transaction.id}>
+          <TableRow key={transaction.$id}>
             <TableCell className="max-w-[250px] pl-0 pr-10">
               <div className="flex items-center gap-3">
                 <h1 className="text-14 truncate font-medium text-gray-900">
