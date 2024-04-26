@@ -18,8 +18,8 @@ const page = async () => {
       <div className="my-banks">
         <HeaderBox
           type="greeting"
-          title="Welcome,"
-          user={`${loggedIn?.firstName} ${loggedIn?.lastName}`}
+          title="Welcome"
+          user={`${loggedIn?.firstName}`}
           subtext="Access & manage your account and transactions efficiently."
         />
         <div className="space-y-4">

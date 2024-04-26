@@ -340,6 +340,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                           <Input
                             placeholder="••••••••"
                             className="input-class"
+                            type="password"
                             {...field}
                           />
                         </FormControl>
