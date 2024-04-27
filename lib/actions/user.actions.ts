@@ -137,7 +137,7 @@ export const getLoggedInUser = async () => {
         "Content-Type": "application/json",
         "X-Appwrite-Response-Format": "1.4.0",
         "X-Appwrite-Project": PROJECT!,
-        "X-Appwrite-Key": SECRET!,
+        // "X-Appwrite-Key": SECRET!,
         Cookie: appWriteCookie?.value!,
       },
     });
