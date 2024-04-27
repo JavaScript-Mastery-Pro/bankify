@@ -32,12 +32,12 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 
   try {
     // create appwrite user
-    const { user, database, account } = await createAdminClient();
-    newUserAccount = await user.create(
+    const { database, account } = await createAdminClient();
+    newUserAccount = await account.create(
       ID.unique(),
       userData.email,
-      undefined, // optional phone number
-      password
+      password,
+      `${userData.firstName} ${userData.lastName}`
     );
 
     if (!newUserAccount) throw new Error("Error creating user");
