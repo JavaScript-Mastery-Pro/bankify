@@ -22,46 +22,17 @@ import { createAdminClient, createSessionClient } from "../appwrite.config";
 import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 
 const {
-  NEXT_PUBLIC_APPWRITE_ENDPOINT: ENDPOINT,
-  NEXT_PUBLIC_APPWRITE_PROJECT: PROJECT,
-  // APPWRITE_SECRET: SECRET,
   APPWRITE_DATABASE_ID: DATABASE_ID,
   APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
   APPWRITE_BANK_COLLECTION_ID: BANK_COLLECTION_ID,
 } = process.env;
-
-export const createEmailSession = async ({ email, password }: signInProps) => {
-  try {
-    const response = await fetch(`${ENDPOINT}/account/sessions/email`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Appwrite-Response-Format": "1.4.0",
-        "X-Appwrite-Project": PROJECT!,
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    // get cookie
-    const responseCookie = response.headers.get("Set-Cookie");
-
-    // set cookie
-    cookies().set("appwrite-cookie", responseCookie!);
-
-    const result = await response.json();
-
-    return parseStringify(result);
-  } catch (error) {
-    console.error("Error", error);
-  }
-};
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
   let newUserAccount;
 
   try {
     // create appwrite user
-    const { user, database } = await createAdminClient();
+    const { user, database, account } = await createAdminClient();
     newUserAccount = await user.create(
       ID.unique(),
       userData.email,
@@ -92,10 +63,16 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
       }
     );
 
-    // get userId from session
-    await createEmailSession({
-      email: userData.email,
-      password,
+    const session = await account.createEmailPasswordSession(
+      userData.email,
+      password
+    );
+
+    cookies().set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
     });
 
     return parseStringify(newUser);
@@ -114,10 +91,9 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 
 export const signIn = async ({ email, password }: signInProps) => {
   try {
-    const response = await createEmailSession({
-      email,
-      password,
-    });
+    const { account } = await createAdminClient();
+    const response = await account.createEmailPasswordSession(email, password);
+
     const user = await getUserInfo({ userId: response.userId });
 
     return parseStringify(user);
@@ -129,20 +105,9 @@ export const signIn = async ({ email, password }: signInProps) => {
 
 export const getLoggedInUser = async () => {
   try {
-    const appWriteCookie = cookies().get("appwrite-cookie");
+    const { account } = await createSessionClient();
+    const result = await account.get();
 
-    const response = await fetch(`${ENDPOINT}/account`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Appwrite-Response-Format": "1.4.0",
-        "X-Appwrite-Project": PROJECT!,
-        // "X-Appwrite-Key": SECRET!,
-        Cookie: appWriteCookie?.value!,
-      },
-    });
-
-    const result = await response.json();
     const user = await getUserInfo({ userId: result.$id });
 
     return parseStringify(user);
@@ -239,7 +204,7 @@ export const logoutAccount = async () => {
   try {
     const { account } = await createSessionClient();
 
-    cookies().delete("appwrite-cookie");
+    cookies().delete("appwrite-session");
     await account.deleteSession("current");
   } catch (error) {
     return null;
